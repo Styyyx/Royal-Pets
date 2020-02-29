@@ -1,0 +1,72 @@
+@font-face {
+    font-family: Monserrat-Regular;
+    src: url(../fonts/Montserrat-Regular.otf);
+}
+
+@font-face {
+    font-family: Monserrat-Semibold;
+    src: url(../fonts/Montserrat-SemiBold.otf);
+}
+
+@font-face {
+    font-family: Monserrat-Thin;
+    src: url(../fonts/Montserrat-Thin.otf);
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    background-color: #FFD45D;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    height: 40%;
+    margin: 5% 0 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper #logo {
+    height: auto;
+    width: 90%;
+}
+
+.menu {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.menu-item {
+    font-size: 1.5em;
+    color: white;
+    padding: 0.5em 0.5em;
+    margin: 0.2em 0;
+    background-color: #E0A777;
+    border: 0.2em solid #4C250A;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 17.5%;
+    text-align: center;
+    font-family: "Monserrat-Semibold";
+}
+
+.menu span {
+    font-size: 2.5em;
+    margin: 2.5%;
+    font-family: "Monserrat-Thin";
+}
