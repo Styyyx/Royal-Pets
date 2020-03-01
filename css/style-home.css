@@ -1,3 +1,4 @@
+/* #region Imported Fonts */
 @font-face {
     font-family: Monserrat-Regular;
     src: url(../fonts/Montserrat-Regular.otf);
@@ -12,7 +13,9 @@
     font-family: Monserrat-Thin;
     src: url(../fonts/Montserrat-Thin.otf);
 }
+/* #endregion */
 
+/* #region Base */
 html, body {
     height: 100%;
     width: 100%;
@@ -28,6 +31,7 @@ body {
 * {
     box-sizing: border-box;
 }
+/* #endregion */
 
 .wrapper {
     display: flex;
@@ -51,7 +55,7 @@ body {
     flex-direction: column;
 }
 
-.menu-item {
+.button {
     font-size: 1.5em;
     color: white;
     padding: 0.5em 0.5em;
