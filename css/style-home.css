@@ -70,3 +70,19 @@ body {
     margin: 2.5%;
     font-family: "Monserrat-Thin";
 }
+
+.silhouette {
+    height: 70%;
+    width: auto;
+    position: absolute;
+    top: 20%;
+    z-index: -1;
+}
+
+.silhouette#dog-silhouette {
+    right: -10%;
+}
+
+.silhouette#cat-silhouette {
+    left: -15%;
+}
