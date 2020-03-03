@@ -12,23 +12,25 @@
     </template>
     <link rel="stylesheet" href="../css/style-home.css">
     <link rel="icon" type="image/png" href="../res/icon.png">
+    <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+    <!-- <script type="text/javascript" src="../js/script.js"></script> -->
 </head>
 
 <body>
     <div class="wrapper"><img id="logo" src="../res/Logo.png"></div>
+
     <div class="menu">
         <span>2-PLAYER WEB-BASED CHESS GAME</span>
-        <a class="button" href="#newGame">
-            <div>NEW GAME</div>
-        </a>
-        <a class="button" href="#howToPlay">
-            <div>HOW TO PLAY</div>
-        </a>
+        <a href="#newGame" class="button"><div id="btn-newGame">NEW GAME</div></a>
+        <a href="#howToPlay" class="button"><div id="btn-howToPlay">HOW TO PLAY</div></a>
     </div>
+
     <img class="silhouette" id="dog-silhouette" src="../res/Dog_Silhouette.png">
     <img class="silhouette" id="cat-silhouette" src="../res/Cat_Silhouette.png">
+
     <div class="overlay" id="newGame">
         <div class="panel">
+            <a href="#" class="exitBtn"><img src="../res/exit_button.png"></a>
             <span>PLAYER 1:</span>
             <input type="text" id="input-player1">
             <span>PLAYER 2:</span>
@@ -38,6 +40,12 @@
     <div class="overlay" id="howToPlay">
         <div class="panel"></div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+            
+        });
+    </script>
 </body>
 
 </html>
