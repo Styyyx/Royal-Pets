@@ -32,13 +32,17 @@
 
     <div class="overlay" id="newGame">
         <div class="panel">
-            <a href="#" id="btn-exit"><img src="../res/exit_button.png"></a>
             <div class="form">
                 <span>PLAYER 1:</span>
                 <input type="text" id="input-player1">
                 <span>PLAYER 2:</span>
                 <input type="text" id="input-player2">
-                <img src="../res/ok_button.png" id="btn-ok">
+                <div class="buttons">
+                    <img src="../res/ok_button.png" id="btn-ok">
+                    <a href="#">
+                        <img src="../res/cancel button.png" id="btn-cancel">
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -53,13 +57,9 @@
 
             var namePlayer1, namePlayer2;
 
-            // $("#btn-newGame").click(function () {
-            //     $("#input-player1").focus();
-            // });
-
             $("#btn-ok").click(function () {
                 if ($("#input-player1").val() == "" || $("#input-player2").val() == "") {
-                    alert("Invalid!");
+                    alert("Invalid!"); //Enhance this
                 }
                 else {
                     namePlayer1 = $("#input-player1").val();
