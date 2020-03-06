@@ -58,15 +58,22 @@
             var namePlayer1, namePlayer2;
 
             $("#btn-ok").click(function () {
-                if ($("#input-player1").val() == "" || $("#input-player2").val() == "") {
-                    alert("Invalid!"); //Enhance this
+                var btn1 = $("#input-player1");
+                var btn2 = $("#input-player2");
+                if (btn1.val() == "" || btn2.val() == "") {
+                    if (btn1.val() == ""){
+                        btn1.addClass("error");
+                        setTimeout(function(){btn1.removeClass("error")}, 300);
+                    }
+                    if (btn2.val() == ""){
+                        btn2.addClass("error");
+                        setTimeout(function(){btn2.removeClass("error")}, 300);
+                    }
                 }
                 else {
                     namePlayer1 = $("#input-player1").val();
                     namePlayer2 = $("#input-player2").val();
 
-                    // This is faulty on mobile browsers
-                    // Recommend to use url params "?data="
                     window.sessionStorage.setItem("player1", namePlayer1);
                     window.sessionStorage.setItem("player2", namePlayer2);
                     window.location.replace("./game.html");
