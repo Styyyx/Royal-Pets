@@ -7,22 +7,114 @@
     <link rel="icon" type="image/png" href="../res/icon.png">
     <link rel="stylesheet" href="../css/style-game.css">
 </head>
+
 <body>
-
-    <div class="board">
-
+    <img class="burger" src="../res/burger.png">
+    <div class="menu">
+        <div>HOME</div>
+        <div>NEW GAME</div>
+        <div>HOW TO PLAY</div>
+        <div>QUIT</div>
     </div>
+    <div id="turn">
+        <img id="playerImg" src="../res/dogPieces/dog_king.png">
+        <span id="playerName"></span>
+    </div>
+    <div class="game-area">
+        <div class="board">
+            <div class="row">
+                <div class="cell" row="1" column="1" piece="rook" player="dog"><img src=""></div>
+                <div class="cell cell-gray" row="1" column="2" piece="knight" player="dog"><img src=""></div>
+                <div class="cell" row="1" column="3" piece="bishop" player="dog"><img src=""></div>
+                <div class="cell cell-gray" row="1" column="4" piece="queen" player="dog"><img src=""></div>
+                <div class="cell" row="1" column="5" piece="king" player="dog"><img src=""></div>
+                <div class="cell cell-gray" row="1" column="6" piece="bishop" player="dog"><img src=""></div>
+                <div class="cell" row="1" column="7" piece="knight" player="dog"><img src=""></div>
+                <div class="cell cell-gray" row="1" column="8" piece="rook" player="dog"><img src=""></div>
+            </div>
 
+            <div class="row">
+                <div class="cell cell-gray" row="2" column="2" piece="pawn" player="dog"><img src=""></div>
+                <div class="cell" row="2" column="1" piece="pawn" player="dog"><img src=""></div>
+                <div class="cell cell-gray" row="2" column="3" piece="pawn" player="dog"><img src=""></div>
+                <div class="cell" row="2" column="4" piece="pawn" player="dog"><img src=""></div>
+                <div class="cell cell-gray" row="2" column="5" piece="pawn" player="dog"><img src=""></div>
+                <div class="cell" row="2" column="6" piece="pawn" player="dog"><img src=""></div>
+                <div class="cell cell-gray" row="2" column="7" piece="pawn" player="dog"><img src=""></div>
+                <div class="cell" row="2" column="8" piece="pawn" player="dog"><img src=""></div>
+            </div>
+
+            <div class="row">
+                <div class="cell" row="3" column="1" piece="" player=""></div>
+                <div class="cell cell-gray" row="3" column="2" piece="" player=""></div>
+                <div class="cell" row="3" column="3" piece="" player=""></div>
+                <div class="cell cell-gray" row="3" column="4" piece="" player=""></div>
+                <div class="cell" row="3" column="5" piece="" player=""></div>
+                <div class="cell cell-gray" row="3" column="6" piece="" player=""></div>
+                <div class="cell" row="3" column="7" piece="" player=""></div>
+                <div class="cell cell-gray" row="3" column="8" piece="" player=""></div>
+            </div>
+
+            <div class="row">
+                <div class="cell cell-gray" row="4" column="1" piece="" player=""></div>
+                <div class="cell" row="4" column="2" piece="" player=""></div>
+                <div class="cell cell-gray" row="4" column="3" piece="" player=""></div>
+                <div class="cell" row="4" column="4" piece="" player=""></div>
+                <div class="cell cell-gray" row="4" column="5" piece="" player=""></div>
+                <div class="cell" row="4" column="6" piece="" player=""></div>
+                <div class="cell cell-gray" row="4" column="7" piece="" player=""></div>
+                <div class="cell" row="4" column="8" piece="" player=""></div>
+            </div>
+
+            <div class="row">
+                <div class="cell" row="5" column="1" piece="" player=""></div>
+                <div class="cell cell-gray" row="5" column="2" piece="" player=""></div>
+                <div class="cell" row="5" column="3" piece="" player=""></div>
+                <div class="cell cell-gray" row="5" column="4" piece="" player=""></div>
+                <div class="cell" row="5" column="6" piece="" player=""></div>
+                <div class="cell cell-gray" row="5" column="5" piece="" player=""></div>
+                <div class="cell" row="5" column="7" piece="" player=""></div>
+                <div class="cell cell-gray" row="5" column="8" piece="" player=""></div>
+            </div>
+
+            <div class="row">
+                <div class="cell cell-gray" row="6" column="1" piece="" player=""></div>
+                <div class="cell" row="6" column="2" piece="" player=""></div>
+                <div class="cell cell-gray" row="6" column="3" piece="" player=""></div>
+                <div class="cell" row="6" column="4" piece="" player=""></div>
+                <div class="cell cell-gray" row="6" column="5" piece="" player=""></div>
+                <div class="cell" row="6" column="6" piece="" player=""></div>
+                <div class="cell cell-gray" row="6" column="7" piece="" player=""></div>
+                <div class="cell" row="6" column="8" piece="" player=""></div>
+            </div>
+
+            <div class="row">
+                <div class="cell" row="7" column="1" piece="" player=""></div>
+                <div class="cell cell-gray" row="7" column="2" piece="" player=""></div>
+                <div class="cell" row="7" column="3" piece="" player=""></div>
+                <div class="cell cell-gray" row="7" column="4" piece="" player=""></div>
+                <div class="cell" row="7" column="5" piece="" player=""></div>
+                <div class="cell cell-gray" row="7" column="6" piece="" player=""></div>
+                <div class="cell" row="7" column="7" piece="" player=""></div>
+                <div class="cell cell-gray" row="7" column="8" piece="" player=""></div>
+            </div>
+
+            <div class="row">
+                <div class="cell cell-gray" row="8" column="1" piece="" player=""></div>
+                <div class="cell" row="8" column="2" piece="" player=""></div>
+                <div class="cell cell-gray" row="8" column="3" piece="" player=""></div>
+                <div class="cell" row="8" column="4" piece="" player=""></div>
+                <div class="cell cell-gray" row="8" column="5" piece="" player=""></div>
+                <div class="cell" row="8" column="6" piece="" player=""></div>
+                <div class="cell cell-gray" row="8" column="7" piece="" player=""></div>
+                <div class="cell" row="8" column="8" piece="" player=""></div>
+            </div>
+        </div>
+        <div class="history"></div>
+        <div class="graveyard"></div>
+    </div>
     <script src="../js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript">
-
-        $(document).ready(function(){
-            var namePlayer1 = sessionStorage.getItem("player1");
-            var namePlayer2 = sessionStorage.getItem("player2");
-
-        });
-
-    </script>
+    <script src="../js/js-game.js"></script>
 </body>
 
 </html>

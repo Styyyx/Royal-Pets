@@ -2,18 +2,28 @@ $(document).ready(function () {
 
     var namePlayer1, namePlayer2;
 
+    $(document).on("keypress", function(e){
+        if (e.which == 13){
+            $("#btn-ok").click();
+        }
+    });
+
+    $(".form input").on("click", function(){
+        $(this).select();
+    });
+
     $("#btn-ok").on("click", function () {
         var btn1 = $("#input-player1");
         var btn2 = $("#input-player2");
         if (btn1.val() == "" || btn2.val() == "") {
             if (btn1.val() == "") {
                 btn1.addClass("error");
-                setTimeout(function () { btn1.removeClass("error") }, 300);
+                setTimeout(function () { btn1.removeClass("error");}, 300);
 
             }
             if (btn2.val() == "") {
                 btn2.addClass("error");
-                setTimeout(function () { btn2.removeClass("error") }, 300);
+                setTimeout(function () { btn2.removeClass("error");}, 300);
             }
         }
         else {
