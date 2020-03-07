@@ -51,42 +51,7 @@
     </div>
 
     <script src="../js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-
-            var namePlayer1, namePlayer2;
-
-            $("#btn-ok").click(function () {
-                var btn1 = $("#input-player1");
-                var btn2 = $("#input-player2");
-                if (btn1.val() == "" || btn2.val() == "") {
-                    if (btn1.val() == ""){
-                        btn1.addClass("error");
-                        setTimeout(function(){btn1.removeClass("error")}, 300);
-                    }
-                    if (btn2.val() == ""){
-                        btn2.addClass("error");
-                        setTimeout(function(){btn2.removeClass("error")}, 300);
-                    }
-                }
-                else {
-                    namePlayer1 = $("#input-player1").val();
-                    namePlayer2 = $("#input-player2").val();
-
-                    window.sessionStorage.setItem("player1", namePlayer1);
-                    window.sessionStorage.setItem("player2", namePlayer2);
-                    window.location.replace("./game.html");
-                }
-            });
-
-            $("#btn-exit").click(function () {
-                $("#input-player1").val("");
-                $("#input-player2").val("");
-            });
-        });
-
-    </script>
+    <script src="../js/js-home.js"></script>
 
 </body>
 
