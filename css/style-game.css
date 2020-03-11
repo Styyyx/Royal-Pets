@@ -93,12 +93,44 @@ body {
 /* #endregion */
 
 /* #region Board Layout*/
+.columnLegend {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    top: -50px;
+}
+
+.columnLegend div {
+    height: 35px;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+}
+
+.rowLegend {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: -50px;
+}
+
+.rowLegend div {
+    height: 70px;
+    width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+}
+
 .board {
     height: 570px;
     width: 570px;
     position: absolute;
     left: 30%;
-    top: 7.5%;
+    top: 10%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -119,11 +151,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.board .cell img {
-    height: 80%;
-    width: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .board .cell-gray {
