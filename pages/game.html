@@ -22,7 +22,7 @@
     </div>
     <div class="game-area">
         <div class="board">
-            <div class="rowLegend">  
+            <div class="rowLegend">
                 <div>1</div>
                 <div>2</div>
                 <div>3</div>
@@ -54,8 +54,8 @@
             </div>
 
             <div class="row">
-                <div class="cell cell-gray" empty="false" row="2" column="2" piece="pawn" player="dog"></div>
-                <div class="cell" empty="false" row="2" column="1" piece="pawn" player="dog"></div>
+                <div class="cell cell-gray" empty="false" row="2" column="1" piece="pawn" player="dog"></div>
+                <div class="cell" empty="false" row="2" column="2" piece="pawn" player="dog"></div>
                 <div class="cell cell-gray" empty="false" row="2" column="3" piece="pawn" player="dog"></div>
                 <div class="cell" empty="false" row="2" column="4" piece="pawn" player="dog"></div>
                 <div class="cell cell-gray" empty="false" row="2" column="5" piece="pawn" player="dog"></div>
@@ -63,7 +63,7 @@
                 <div class="cell cell-gray" empty="false" row="2" column="7" piece="pawn" player="dog"></div>
                 <div class="cell" empty="false" row="2" column="8" piece="pawn" player="dog"></div>
             </div>
-            
+
             <div class="row">
                 <div class="cell" empty="true" row="3" column="1" piece="" player=""></div>
                 <div class="cell cell-gray" empty="true" row="3" column="2" piece="" player=""></div>
@@ -91,8 +91,8 @@
                 <div class="cell cell-gray" empty="true" row="5" column="2" piece="" player=""></div>
                 <div class="cell" empty="true" row="5" column="3" piece="" player=""></div>
                 <div class="cell cell-gray" empty="true" row="5" column="4" piece="" player=""></div>
-                <div class="cell" empty="true" row="5" column="6" piece="" player=""></div>
-                <div class="cell cell-gray" empty="true" row="5" column="5" piece="" player=""></div>
+                <div class="cell" empty="true" row="5" column="5" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="5" column="6" piece="" player=""></div>
                 <div class="cell" empty="true" row="5" column="7" piece="" player=""></div>
                 <div class="cell cell-gray" empty="true" row="5" column="8" piece="" player=""></div>
             </div>
@@ -130,7 +130,15 @@
                 <div class="cell" empty="false" row="8" column="8" piece="rook" player="cat"></div>
             </div>
         </div>
-        <div class="history"></div>
+        <div class="history">
+            <div class="moveList">
+            </div>
+            <div class="buttons">
+                <img src="../res/undo_button.png">
+                <img src="../res/options_button.png">
+                <img src="../res/redo_button.png">
+            </div>
+        </div>
         <div class="graveyard"></div>
     </div>
     <script src="../js/jquery-3.4.1.min.js"></script>
