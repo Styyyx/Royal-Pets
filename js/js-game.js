@@ -2,7 +2,7 @@ $(document).ready(function () {
     //#region Randomize First Player
     var namePlayer1 = sessionStorage.getItem("player1");
     var namePlayer2 = sessionStorage.getItem("player2");
-    var turnPlayer;
+    var turnPlayer = "";
 
     if (Math.round(Math.random()) == 0) {
         turnPlayer = "dog";
@@ -43,7 +43,7 @@ $(document).ready(function () {
             $(this).attr("empty", "true").removeAttr("piece").removeAttr("player");
         } else {
             $(this).css("background-image", "url(\"../res/" + player + "Pieces/" +
-                player + "_" + piece + ".png\"").css("background-size", "60px 60px");
+                player + "_" + piece + ".png\"").css("background-size", "50px 60px");
         }
     });
 
@@ -65,12 +65,6 @@ $(document).ready(function () {
                 $(this).css("background-color", "rgba(0, 128, 0, 0.7)");
                 data = { player: thisPlayer, piece: thisPiece, row: thisRow, column: thisColumn };
                 ShowMoves();
-                // $(".cell").each(function () {
-                //     if (($(this).css("background-color") == "rgb(255,0,0)") ||
-                //         ($(this).css("background-color") == "rgb(0,0,255)")) {
-                //         $(this).css("cursor", "pointer");
-                //     }
-                // });
             }
         }
         //When selecting cell other than own pieces
@@ -83,10 +77,10 @@ $(document).ready(function () {
                 //When trying to eat
                 if (CheckEat(thisRow, thisColumn)) {
                     MovePiece(thisRow, thisColumn);
-                    ReloadColors();
                     Debug("EAT", thisPlayer, thisPiece, thisRow, thisColumn);
                     data = { player: "", piece: "", row: "", column: "" };
-                    // EndTurn();
+                    EndTurn();
+                    ReloadColors();
                 }
                 //When eat fails
                 else {
@@ -99,12 +93,13 @@ $(document).ready(function () {
                 //When trying to move
                 if (CheckMove(thisRow, thisColumn)) {
                     MovePiece(thisRow, thisColumn);
-                    ReloadColors();
                     Debug("MOVE", thisPlayer, thisPiece, thisRow, thisColumn);
                     data = { player: "", piece: "", row: "", column: "" };
-                    // EndTurn();
+                    CheckforCheck();
+                    EndTurn();
+                    ReloadColors();
                 }
-                //When move
+                //When move fails
                 else {
                     ReloadColors();
                     data = { player: "", piece: "", row: "", column: "" };
@@ -115,7 +110,9 @@ $(document).ready(function () {
 
     function ReloadColors() {
         $("[empty]").each(function () {
-            if ($(this).hasClass("cell-gray")) {
+            if ($(this).attr("piece") == "king" && $(this).attr("check") == "true") {
+                $(this).css("background-color", "violet");
+            } else if ($(this).hasClass("cell-gray")) {
                 $(this).css("background-color", "#8A8A8A");
             } else {
                 $(this).css("background-color", "#ffffff");
@@ -197,7 +194,6 @@ $(document).ready(function () {
             } else { return false; }
         }
     }
-
 
     function CheckEat(thisRow, thisColumn) {
         if (data.piece == "pawn") {
@@ -513,56 +509,63 @@ $(document).ready(function () {
             }
         } else if (data.piece == "king") {
             //North
-            if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("empty") == "true") {
+            if (($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("empty") == "true") &&
+                ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("check") != "true")) {
                 $("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").css("background-color", "blue");
             } else if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("player") != turnPlayer) {
                 $("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").css("background-color", "red");
             }
             //Northeast
-            if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") {
+            if (($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") &&
+                ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("check") != "true")) {
                 $("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "blue");
             } else if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("player") != turnPlayer) {
                 $("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "red");
             }
             //East
-            if ($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") {
+            if (($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") &&
+                ($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("check") != "true")) {
                 $("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "blue");
             } else if ($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("player") != turnPlayer) {
                 $("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "red");
             }
             //Southeast
-            if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") {
+            if (($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") &&
+                ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("check") != "true")) {
                 $("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "blue");
             } else if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("player") != turnPlayer) {
                 $("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "red");
             }
             //South+1
-            if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("empty") == "true") {
+            if (($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("empty") == "true") &&
+                ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("check") != "true")) {
                 $("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").css("background-color", "blue");
             } else if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("player") != turnPlayer) {
                 $("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").css("background-color", "red");
             }
             //Southwest
-            if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") {
+            if (($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") &&
+                ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("check") != "true")) {
                 $("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "blue");
             } else if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("player") != turnPlayer) {
                 $("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
             }
             //West
-            if ($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") {
+            if (($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") &&
+                ($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("check") != "true")) {
                 $("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "blue");
             } else if ($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("player") != turnPlayer) {
                 $("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
             }
             //Northwest
-            if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") {
+            if (($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") &&
+                ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("check") != "true")) {
                 $("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "blue");
             } else if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("player") != turnPlayer) {
                 $("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
             }
         }
     }
-
 
     function MovePiece(thisRow, thisColumn) {
         $("[row = \'" + data.row + "\'][column = \'" + data.column + "\']")
@@ -576,13 +579,9 @@ $(document).ready(function () {
             .attr("piece", data.piece)
             .attr("player", data.player)
             .css("background-image", "url(\"../res/" + data.player + "Pieces/" + data.player + "_" + data.piece + ".png\"")
-            .css("background-size", "60px 60px")
+            .css("background-size", "50px 60px")
             .css("background-repeat", "no-repeat")
             .css("background-position", "center");
-    }
-
-    function EatPiece(thisRow, thisColumn) {
-
     }
 
     function CheckHorizontal(thisColumn, xDist) {
@@ -705,11 +704,56 @@ $(document).ready(function () {
     }
 
     function CheckforCheck() {
+        /*
+            On move or eat, check this' piece future possible eats.
+            If possible eat is enemy king, mark that for check.
+        */
+        $("[empty=\'false\']").each(function () {
+            let thisPlayer = $(this).attr("player"),
+                thisPiece = $(this).attr("piece"),
+                thisRow = $(this).attr("row"),
+                thisColumn = $(this).attr("column");
+            // console.log("Player = " + thisPlayer + "\nPiece = " + thisPiece + "\nRow = " + thisRow + "\nColumn = " + thisColumn);
+            if (thisPiece == "pawn") {
 
+            } else if (thisPiece == "knight") {
+
+            } else if (thisPiece == "rook") {
+
+            } else if (thisPiece == "bishop") {
+
+            } else if (thisPiece == "queen") {
+                //Check North
+                for (let i = (parseInt(thisRow) - 1); i > 0; i--) {
+                    if ($("[row=\'" + i + "\'][column=\'" + thisColumn + "\']").attr("empty") == "false") {
+                        if (($("[row=\'" + i + "\'][column=\'" + thisColumn + "\']").attr("piece") == "king") &&
+                            ($("[row=\'" + i + "\'][column=\'" + thisColumn + "\']").attr("player") == thisPlayer)) {
+                            // Position of king
+                            $("[row=\'" + i + "\'][column=\'" + thisColumn + "\']").attr("check", "true");
+                            // One cell south of king
+                            $("[row=\'" + (i + 1) + "\'][column=\'" + thisColumn + "\']").attr("check", "true");
+                            break;
+                        }
+                        // If cell is occupied and blocking for a king
+                        else if (($("[row=\'" + (i - 1) + "\'][column=\'" + thisColumn + "\']").attr("piece") == "king") &&
+                            ($("[row=\'" + (i - 1) + "\'][column=\'" + thisColumn + "\']").attr("player") != thisPlayer)) {
+                            $("[row=\'" + i + "\'][column=\'" + thisColumn + "\']").removeAttr("check");
+                            $("[row=\'" + (i - 1) + "\'][column=\'" + thisColumn + "\']").removeAttr("check");
+                        }
+                    } else { continue; }
+                }
+            }
+        });
     }
 
     function CheckMate() {
         alert("[Checkmate] " + turnPlayer + " has WON!");
         window.location.replace("./home.html");
+    }
+
+    function EndangerKing() {
+        $("[empty = false]").each(function () {
+
+        });
     }
 });

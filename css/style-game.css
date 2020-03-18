@@ -178,25 +178,6 @@ body {
     align-items: center;
     justify-content: center;
 }
-.history .moveList {
-    background-color: #ffffff;
-    height: 60%;
-    width: 70%;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    overflow-y: auto;
-    scroll-behavior: smooth;
-}
-
-.history .moveList div {
-    font-family: "Monserrat-Regular";
-    font-size: 0.8em;
-    margin: 5px 0;
-    position: relative;
-}
 
 .history .buttons {
     display: flex;
