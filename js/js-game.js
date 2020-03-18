@@ -1,3 +1,24 @@
+/** 
+ *  Created by Patrick Alcantara on March 2020
+ *  Email: pema.alcantara@gmail.com
+ * 
+ *  Graphics by : Reanne Bernardo
+ *  Email: reannemaebernardo@gmail.com
+ * 
+ *  [Got some help from these sources]
+ *  1) On the idea that you can make custom attributes to html elements:
+ *      https://www.youtube.com/watch?v=_GC3epPiAvI
+ *  2) On how to change webpage using javascript/jquery:
+ *      https://stackoverflow.com/questions/846954/change-url-and-redirect-using-jquery
+ *  3) On how to transfer data between pages:
+ *      https://stackoverflow.com/questions/27765666/passing-variable-through-javascript-from-one-html-page-to-another-page
+ *  4) On how to disable selection while dragging:
+ *      https://stackoverflow.com/questions/4975222/jquery-disable-select-when-dragging
+ *  
+ *  "Credit where credit is due."
+ * 
+ */
+
 $(document).ready(function () {
     //#region Randomize First Player
     var namePlayer1 = sessionStorage.getItem("player1");
@@ -33,9 +54,11 @@ $(document).ready(function () {
     });
     // #endregion
 
+    $("*").bind()
 
     ReloadColors();
 
+    //Load pieces
     $("[empty]").each(function () {
         let piece = $(this).attr("piece"),
             player = $(this).attr("player");
@@ -79,7 +102,8 @@ $(document).ready(function () {
                     MovePiece(thisRow, thisColumn);
                     Debug("EAT", thisPlayer, thisPiece, thisRow, thisColumn);
                     data = { player: "", piece: "", row: "", column: "" };
-                    EndTurn();
+                    CheckforCheck();
+                    // EndTurn();
                     ReloadColors();
                 }
                 //When eat fails
@@ -96,7 +120,7 @@ $(document).ready(function () {
                     Debug("MOVE", thisPlayer, thisPiece, thisRow, thisColumn);
                     data = { player: "", piece: "", row: "", column: "" };
                     CheckforCheck();
-                    EndTurn();
+                    // EndTurn();
                     ReloadColors();
                 }
                 //When move fails
@@ -155,15 +179,13 @@ $(document).ready(function () {
                 } else { return false; }
             }
         } else if (data.piece == "rook") {
-            let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
-            let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
             //Vertical travel
-            if (xDist == 0) {
-                return CheckVertical(thisRow, yDist);
+            if (data.column == thisColumn) {
+                return CheckVertical(thisRow);
             }
             //Horizontal Travel
-            if (yDist == 0) {
-                return CheckHorizontal(thisColumn, xDist);
+            else if (data.row == thisRow) {
+                return CheckHorizontal(thisColumn);
             }
         } else if (data.piece == "knight") {
             let slope = ((Math.abs(parseInt(data.row) - parseInt(thisRow))) / (Math.abs(parseInt(data.column) - parseInt(thisColumn))));
@@ -174,17 +196,55 @@ $(document).ready(function () {
             let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
             let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
             let slope = yDist / xDist;
-            return CheckDiagonal(thisRow, thisColumn, xDist, yDist, slope);
+            if (slope == 1) {
+                //Northeast
+                if ((data.row > thisRow) && (data.column < thisColumn)) {
+                    return CheckDiagonalNorthEast(yDist);
+                }
+
+                //Southeast
+                else if ((data.row < thisRow) && (data.column < thisColumn)) {
+                    return CheckDiagonalSouthEast(yDist);
+                }
+
+                //Southwest
+                else if ((data.row < thisRow) && (data.column > thisColumn)) {
+                    return CheckDiagonalSouthWest(yDist);
+                }
+
+                //Northwest
+                else if ((data.row > thisRow) && (data.column > thisColumn)) {
+                    return CheckDiagonalNorthWest(yDist);
+                }
+            } else { return false; }
         } else if (data.piece == "queen") {
             let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
             let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
             let slope = yDist / xDist;
             if (xDist == 0) {
-                return CheckVertical(thisRow, yDist);
+                return CheckVertical(thisRow);
             } else if (yDist == 0) {
-                return CheckHorizontal(thisColumn, xDist);
+                return CheckHorizontal(thisColumn);
             } else if (slope == 1) {
-                return CheckDiagonal(thisRow, thisColumn, xDist, yDist, slope);
+                //Northeast
+                if ((data.row > thisRow) && (data.column < thisColumn)) {
+                    return CheckDiagonalNorthEast(yDist);
+                }
+
+                //Southeast
+                else if ((data.row < thisRow) && (data.column < thisColumn)) {
+                    return CheckDiagonalSouthEast(yDist);
+                }
+
+                //Southwest
+                else if ((data.row < thisRow) && (data.column > thisColumn)) {
+                    return CheckDiagonalSouthWest(yDist);
+                }
+
+                //Northwest
+                else if ((data.row > thisRow) && (data.column > thisColumn)) {
+                    return CheckDiagonalNorthWest(yDist);
+                }
             }
         } else if (data.piece == "king") {
             let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
@@ -209,16 +269,13 @@ $(document).ready(function () {
                 } else { return false; }
             }
         } else if (data.piece == "rook") {
-            let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
-            let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
-
             //Vertical travel
-            if (xDist == 0) {
-                return CheckVertical(thisRow, yDist);
+            if (data.column == thisColumn) {
+                return CheckVertical(thisRow);
             }
             //Horizontal Travel
-            if (yDist == 0) {
-                return CheckHorizontal(thisColumn, xDist);
+            else if (data.row == thisRow) {
+                return CheckHorizontal(thisColumn);
             }
         } else if (data.piece == "knight") {
             let slope = ((Math.abs(parseInt(data.row) - parseInt(thisRow))) / (Math.abs(parseInt(data.column) - parseInt(thisColumn))));
@@ -229,20 +286,60 @@ $(document).ready(function () {
             let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
             let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
             let slope = yDist / xDist;
-            return CheckDiagonal(thisRow, thisColumn, xDist, yDist, slope);
+            if (slope == 1) {
+                //Northeast
+                if ((data.row > thisRow) && (data.column < thisColumn)) {
+                    return CheckDiagonalNorthEast(yDist);
+                }
+
+                //Southeast
+                else if ((data.row < thisRow) && (data.column < thisColumn)) {
+                    return CheckDiagonalSouthEast(yDist);
+                }
+
+                //Southwest
+                else if ((data.row < thisRow) && (data.column > thisColumn)) {
+                    return CheckDiagonalSouthWest(yDist);
+                }
+
+                //Northwest
+                else if ((data.row > thisRow) && (data.column > thisColumn)) {
+                    return CheckDiagonalNorthWest(yDist);
+                }
+            } else { return false; }
         } else if (data.piece == "queen") {
             let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
             let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
             let slope = yDist / xDist;
             if (xDist == 0) {
-                return CheckVertical(thisRow, yDist);
+                return CheckVertical(thisRow);
             } else if (yDist == 0) {
-                return CheckHorizontal(thisColumn, xDist);
+                return CheckHorizontal(thisColumn);
             } else if (slope == 1) {
-                return CheckDiagonal(thisRow, thisColumn, xDist, yDist, slope);
+                //Northeast
+                if ((data.row > thisRow) && (data.column < thisColumn)) {
+                    return CheckDiagonalNorthEast(yDist);
+                }
+
+                //Southeast
+                else if ((data.row < thisRow) && (data.column < thisColumn)) {
+                    return CheckDiagonalSouthEast(yDist);
+                }
+
+                //Southwest
+                else if ((data.row < thisRow) && (data.column > thisColumn)) {
+                    return CheckDiagonalSouthWest(yDist);
+                }
+
+                //Northwest
+                else if ((data.row > thisRow) && (data.column > thisColumn)) {
+                    return CheckDiagonalNorthWest(yDist);
+                }
             } else {
                 return false;
             }
+        } else if (data.piece == "king") {
+
         }
     }
 
@@ -584,105 +681,117 @@ $(document).ready(function () {
             .css("background-position", "center");
     }
 
-    function CheckHorizontal(thisColumn, xDist) {
+    /** Checks for blockage along path of piece assuming path is straight horizontal.
+     * 
+     * @param {*} targetColumn The column of target position
+     * @param {*} thisColumn [optional] Current column of the piece, Default to data.column
+     * @returns {boolean} true if path is clear, else false.
+     */
+    function CheckHorizontal(targetColumn, thisColumn = data.column) {
         //Leftwards
-        if (parseInt(data.column) > parseInt(thisColumn)) {
-            let allow = true;
-            for (let i = 1; i < xDist; i++) {
-                if ($("[row = \'" + data.row + "\'][column = \'" + (parseInt(data.column) - i) + "\']").attr("empty") == "false") {
-                    allow = false;
+        if (thisColumn > targetColumn) {
+            for (let i = parseInt(thisColumn) - 1; i > targetColumn; i--) {
+                if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("empty") == "false") {
+                    return false;
                 }
             }
-            return allow;
+            return true;
         }
         //Rightwards
-        else if (parseInt(data.column) < parseInt(thisColumn)) {
-            let allow = true;
-            for (let i = 1; i < xDist; i++) {
-                if ($("[row = \'" + data.row + "\'][column = \'" + (parseInt(data.column) + i) + "\']").attr("empty") == "false") {
-                    allow = false;
+        else if (thisColumn < targetColumn) {
+            for (let i = parseInt(thisColumn) + 1; i < targetColumn; i++) {
+                if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("empty") == "false") {
+                    return false;
                 }
             }
-            return allow;
+            return true;
         }
     }
 
-    function CheckVertical(thisRow, yDist) {
+    /** Checks for blockage along path of piece assuming path is straight vertical.
+     * 
+     * @param {*} targetRow The row of target position
+     * @param {*} thisRow [optional] Current row of the piece. Default to data.row
+     * @returns {boolean} true if path is clear, else false.
+     */
+    function CheckVertical(targetRow, thisRow = data.row) {
         //Upwards
-        if (parseInt(data.row) > parseInt(thisRow)) {
-            let allow = true;
-            for (let i = 1; i < yDist; i++) {
-                if ($("[row = \'" + (parseInt(data.row) - i) + "\'][column = \'" + data.column + "\']").attr("empty") == "false") {
-                    allow = false;
+        if (thisRow > targetRow) {
+            for (let i = parseInt(thisRow) - 1; i > targetRow; i--) {
+                if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("empty") == "false") {
+                    return false;
                 }
             }
-            return allow;
+            return true;
         }
         //Downwards
-        else if (parseInt(data.row) < parseInt(thisRow)) {
-            let allow = true;
-            for (let i = 1; i < yDist; i++) {
-                if ($("[row = \'" + (parseInt(data.row) + i) + "\'][column = \'" + data.column + "\']").attr("empty") == "false") {
-                    allow = false;
+        else if (thisRow < targetRow) {
+            for (let i = parseInt(thisRow) + 1; i < targetRow; i++) {
+                if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("empty") == "false") {
+                    return false;
                 }
             }
-            return allow;
+            return true;
         }
-
     }
 
-    function CheckDiagonal(thisRow, thisColumn, xDist, yDist, slope) {
-
-        if (slope == 1) {
-            //Northeast
-            if ((parseInt(data.row) > parseInt(thisRow)) && (parseInt(data.column) < parseInt(thisColumn))) {
-                let allow = true;
-                for (let i = 1; i < yDist; i++) {
-                    if ($("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").attr("empty") == "false") {
-                        allow = false;
-                        break;
-                    }
-
-                }
-                return allow;
-            }
-
-            //Northwest
-            if ((parseInt(data.row) > parseInt(thisRow)) && (parseInt(data.column) > parseInt(thisColumn))) {
-                let allow = true;
-                for (let i = 1; i < yDist; i++) {
-                    if ($("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").attr("empty") == "false") {
-                        allow = false;
-                        break;
-                    }
-                }
-                return allow;
-            }
-
-            //Southwest
-            if ((parseInt(data.row) < parseInt(thisRow)) && (parseInt(data.column) > parseInt(thisColumn))) {
-                let allow = true;
-                for (let i = 1; i < yDist; i++) {
-                    if ($("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").attr("empty") == "false") {
-                        allow = false;
-                        break;
-                    }
-                }
-                return allow;
-            }
-
-            //Southeast
-            if ((parseInt(data.row) < parseInt(thisRow)) && (parseInt(data.column) < parseInt(thisColumn))) {
-                let allow = true;
-                for (let i = 1; i < yDist; i++) {
-                    if ($("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").attr("empty") == "false") {
-                        allow = false;
-                        break;
-                    }
-                }
-                return allow;
+    /** Checks for blockage along path if target location is NORTH-WEST of current location
+     * 
+     * @param {*} distance Distance of piece from target location. Can either be X or Y distance
+     * @param {*} thisRow [optional] Current row of piece, default to data.row.
+     * @param {*} thisColumn [optional] Current column of piece, default to data.column.
+     */
+    function CheckDiagonalNorthWest(distance, thisRow = data.row, thisColumn = data.column) {
+        for (let i = 1; i < distance; i++) {
+            if ($("[row=\'" + (parseInt(thisRow) - i) + "\'][column=\'" + (parseInt(thisColumn) - i) + "\']").attr("empty") == "false") {
+                return false;
             }
         }
+        return true;
+    }
+    /** Checks for blockage along path if target location is NORTH-EAST of current location
+     * 
+     * @param {*} distance Distance of piece from target location. Can either be X or Y distance
+     * @param {*} thisRow [optional] Current row of piece, default to data.row.
+     * @param {*} thisColumn [optional] Current column of piece, default to data.column.
+     */
+    function CheckDiagonalNorthEast(distance, thisRow = data.row, thisColumn = data.column) {
+        for (let i = 1; i < distance; i++) {
+            if ($("[row=\'" + (parseInt(thisRow) - i) + "\'][column=\'" + (parseInt(thisColumn) + i) + "\']").attr("empty") == "false") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Checks for blockage along path if target location is SOUTH-EAST of current location
+     * 
+     * @param {*} distance Distance of piece from target location. Can either be X or Y distance
+     * @param {*} thisRow [optional] Current row of piece, default to data.row.
+     * @param {*} thisColumn [optional] Current column of piece, default to data.column.
+     */
+    function CheckDiagonalSouthEast(distance, thisRow = data.row, thisColumn = data.column) {
+        for (let i = 1; i < distance; i++) {
+            if ($("[row=\'" + (parseInt(thisRow) + i) + "\'][column=\'" + (parseInt(thisColumn) + i) + "\']").attr("empty") == "false") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Checks for blockage along path if target location is SOUTH-WEST of current location
+     * 
+     * @param {*} distance Distance of piece from target location. Can either be X or Y distance
+     * @param {*} thisRow [optional] Current row of piece, default to data.row.
+     * @param {*} thisColumn [optional] Current column of piece, default to data.column.
+     */
+    function CheckDiagonalSouthWest(distance, thisRow = data.row, thisColumn = data.column) {
+        for (let i = 1; i < distance; i++) {
+            if ($("[row=\'" + (parseInt(thisRow) + i) + "\'][column=\'" + (parseInt(thisColumn) - i) + "\']").attr("empty") == "false") {
+                return false;
+            }
+        }
+        return true;
     }
 
     function EndTurn() {
@@ -711,9 +820,15 @@ $(document).ready(function () {
         $("[empty=\'false\']").each(function () {
             let thisPlayer = $(this).attr("player"),
                 thisPiece = $(this).attr("piece"),
-                thisRow = $(this).attr("row"),
-                thisColumn = $(this).attr("column");
-            // console.log("Player = " + thisPlayer + "\nPiece = " + thisPiece + "\nRow = " + thisRow + "\nColumn = " + thisColumn);
+                thisRow = parseInt($(this).attr("row")),
+                thisColumn = parseInt($(this).attr("column"));
+
+            // Ternary operator para cool hehe B)
+            let enemyKing = $("[player=\'" + (thisPlayer == "dog" ? "cat" : "dog") + "\'][piece=\'king\']");
+            let enemyKingRow = parseInt(enemyKing.attr("row")),
+                enemyKingColumn = parseInt(enemyKing.attr("column")),
+                slope = (Math.abs(thisRow - enemyKingRow) / Math.abs(thisColumn - enemyKingColumn));
+
             if (thisPiece == "pawn") {
 
             } else if (thisPiece == "knight") {
@@ -723,24 +838,25 @@ $(document).ready(function () {
             } else if (thisPiece == "bishop") {
 
             } else if (thisPiece == "queen") {
-                //Check North
-                for (let i = (parseInt(thisRow) - 1); i > 0; i--) {
-                    if ($("[row=\'" + i + "\'][column=\'" + thisColumn + "\']").attr("empty") == "false") {
-                        if (($("[row=\'" + i + "\'][column=\'" + thisColumn + "\']").attr("piece") == "king") &&
-                            ($("[row=\'" + i + "\'][column=\'" + thisColumn + "\']").attr("player") == thisPlayer)) {
-                            // Position of king
-                            $("[row=\'" + i + "\'][column=\'" + thisColumn + "\']").attr("check", "true");
-                            // One cell south of king
-                            $("[row=\'" + (i + 1) + "\'][column=\'" + thisColumn + "\']").attr("check", "true");
-                            break;
-                        }
-                        // If cell is occupied and blocking for a king
-                        else if (($("[row=\'" + (i - 1) + "\'][column=\'" + thisColumn + "\']").attr("piece") == "king") &&
-                            ($("[row=\'" + (i - 1) + "\'][column=\'" + thisColumn + "\']").attr("player") != thisPlayer)) {
-                            $("[row=\'" + i + "\'][column=\'" + thisColumn + "\']").removeAttr("check");
-                            $("[row=\'" + (i - 1) + "\'][column=\'" + thisColumn + "\']").removeAttr("check");
-                        }
-                    } else { continue; }
+                // If queen perfectly aligns vertically with enemy king
+                if (thisColumn == enemyKingColumn) {
+                    if (CheckVertical(enemyKingRow, thisRow)) {
+                        enemyKing.attr("check", "true");
+                        $("[row=\'" + (enemyKingRow - 1) + "\'][column=\'" + thisColumn + "\']").attr("check", "true");
+                        $("[row=\'" + (enemyKingRow + 1) + "\'][column=\'" + thisColumn + "\']").attr("check", "true");
+                    }
+                }
+                // If queen perfectly aligns horizontally with enemy king
+                else if (thisRow == enemyKingRow) {
+                    if (CheckHorizontal(enemyKingColumn, thisColumn)) {
+                        enemyKing.attr("check", "true");
+                        $("[row=\'" + thisRow + "\'][column=\'" + (enemyKingColumn - 1) + "\']").attr("check", "true");
+                        $("[row=\'" + thisRow + "\'][column=\'" + (enemyKingColumn + 1) + "\']").attr("check", "true");
+                    }
+                }
+                // If queen check king diagonally
+                else if (slope == 1) {
+
                 }
             }
         });
