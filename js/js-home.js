@@ -2,15 +2,21 @@ $(document).ready(function () {
 
     var namePlayer1, namePlayer2;
 
-    $(document).on("keypress", function(e){
-        if (e.which == 13){
+    $(document).on("keypress", function (event) {
+        console.log("Key : " + event.key + "\tWhich : " + event.which);
+        if (event.key == "Enter" && $("#newGame").css("display") != "none") {
             $("#btn-ok").click();
         }
     });
 
-    $(".form input").on("click", function(){
+    $(".form input").on("click", function () {
         $(this).select();
     });
+
+    // Prevents highlighting/selecting elements on drag
+    $("*").attr('unselectable', 'on')
+        .css('user-select', 'none')
+        .bind('selectstart', function () { return false; });
 
     $("#btn-ok").on("click", function () {
         var btn1 = $("#input-player1");
@@ -18,12 +24,12 @@ $(document).ready(function () {
         if (btn1.val() == "" || btn2.val() == "") {
             if (btn1.val() == "") {
                 btn1.addClass("error");
-                setTimeout(function () { btn1.removeClass("error");}, 300);
+                setTimeout(function () { btn1.removeClass("error"); }, 300);
 
             }
             if (btn2.val() == "") {
                 btn2.addClass("error");
-                setTimeout(function () { btn2.removeClass("error");}, 300);
+                setTimeout(function () { btn2.removeClass("error"); }, 300);
             }
         }
         else {

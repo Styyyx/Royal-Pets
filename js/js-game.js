@@ -13,9 +13,7 @@
  *  3) On how to transfer data between pages:
  *      https://stackoverflow.com/questions/27765666/passing-variable-through-javascript-from-one-html-page-to-another-page
  *  4) On how to disable selection while dragging:
- *      https://stackoverflow.com/questions/4975222/jquery-disable-select-when-dragging
- *  
- *  "Credit where credit is due."
+ *      https://stackoverflow.com/questions/2700000/how-to-disable-text-selection-using-jquery
  * 
  */
 
@@ -54,7 +52,10 @@ $(document).ready(function () {
     });
     // #endregion
 
-    $("*").bind()
+    // Prevents highlighting/selecting elements on drag
+    $("*").attr('unselectable', 'on')
+        .css('user-select', 'none')
+        .bind('selectstart', function () { return false; });
 
     ReloadColors();
 
@@ -78,11 +79,11 @@ $(document).ready(function () {
 
         if (thisPlayer == turnPlayer) {
             //Unselect currently selected piece
-            if (data.row == thisRow && data.column == thisColumn) {
+            if (thisRow == thisRow && data.column == thisColumn) {
                 ReloadColors();
                 data = { player: "", piece: "", row: "", column: "" };
             }
-            //Select piece
+            //Select (other) piece
             else {
                 ReloadColors();
                 $(this).css("background-color", "rgba(0, 128, 0, 0.7)");
@@ -127,6 +128,7 @@ $(document).ready(function () {
                 else {
                     ReloadColors();
                     data = { player: "", piece: "", row: "", column: "" };
+
                 }
             }
         }
@@ -149,197 +151,227 @@ $(document).ready(function () {
         });
     }
 
-    function CheckMove(thisRow, thisColumn) {
-        if (data.piece == "pawn") {
-            if (data.player == "dog") {
-                if (data.column == thisColumn) {
-                    if (data.row == 2) {
-                        if (thisRow == 3) {
+    /**
+     * Checks when the player is trying to move one of their own pieces
+     * 
+     * @param {*} targetRow Row of target position
+     * @param {*} targetColumn Column of target position
+     * @param {*} thisPlayer [optional] Whose player is selected piece, default to data.player
+     * @param {*} thisPiece [optional] Type of piece selected, default to data.piece
+     * @param {*} thisRow [optional] Current row of selected piece, default to data.row
+     * @param {*} thisColumn [optional] Current column of selected piece, default to data.column
+     * @returns {boolean} true if move is allowed, else false
+     * 
+     */
+    function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece = data.piece, thisRow = data.row, thisColumn = data.column) {
+        if (thisPiece == "pawn") {
+            if (thisPlayer == "dog") {
+                if (thisColumn == targetColumn) {
+                    if (thisRow == 2) {
+                        if (targetRow == 3) {
                             return true;
-                        } else if (thisRow == 4 &&
-                            ($("[row = \'3\'][column = \'" + thisColumn + "\']").attr("empty") == "true")) {
+                        } else if (targetRow == 4 &&
+                            ($("[row = \'3\'][column = \'" + targetColumn + "\']").attr("empty") == "true")) {
                             return true;
                         } else { return false; }
-                    } else if (((parseInt(data.row)) + 1) == thisRow) {
+                    } else if (((parseInt(thisRow)) + 1) == targetRow) {
                         return true;
                     } else { return false; }
                 } else { return false; }
-            } else if (data.player == "cat") {
-                if (data.column == thisColumn) {
-                    if (data.row == 7) {
-                        if (thisRow == 6) {
+            } else if (thisPlayer == "cat") {
+                if (thisColumn == targetColumn) {
+                    if (thisRow == 7) {
+                        if (targetRow == 6) {
                             return true;
-                        } else if (thisRow == 5 &&
-                            ($("[row = \'6\'][column = \'" + thisColumn + "\']").attr("empty") == "true")) {
+                        } else if (targetRow == 5 &&
+                            ($("[row = \'6\'][column = \'" + targetColumn + "\']").attr("empty") == "true")) {
                             return true;
                         } else { return false; }
-                    } else if (((parseInt(data.row)) - 1) == thisRow) {
+                    } else if (((parseInt(thisRow)) - 1) == targetRow) {
                         return true;
                     } else { return false; }
                 } else { return false; }
             }
-        } else if (data.piece == "rook") {
+        } else if (thisPiece == "rook") {
             //Vertical travel
-            if (data.column == thisColumn) {
-                return CheckVertical(thisRow);
+            if (targetColumn == thisColumn) {
+                return CheckVertical(targetRow, thisRow, thisColumn);
             }
             //Horizontal Travel
-            else if (data.row == thisRow) {
-                return CheckHorizontal(thisColumn);
+            else if (targetRow == thisRow) {
+                return CheckHorizontal(targetColumn, thisRow, thisColumn);
             }
-        } else if (data.piece == "knight") {
-            let slope = ((Math.abs(parseInt(data.row) - parseInt(thisRow))) / (Math.abs(parseInt(data.column) - parseInt(thisColumn))));
+        } else if (thisPiece == "knight") {
+            let slope = ((Math.abs(parseInt(targetRow) - parseInt(thisRow))) / (Math.abs(parseInt(targetColumn) - parseInt(thisColumn))));
             if (slope == 2 || slope == 0.5) {
                 return true;
             }
-        } else if (data.piece == "bishop") {
-            let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
-            let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
+        } else if (thisPiece == "bishop") {
+            let yDist = Math.abs(parseInt(targetRow) - parseInt(thisRow));
+            let xDist = Math.abs(parseInt(targetColumn) - parseInt(thisColumn));
             let slope = yDist / xDist;
             if (slope == 1) {
                 //Northeast
-                if ((data.row > thisRow) && (data.column < thisColumn)) {
-                    return CheckDiagonalNorthEast(yDist);
+                if ((thisRow > targetRow) && (thisColumn < targetColumn)) {
+                    return CheckDiagonalNorthEast(yDist, thisRow, thisColumn);
                 }
 
                 //Southeast
-                else if ((data.row < thisRow) && (data.column < thisColumn)) {
-                    return CheckDiagonalSouthEast(yDist);
+                else if ((thisRow < targetRow) && (thisColumn < targetColumn)) {
+                    return CheckDiagonalSouthEast(yDist, thisRow, thisColumn);
                 }
 
                 //Southwest
-                else if ((data.row < thisRow) && (data.column > thisColumn)) {
-                    return CheckDiagonalSouthWest(yDist);
+                else if ((thisRow < targetRow) && (thisColumn > targetColumn)) {
+                    return CheckDiagonalSouthWest(yDist, thisRow, thisColumn);
                 }
 
                 //Northwest
-                else if ((data.row > thisRow) && (data.column > thisColumn)) {
-                    return CheckDiagonalNorthWest(yDist);
+                else if ((thisRow > targetRow) && (thisColumn > targetColumn)) {
+                    return CheckDiagonalNorthWest(yDist, thisRow, thisColumn);
                 }
             } else { return false; }
-        } else if (data.piece == "queen") {
-            let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
-            let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
+        } else if (thisPiece == "queen") {
+            let yDist = Math.abs(parseInt(targetRow) - parseInt(thisRow));
+            let xDist = Math.abs(parseInt(targetColumn) - parseInt(thisColumn));
             let slope = yDist / xDist;
             if (xDist == 0) {
-                return CheckVertical(thisRow);
+                return CheckVertical(targetRow, thisRow, thisColumn);
             } else if (yDist == 0) {
-                return CheckHorizontal(thisColumn);
+                return CheckHorizontal(targetColumn, thisRow, thisColumn);
             } else if (slope == 1) {
                 //Northeast
-                if ((data.row > thisRow) && (data.column < thisColumn)) {
-                    return CheckDiagonalNorthEast(yDist);
+                if ((thisRow > targetRow) && (thisColumn < targetColumn)) {
+                    return CheckDiagonalNorthEast(yDist, thisRow, thisColumn);
                 }
 
                 //Southeast
-                else if ((data.row < thisRow) && (data.column < thisColumn)) {
-                    return CheckDiagonalSouthEast(yDist);
+                else if ((thisRow < targetRow) && (thisColumn < targetColumn)) {
+                    return CheckDiagonalSouthEast(yDist, thisRow, thisColumn);
                 }
 
                 //Southwest
-                else if ((data.row < thisRow) && (data.column > thisColumn)) {
-                    return CheckDiagonalSouthWest(yDist);
+                else if ((thisRow < targetRow) && (thisColumn > targetColumn)) {
+                    return CheckDiagonalSouthWest(yDist, thisRow, thisColumn);
                 }
 
                 //Northwest
-                else if ((data.row > thisRow) && (data.column > thisColumn)) {
-                    return CheckDiagonalNorthWest(yDist);
+                else if ((thisRow > targetRow) && (thisColumn > targetColumn)) {
+                    return CheckDiagonalNorthWest(yDist, thisRow, thisColumn);
                 }
             }
-        } else if (data.piece == "king") {
-            let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
-            let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
-            if ((xDist == 1 && yDist == 0) || (xDist == 0 && yDist == 1) || (xDist == 1 && yDist == 1)) {
+        } else if (thisPiece == "king") {
+            let xDist = Math.abs(targetColumn - thisColumn);
+            let yDist = Math.abs(targetRow - thisRow);
+            if (($("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("check") != "true") &&
+                (xDist == 1 || xDist == 0) && (yDist == 1 || yDist == 0)) {
                 return true;
             } else { return false; }
         }
     }
 
-    function CheckEat(thisRow, thisColumn) {
-        if (data.piece == "pawn") {
-            if (data.player == "dog") {
-                if (((parseInt(data.row) + 1) == thisRow) &&
-                    (((parseInt(data.column) - 1) == thisColumn) || ((parseInt(data.column) + 1) == thisColumn))) {
+    /**
+     * Checks when the player has clicked one of their own piece, and is trying to eat a piece of the enemy player.
+     * 
+     * @param {*} targetRow Row of target position
+     * @param {*} targetColumn  Column of target position
+     * @param {*} thisPlayer [optional] Whose player is selected piece, default to data.player
+     * @param {*} thisPiece [optional] Type of piece selected, default to data.piece
+     * @param {*} thisRow [optional] Current row of selected piece, default to data.row
+     * @param {*} thisColumn [optional] Current column of selected piece, default to data.column
+     * @returns {boolean} true if eat is allowed, else false
+     * 
+     */
+    function CheckEat(targetRow, targetColumn, thisPlayer = data.player, thisPiece = data.piece, thisRow = data.row, thisColumn = data.column) {
+        if (thisPiece == "pawn") {
+            if (thisPlayer == "dog") {
+                if (((parseInt(thisRow) + 1) == targetRow) &&
+                    (((parseInt(thisColumn) - 1) == targetColumn) || ((parseInt(thisColumn) + 1) == targetColumn))) {
                     return true;
                 } else { return false; }
-            } else if (data.player == "cat") {
-                if (((parseInt(data.row) - 1) == thisRow) &&
-                    (((parseInt(data.column) - 1) == thisColumn) || ((parseInt(data.column) + 1) == thisColumn))) {
+            } else if (thisPlayer == "cat") {
+                if (((parseInt(thisRow) - 1) == targetRow) &&
+                    (((parseInt(thisColumn) - 1) == targetColumn) || ((parseInt(thisColumn) + 1) == targetColumn))) {
                     return true;
                 } else { return false; }
             }
-        } else if (data.piece == "rook") {
+        } else if (thisPiece == "rook") {
             //Vertical travel
-            if (data.column == thisColumn) {
-                return CheckVertical(thisRow);
+            if (thisColumn == targetColumn) {
+                return CheckVertical(targetRow, thisRow, thisColumn);
             }
             //Horizontal Travel
-            else if (data.row == thisRow) {
-                return CheckHorizontal(thisColumn);
+            else if (thisColumn == targetRow) {
+                return CheckHorizontal(targetColumn, thisRow, thisColumn);
             }
-        } else if (data.piece == "knight") {
-            let slope = ((Math.abs(parseInt(data.row) - parseInt(thisRow))) / (Math.abs(parseInt(data.column) - parseInt(thisColumn))));
+        } else if (thisPiece == "knight") {
+            let slope = ((Math.abs(parseInt(thisRow) - parseInt(targetRow))) / (Math.abs(parseInt(thisColumn) - parseInt(targetColumn))));
             if (slope == 2 || slope == 0.5) {
                 return true;
             }
-        } else if (data.piece == "bishop") {
-            let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
-            let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
+        } else if (thisPiece == "bishop") {
+            let yDist = Math.abs(parseInt(thisRow) - parseInt(targetRow));
+            let xDist = Math.abs(parseInt(thisColumn) - parseInt(targetColumn));
             let slope = yDist / xDist;
             if (slope == 1) {
                 //Northeast
-                if ((data.row > thisRow) && (data.column < thisColumn)) {
-                    return CheckDiagonalNorthEast(yDist);
+                if ((thisRow > targetRow) && (thisColumn < targetColumn)) {
+                    return CheckDiagonalNorthEast(yDist, thisRow, thisColumn);
                 }
 
                 //Southeast
-                else if ((data.row < thisRow) && (data.column < thisColumn)) {
-                    return CheckDiagonalSouthEast(yDist);
+                else if ((thisRow < targetRow) && (thisColumn < targetColumn)) {
+                    return CheckDiagonalSouthEast(yDist, thisRow, thisColumn);
                 }
 
                 //Southwest
-                else if ((data.row < thisRow) && (data.column > thisColumn)) {
-                    return CheckDiagonalSouthWest(yDist);
+                else if ((thisRow < targetRow) && (thisColumn > targetColumn)) {
+                    return CheckDiagonalSouthWest(yDist, thisRow, thisColumnt);
                 }
 
                 //Northwest
-                else if ((data.row > thisRow) && (data.column > thisColumn)) {
-                    return CheckDiagonalNorthWest(yDist);
+                else if ((thisRow > targetRow) && (thisColumn > targetColumn)) {
+                    return CheckDiagonalNorthWest(yDist, thisRow, thisColumn);
                 }
             } else { return false; }
-        } else if (data.piece == "queen") {
-            let yDist = Math.abs(parseInt(data.row) - parseInt(thisRow));
-            let xDist = Math.abs(parseInt(data.column) - parseInt(thisColumn));
+        } else if (thisPiece == "queen") {
+            let yDist = Math.abs(parseInt(thisRow) - parseInt(targetRow));
+            let xDist = Math.abs(parseInt(thisColumn) - parseInt(targetColumn));
             let slope = yDist / xDist;
             if (xDist == 0) {
-                return CheckVertical(thisRow);
+                return CheckVertical(targetRow, thisRow, thisColumn);
             } else if (yDist == 0) {
-                return CheckHorizontal(thisColumn);
+                return CheckHorizontal(targetColumn, thisRow, thisColumn);
             } else if (slope == 1) {
                 //Northeast
-                if ((data.row > thisRow) && (data.column < thisColumn)) {
-                    return CheckDiagonalNorthEast(yDist);
+                if ((thisRow > targetRow) && (thisColumn < targetColumn)) {
+                    return CheckDiagonalNorthEast(yDist, thisRow, thisColumn);
                 }
 
                 //Southeast
-                else if ((data.row < thisRow) && (data.column < thisColumn)) {
-                    return CheckDiagonalSouthEast(yDist);
+                else if ((thisRow < targetRow) && (thisColumn < targetColumn)) {
+                    return CheckDiagonalSouthEast(yDist, thisRow, thisColumn);
                 }
 
                 //Southwest
-                else if ((data.row < thisRow) && (data.column > thisColumn)) {
-                    return CheckDiagonalSouthWest(yDist);
+                else if ((thisRow < targetRow) && (thisColumn > targetColumn)) {
+                    return CheckDiagonalSouthWest(yDist, thisRow, thisColumn);
                 }
 
                 //Northwest
-                else if ((data.row > thisRow) && (data.column > thisColumn)) {
-                    return CheckDiagonalNorthWest(yDist);
+                else if ((thisRow > targetRow) && (thisColumn > targetColumn)) {
+                    return CheckDiagonalNorthWest(yDist, thisRow, thisColumn);
                 }
             } else {
                 return false;
             }
-        } else if (data.piece == "king") {
-
+        } else if (thisPiece == "king") {
+            let yDist = Math.abs(targetRow - thisRow),
+                xDist = Math.abs(targetColumn - thisColumn);
+            if (($("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("check") != "true") &&
+                (yDist == 1 || yDist == 0) && (xDist == 1 || xDist == 0)) {
+                return true;
+            } else { return false; }
         }
     }
 
@@ -684,14 +716,16 @@ $(document).ready(function () {
     /** Checks for blockage along path of piece assuming path is straight horizontal.
      * 
      * @param {*} targetColumn The column of target position
-     * @param {*} thisColumn [optional] Current column of the piece, Default to data.column
+     * @param {*} thisRow Current row of the piece
+     * @param {*} thisColumn Current column of the piece.
      * @returns {boolean} true if path is clear, else false.
+     * 
      */
-    function CheckHorizontal(targetColumn, thisColumn = data.column) {
+    function CheckHorizontal(targetColumn, thisRow, thisColumn) {
         //Leftwards
         if (thisColumn > targetColumn) {
             for (let i = parseInt(thisColumn) - 1; i > targetColumn; i--) {
-                if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("empty") == "false") {
+                if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("empty") == "false") {
                     return false;
                 }
             }
@@ -700,7 +734,7 @@ $(document).ready(function () {
         //Rightwards
         else if (thisColumn < targetColumn) {
             for (let i = parseInt(thisColumn) + 1; i < targetColumn; i++) {
-                if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("empty") == "false") {
+                if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("empty") == "false") {
                     return false;
                 }
             }
@@ -711,14 +745,16 @@ $(document).ready(function () {
     /** Checks for blockage along path of piece assuming path is straight vertical.
      * 
      * @param {*} targetRow The row of target position
-     * @param {*} thisRow [optional] Current row of the piece. Default to data.row
+     * @param {*} thisRow Current row of the piece.
+     * @param {*} thisColumn Current column of the piece.
      * @returns {boolean} true if path is clear, else false.
+     * 
      */
-    function CheckVertical(targetRow, thisRow = data.row) {
+    function CheckVertical(targetRow, thisRow, thisColumn) {
         //Upwards
         if (thisRow > targetRow) {
             for (let i = parseInt(thisRow) - 1; i > targetRow; i--) {
-                if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("empty") == "false") {
+                if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("empty") == "false") {
                     return false;
                 }
             }
@@ -727,7 +763,7 @@ $(document).ready(function () {
         //Downwards
         else if (thisRow < targetRow) {
             for (let i = parseInt(thisRow) + 1; i < targetRow; i++) {
-                if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("empty") == "false") {
+                if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("empty") == "false") {
                     return false;
                 }
             }
@@ -738,10 +774,11 @@ $(document).ready(function () {
     /** Checks for blockage along path if target location is NORTH-WEST of current location
      * 
      * @param {*} distance Distance of piece from target location. Can either be X or Y distance
-     * @param {*} thisRow [optional] Current row of piece, default to data.row.
-     * @param {*} thisColumn [optional] Current column of piece, default to data.column.
+     * @param {*} thisRow Current row of piece.
+     * @param {*} thisColumn Current column of piece.
+     * 
      */
-    function CheckDiagonalNorthWest(distance, thisRow = data.row, thisColumn = data.column) {
+    function CheckDiagonalNorthWest(distance, thisRow, thisColumn) {
         for (let i = 1; i < distance; i++) {
             if ($("[row=\'" + (parseInt(thisRow) - i) + "\'][column=\'" + (parseInt(thisColumn) - i) + "\']").attr("empty") == "false") {
                 return false;
@@ -752,10 +789,11 @@ $(document).ready(function () {
     /** Checks for blockage along path if target location is NORTH-EAST of current location
      * 
      * @param {*} distance Distance of piece from target location. Can either be X or Y distance
-     * @param {*} thisRow [optional] Current row of piece, default to data.row.
-     * @param {*} thisColumn [optional] Current column of piece, default to data.column.
+     * @param {*} thisRow Current row of piece.
+     * @param {*} thisColumn Current column of piece.
+     * 
      */
-    function CheckDiagonalNorthEast(distance, thisRow = data.row, thisColumn = data.column) {
+    function CheckDiagonalNorthEast(distance, thisRow, thisColumn) {
         for (let i = 1; i < distance; i++) {
             if ($("[row=\'" + (parseInt(thisRow) - i) + "\'][column=\'" + (parseInt(thisColumn) + i) + "\']").attr("empty") == "false") {
                 return false;
@@ -767,10 +805,11 @@ $(document).ready(function () {
     /** Checks for blockage along path if target location is SOUTH-EAST of current location
      * 
      * @param {*} distance Distance of piece from target location. Can either be X or Y distance
-     * @param {*} thisRow [optional] Current row of piece, default to data.row.
-     * @param {*} thisColumn [optional] Current column of piece, default to data.column.
+     * @param {*} thisRow Current row of piece.
+     * @param {*} thisColumn Current column of piece, default to data.column.
+     * 
      */
-    function CheckDiagonalSouthEast(distance, thisRow = data.row, thisColumn = data.column) {
+    function CheckDiagonalSouthEast(distance, thisRow, thisColumn) {
         for (let i = 1; i < distance; i++) {
             if ($("[row=\'" + (parseInt(thisRow) + i) + "\'][column=\'" + (parseInt(thisColumn) + i) + "\']").attr("empty") == "false") {
                 return false;
@@ -782,10 +821,11 @@ $(document).ready(function () {
     /** Checks for blockage along path if target location is SOUTH-WEST of current location
      * 
      * @param {*} distance Distance of piece from target location. Can either be X or Y distance
-     * @param {*} thisRow [optional] Current row of piece, default to data.row.
-     * @param {*} thisColumn [optional] Current column of piece, default to data.column.
+     * @param {*} thisRow Current row of piece.
+     * @param {*} thisColumn Current column of piece.
+     * 
      */
-    function CheckDiagonalSouthWest(distance, thisRow = data.row, thisColumn = data.column) {
+    function CheckDiagonalSouthWest(distance, thisRow, thisColumn) {
         for (let i = 1; i < distance; i++) {
             if ($("[row=\'" + (parseInt(thisRow) + i) + "\'][column=\'" + (parseInt(thisColumn) - i) + "\']").attr("empty") == "false") {
                 return false;
@@ -813,63 +853,188 @@ $(document).ready(function () {
     }
 
     function CheckforCheck() {
-        /*
-            On move or eat, check this' piece future possible eats.
-            If possible eat is enemy king, mark that for check.
-        */
-        $("[empty=\'false\']").each(function () {
-            let thisPlayer = $(this).attr("player"),
-                thisPiece = $(this).attr("piece"),
-                thisRow = parseInt($(this).attr("row")),
-                thisColumn = parseInt($(this).attr("column"));
+        //Remove all checks
+        $("[check]").each(function () {
+            $(this).removeAttr("check");
+        });
+        //Get king row and column
+        let thisKing = $("[piece=\'king\'][player=\'" + turnPlayer + "\']");
+        let thisKingRow = parseInt(thisKing.attr("row")),
+            thisKingColumn = parseInt(thisKing.attr("column"));
 
-            // Ternary operator para cool hehe B)
-            let enemyKing = $("[player=\'" + (thisPlayer == "dog" ? "cat" : "dog") + "\'][piece=\'king\']");
-            let enemyKingRow = parseInt(enemyKing.attr("row")),
-                enemyKingColumn = parseInt(enemyKing.attr("column")),
-                slope = (Math.abs(thisRow - enemyKingRow) / Math.abs(thisColumn - enemyKingColumn));
+        //Assess all adjacent cells/pieces
+        let adjacentCells = [
+            $("[row=\'" + (thisKingRow - 1) + "\'][column=\'" + (thisKingColumn - 1) + "\']"),
+            $("[row=\'" + (thisKingRow - 1) + "\'][column=\'" + (thisKingColumn) + "\']"),
+            $("[row=\'" + (thisKingRow - 1) + "\'][column=\'" + (thisKingColumn + 1) + "\']"),
+            $("[row=\'" + (thisKingRow) + "\'][column=\'" + (thisKingColumn + 1) + "\']"),
+            $("[row=\'" + (thisKingRow + 1) + "\'][column=\'" + (thisKingColumn + 1) + "\']"),
+            $("[row=\'" + (thisKingRow + 1) + "\'][column=\'" + (thisKingColumn) + "\']"),
+            $("[row=\'" + (thisKingRow + 1) + "\'][column=\'" + (thisKingColumn - 1) + "\']"),
+            $("[row=\'" + (thisKingRow) + "\'][column=\'" + (thisKingColumn - 1) + "\']")
+        ];
 
-            if (thisPiece == "pawn") {
-
-            } else if (thisPiece == "knight") {
-
-            } else if (thisPiece == "rook") {
-
-            } else if (thisPiece == "bishop") {
-
-            } else if (thisPiece == "queen") {
-                // If queen perfectly aligns vertically with enemy king
-                if (thisColumn == enemyKingColumn) {
-                    if (CheckVertical(enemyKingRow, thisRow)) {
-                        enemyKing.attr("check", "true");
-                        $("[row=\'" + (enemyKingRow - 1) + "\'][column=\'" + thisColumn + "\']").attr("check", "true");
-                        $("[row=\'" + (enemyKingRow + 1) + "\'][column=\'" + thisColumn + "\']").attr("check", "true");
-                    }
-                }
-                // If queen perfectly aligns horizontally with enemy king
-                else if (thisRow == enemyKingRow) {
-                    if (CheckHorizontal(enemyKingColumn, thisColumn)) {
-                        enemyKing.attr("check", "true");
-                        $("[row=\'" + thisRow + "\'][column=\'" + (enemyKingColumn - 1) + "\']").attr("check", "true");
-                        $("[row=\'" + thisRow + "\'][column=\'" + (enemyKingColumn + 1) + "\']").attr("check", "true");
-                    }
-                }
-                // If queen check king diagonally
-                else if (slope == 1) {
-
-                }
+        adjacentCells.forEach(EvalSelf(cell));
+        adjacentCells.forEach(function (cell) {
+            let moves = 0;
+            if (cell.attr("check") != "true") {
+                moves += 1;
             }
         });
+
     }
 
-    function CheckMate() {
-        alert("[Checkmate] " + turnPlayer + " has WON!");
-        window.location.replace("./home.html");
-    }
+    /**
+     * This function checks if there are pieces that can access this cell
+     * 
+     *  @param {*} self The cell to be evaluated
+     */
+    function EvalSelf(self) {
+        if (self.attr("empty") == "true") {
+            let thisRow = self.attr("row"),
+                thisColumn = self.attr("column");
+            //Upwards
+            for (let i = parseInt(thisRow) - 1; i >= 1; i--) {
+                if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("empty") == "false") {
+                    if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("player") != turnPlayer) {
+                        let enemy = $("[row = \'" + i + "\'][column = \'" + thisColumn + "\']");
+                        let enemyPlayer = enemy.attr("player"),
+                            enemyPiece = enemy.attr("piece"),
+                            enemyRow = enemy.attr("row"),
+                            enemyColumn = enemy.attr("column");
+                        if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
+                            self.attr("check", "true");
+                        }
+                    } else { break; }
+                } else { continue; }
+            }
 
-    function EndangerKing() {
-        $("[empty = false]").each(function () {
+            //Downwards
+            for (let i = parseInt(thisRow) + 1; i <= 8; i++) {
+                if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("empty") == "false") {
+                    if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("player") != turnPlayer) {
+                        let enemy = $("[row = \'" + i + "\'][column = \'" + thisColumn + "\']");
+                        let enemyPlayer = enemy.attr("player"),
+                            enemyPiece = enemy.attr("piece"),
+                            enemyRow = enemy.attr("row"),
+                            enemyColumn = enemy.attr("column");
+                        if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
+                            self.attr("check", "true");
+                        } else { break; }
+                    } else { break; }
+                } else { continue; }
+            }
 
-        });
+            //Rightwards
+            for (let i = parseInt(thisColumn) + 1; i <= 8; i++) {
+                if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("empty") == "false") {
+                    if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("player") != turnPlayer) {
+                        let enemy = $("[row = \'" + thisRow + "\'][column = \'" + i + "\']");
+                        let enemyPlayer = enemy.attr("player"),
+                            enemyPiece = enemy.attr("piece"),
+                            enemyRow = enemy.attr("row"),
+                            enemyColumn = enemy.attr("column");
+                        if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
+                            self.attr("check", "true");
+                        } else { break; }
+                    } else { break; }
+                } else { continue; }
+            }
+
+            //Leftwards
+            for (let i = parseInt(thisColumn) - 1; i >= 1; i--) {
+                if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("empty") == "false") {
+                    if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("player") != turnPlayer) {
+                        let enemy = $("[row = \'" + thisRow + "\'][column = \'" + i + "\']");
+                        let enemyPlayer = enemy.attr("player"),
+                            enemyPiece = enemy.attr("piece"),
+                            enemyRow = enemy.attr("row"),
+                            enemyColumn = enemy.attr("column");
+                        if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
+                            self.attr("check", "true");
+                        } else { break; }
+                    } else { break; }
+                } else { continue; }
+            }
+
+            //From Northeast
+            let dist = ((thisRow - 1) >= (Math.abs(thisColumn - 8))) ? (Math.abs(thisColumn - 8)) : (thisRow - 1);
+            for (let i = 1; i <= dist; i++) {
+                if ($("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn + i) + "\']").attr("empty") == "false") {
+                    if ($("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn + i) + "\']").attr("player") != turnPlayer) {
+                        let enemy = $("[row = \'" + (thisRow - i) + "\'][column = \'" + (thisColumn + i) + "\']");
+                        let enemyPlayer = enemy.attr("player"),
+                            enemyPiece = enemy.attr("piece"),
+                            enemyRow = enemy.attr("row"),
+                            enemyColumn = enemy.attr("column");
+                        if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
+                            self.attr("check", "true");
+                        } else { break; }
+                    } else { break; }
+                } else { continue; }
+            }
+
+            //From Southeast
+            dist = ((Math.abs(thisRow - 8)) >= (Math.abs(thisColumn - 8))) ? Math.abs(thisColumn - 8) : (Math.abs(thisRow - 8));
+            for (let i = 1; i <= dist; i++) {
+                if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn + i) + "\']").attr("empty") == "false") {
+                    if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn + i) + "\']").attr("player") != turnPlayer) {
+                        let enemy = $("[row = \'" + (thisRow + i) + "\'][column = \'" + (thisColumn + i) + "\']");
+                        let enemyPlayer = enemy.attr("player"),
+                            enemyPiece = enemy.attr("piece"),
+                            enemyRow = enemy.attr("row"),
+                            enemyColumn = enemy.attr("column");
+                        if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
+                            self.attr("check", "true");
+                        } else { break; }
+                    } else { break; }
+                } else { continue; }
+            }
+
+            //From southwest
+            dist = ((Math.abs(thisRow - 8)) >= (thisColumn - 1)) ? thisColumn - 1 : (Math.abs(thisRow - 8));
+            for (let i = 1; i <= dist; i++) {
+                if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("empty") == "false") {
+                    if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("player") != turnPlayer) {
+                        let enemy = $("[row = \'" + (thisRow + i) + "\'][column = \'" + (thisColumn - i) + "\']");
+                        let enemyPlayer = enemy.attr("player"),
+                            enemyPiece = enemy.attr("piece"),
+                            enemyRow = enemy.attr("row"),
+                            enemyColumn = enemy.attr("column");
+                        if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
+                            self.attr("check", "true");
+                        } else { break; }
+                    } else { break; }
+                } else { continue; }
+            }
+
+            //From Northwest
+            dist = ((thisRow - 1) > (thisColumn - 1)) ? thisColumn - 1 : thisRow - 1;
+            for (let i = 1; i <= dist; i++) {
+                if ($("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("empty") == "false") {
+                    if ($("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("player") != turnPlayer) {
+                        let enemy = $("[row = \'" + (thisRow - i) + "\'][column = \'" + (thisColumn - i) + "\']");
+                        let enemyPlayer = enemy.attr("player"),
+                            enemyPiece = enemy.attr("piece"),
+                            enemyRow = enemy.attr("row"),
+                            enemyColumn = enemy.attr("column");
+                        if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
+                            self.attr("check", "true");
+                        } else { break; }
+                    } else { break; }
+                } else { continue; }
+            }
+
+            //Checks if an enemy knight can access the empty cell
+            $("[piece='knight']").each(function () {
+                if ($(this).attr("player") != turnPlayer) {
+                    if (CheckEat(thisRow, thisColumn, $(this).attr("player"), "knight", $(this).attr("row"), $(this).attr("column"))) {
+                        self.attr("check", "true");
+                    }
+                }
+            });
+        } else if (self.attr("player") != turnPlayer) {
+
+        }
     }
 });
