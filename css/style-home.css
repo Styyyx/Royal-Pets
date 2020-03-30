@@ -10,9 +10,15 @@
 }
 
 @font-face {
+    font-family: Monserrat-Medium;
+    src: url(../fonts/Montserrat-Medium.otf);
+}
+
+@font-face {
     font-family: Monserrat-Thin;
     src: url(../fonts/Montserrat-Thin.otf);
 }
+
 /* #endregion */
 
 /* #region Animations */
@@ -126,6 +132,7 @@ body {
     height: 50%;
     width: 40%;
     background-color: white;
+    border: 0.5em solid #DB8B2F;
     border-radius: 75px;
     background-color: #f7d2b5;
     display: flex;
@@ -135,6 +142,7 @@ body {
 
 .overlay#newGame .panel .form span {
     font-size: 2em;
+    font-family: "Monserrat-Medium";
     position: relative;
     left: -30%;
     margin: 2.5% 0 0 0 ;
@@ -159,6 +167,7 @@ body {
     width: 100%;
     height: 35px;
     font-size: 2em;
+    font-family: "Monserrat-Regular";
 }
 
 .overlay#newGame .panel .form input.error {
