@@ -78,7 +78,8 @@ body {
 .menu span {
     font-size: 2.5em;
     margin: 2.5%;
-    font-family: "Monserrat-Regular";
+    font-family: "Monserrat-SemiBold";
+    color: #5A2D00;
 }
 
 .silhouette {
@@ -87,6 +88,7 @@ body {
     position: absolute;
     top: 20%;
     z-index: -1;
+    opacity: 0.75;
 }
 
 .silhouette#dog-silhouette {
@@ -184,5 +186,3 @@ body {
 }
 
 /* #endregion */
-
-
