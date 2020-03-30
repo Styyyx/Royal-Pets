@@ -65,7 +65,7 @@ body {
     font-size: 1.5em;
     color: #ffffff;
     padding: 0.5em 0.5em;
-    margin: 0.2em 0;
+    margin: 0.3em 0;
     background-color: #EA7221;
     border: 0.2em solid #72370F;
     border-radius: 50px;
@@ -73,7 +73,7 @@ body {
     text-align: center;
     font-family: "Monserrat-Semibold";
     cursor: pointer;
-    box-shadow: 0 0 5px black;
+    box-shadow: 0 0 10px black;
 }
 
 .menu span {
