@@ -1,10 +1,10 @@
-/**
+/** 
  *  Created by Patrick Alcantara on March 2020
  *  Email: pema.alcantara@gmail.com
- *
+ * 
  *  Graphics by : Reanne Bernardo
  *  Email: reannemaebernardo@gmail.com
- *
+ * 
  *  [Got some help from these sources]
  *  1) On the idea that you can make custom attributes to html elements:
  *      https://www.youtube.com/watch?v=_GC3epPiAvI
@@ -14,7 +14,7 @@
  *      https://stackoverflow.com/questions/27765666/passing-variable-through-javascript-from-one-html-page-to-another-page
  *  4) On how to disable selection while dragging:
  *      https://stackoverflow.com/questions/2700000/how-to-disable-text-selection-using-jquery
- *
+ * 
  */
 
 $(document).ready(function () {
@@ -68,7 +68,7 @@ $(document).ready(function () {
             $(this).attr("empty", "true").removeAttr("piece").removeAttr("player");
         } else {
             $(this).css("background-image", "url(\"../res/" + player + "Pieces/" +
-                player + "_" + piece + ".png\"").css("background-size", "60px 80px");
+                player + "_" + piece + ".png\"").css("background-size", "50px 60px");
         }
     });
 
@@ -164,7 +164,7 @@ $(document).ready(function () {
 
     /**
      * Checks when the player is trying to move one of their own pieces
-     *
+     * 
      * @param {*} targetRow Row of target position
      * @param {*} targetColumn Column of target position
      * @param {*} thisPlayer [optional] Whose player is selected piece, default to data.player
@@ -172,7 +172,7 @@ $(document).ready(function () {
      * @param {*} thisRow [optional] Current row of selected piece, default to data.row
      * @param {*} thisColumn [optional] Current column of selected piece, default to data.column
      * @returns {boolean} true if move is allowed, else false
-     *
+     * 
      */
     function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece = data.piece, thisRow = data.row, thisColumn = data.column) {
         if (thisPiece == "pawn") {
@@ -283,7 +283,7 @@ $(document).ready(function () {
 
     /**
      * Checks when the player has clicked one of their own piece, and is trying to eat a piece of the enemy player.
-     *
+     * 
      * @param {*} targetRow Row of target position
      * @param {*} targetColumn  Column of target position
      * @param {*} thisPlayer [optional] Whose player is selected piece, default to data.player
@@ -291,7 +291,7 @@ $(document).ready(function () {
      * @param {*} thisRow [optional] Current row of selected piece, default to data.row
      * @param {*} thisColumn [optional] Current column of selected piece, default to data.column
      * @returns {boolean} true if eat is allowed, else false
-     *
+     * 
      */
     function CheckEat(targetRow, targetColumn, thisPlayer = data.player, thisPiece = data.piece, thisRow = data.row, thisColumn = data.column) {
         if (thisPiece == "pawn") {
@@ -725,12 +725,12 @@ $(document).ready(function () {
     }
 
     /** Checks for blockage along path of piece assuming path is straight horizontal.
-     *
+     * 
      * @param {*} targetColumn The column of target position
      * @param {*} thisRow Current row of the piece
      * @param {*} thisColumn Current column of the piece.
      * @returns {boolean} true if path is clear, else false.
-     *
+     * 
      */
     function CheckHorizontal(targetColumn, thisRow, thisColumn) {
         //Leftwards
@@ -754,12 +754,12 @@ $(document).ready(function () {
     }
 
     /** Checks for blockage along path of piece assuming path is straight vertical.
-     *
+     * 
      * @param {*} targetRow The row of target position
      * @param {*} thisRow Current row of the piece.
      * @param {*} thisColumn Current column of the piece.
      * @returns {boolean} true if path is clear, else false.
-     *
+     * 
      */
     function CheckVertical(targetRow, thisRow, thisColumn) {
         //Upwards
@@ -783,11 +783,11 @@ $(document).ready(function () {
     }
 
     /** Checks for blockage along path if target location is NORTH-WEST of current location
-     *
+     * 
      * @param {*} distance Distance of piece from target location. Can either be X or Y distance
      * @param {*} thisRow Current row of piece.
      * @param {*} thisColumn Current column of piece.
-     *
+     * 
      */
     function CheckDiagonalNorthWest(distance, thisRow, thisColumn) {
         for (let i = 1; i < distance; i++) {
@@ -798,11 +798,11 @@ $(document).ready(function () {
         return true;
     }
     /** Checks for blockage along path if target location is NORTH-EAST of current location
-     *
+     * 
      * @param {*} distance Distance of piece from target location. Can either be X or Y distance
      * @param {*} thisRow Current row of piece.
      * @param {*} thisColumn Current column of piece.
-     *
+     * 
      */
     function CheckDiagonalNorthEast(distance, thisRow, thisColumn) {
         for (let i = 1; i < distance; i++) {
@@ -814,11 +814,11 @@ $(document).ready(function () {
     }
 
     /** Checks for blockage along path if target location is SOUTH-EAST of current location
-     *
+     * 
      * @param {*} distance Distance of piece from target location. Can either be X or Y distance
      * @param {*} thisRow Current row of piece.
      * @param {*} thisColumn Current column of piece, default to data.column.
-     *
+     * 
      */
     function CheckDiagonalSouthEast(distance, thisRow, thisColumn) {
         for (let i = 1; i < distance; i++) {
@@ -830,11 +830,11 @@ $(document).ready(function () {
     }
 
     /** Checks for blockage along path if target location is SOUTH-WEST of current location
-     *
+     * 
      * @param {*} distance Distance of piece from target location. Can either be X or Y distance
      * @param {*} thisRow Current row of piece.
      * @param {*} thisColumn Current column of piece.
-     *
+     * 
      */
     function CheckDiagonalSouthWest(distance, thisRow, thisColumn) {
         for (let i = 1; i < distance; i++) {
@@ -908,7 +908,7 @@ $(document).ready(function () {
 
     /**
      * This function checks if there are pieces that can access this cell
-     *
+     * 
      *  @param {*} self The cell to be evaluated
      */
     function EvalSelf(self) {
@@ -1057,10 +1057,6 @@ $(document).ready(function () {
             });
         }
     }
-<<<<<<< Updated upstream
-});
-=======
-
     function CheckMate() {
 
     }
@@ -1069,4 +1065,3 @@ $(document).ready(function () {
 
     }
 });
->>>>>>> Stashed changes
