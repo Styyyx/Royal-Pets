@@ -22,6 +22,7 @@ $(document).ready(function () {
     var namePlayer1 = sessionStorage.getItem("player1");
     var namePlayer2 = sessionStorage.getItem("player2");
     var turnPlayer = "";
+    var moves;
 
     if (Math.round(Math.random()) == 0) {
         turnPlayer = "dog";
@@ -85,10 +86,20 @@ $(document).ready(function () {
             }
             //Select (other) piece
             else {
-                ReloadColors();
-                $(this).css("background-color", "rgba(0, 128, 0, 0.7)");
-                data = { player: thisPlayer, piece: thisPiece, row: thisRow, column: thisColumn };
-                ShowMoves();
+                if ($("[piece = 'king'][player =\'" + turnPlayer + "\']").attr("check") == "true") {
+                    if ($(this).attr("possible") == "true") {
+                        ReloadColors();
+                        $(this).css("background-color", "rgba(0, 128, 0, 0.7)");
+                        data = { player: thisPlayer, piece: thisPiece, row: thisRow, column: thisColumn };
+                        ShowMoves();
+                    }
+                } else {
+                    ReloadColors();
+                    $(this).css("background-color", "rgba(0, 128, 0, 0.7)");
+                    data = { player: thisPlayer, piece: thisPiece, row: thisRow, column: thisColumn };
+                    ShowMoves();
+                }
+
             }
         }
         //When selecting cell other than own pieces
@@ -871,16 +882,27 @@ $(document).ready(function () {
             $("[row=\'" + (thisKingRow + 1) + "\'][column=\'" + (thisKingColumn + 1) + "\']"),
             $("[row=\'" + (thisKingRow + 1) + "\'][column=\'" + (thisKingColumn) + "\']"),
             $("[row=\'" + (thisKingRow + 1) + "\'][column=\'" + (thisKingColumn - 1) + "\']"),
-            $("[row=\'" + (thisKingRow) + "\'][column=\'" + (thisKingColumn - 1) + "\']")
+            $("[row=\'" + (thisKingRow) + "\'][column=\'" + (thisKingColumn - 1) + "\']"),
         ];
 
-        adjacentCells.forEach(EvalSelf(cell));
-        adjacentCells.forEach(function (cell) {
-            let moves = 0;
-            if (cell.attr("check") != "true") {
-                moves += 1;
-            }
-        });
+        moves = 0;
+        EvalSelf(thisKing);
+        // adjacentCells.forEach(function (item) {
+        //     console.log(item);
+        // });
+        // adjacentCells.forEach(EvalSelf());
+        // adjacentCells.forEach(function () {
+        //     if (cell.attr("check") != "true") {
+        //         moves += 1;
+        //     }
+        // });
+        // if (moves == 0) {
+        //     if (thisKing.attr("check") == "true") {
+        //         CheckMate();
+        //     } else {
+        //         StaleMate();
+        //     }
+        // }
 
     }
 
@@ -890,7 +912,7 @@ $(document).ready(function () {
      *  @param {*} self The cell to be evaluated
      */
     function EvalSelf(self) {
-        if (self.attr("empty") == "true") {
+        if (self.attr("empty") == "true" || self.attr("player") != turnPlayer) {
             let thisRow = self.attr("row"),
                 thisColumn = self.attr("column");
             //Upwards
@@ -1033,8 +1055,18 @@ $(document).ready(function () {
                     }
                 }
             });
-        } else if (self.attr("player") != turnPlayer) {
-
         }
     }
+<<<<<<< Updated upstream
 });
+=======
+
+    function CheckMate() {
+
+    }
+
+    function StaleMate() {
+
+    }
+});
+>>>>>>> Stashed changes
