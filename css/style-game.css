@@ -111,8 +111,8 @@ body {
 }
 
 .columnLegend div {
-    height: 35px;
-    width: 100px;
+    height: 3.611971104231166vh;
+    width: 5.208333333333333vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -128,8 +128,8 @@ body {
 }
 
 .rowLegend div {
-    height: 100px;
-    width: 35px;
+    height: 10.319917440660475vh;
+    width: 1.8229166666666667vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -138,8 +138,8 @@ body {
 }
 
 .board {
-    height: 820px;
-    width: 820px;
+    height: 84.6233230134159vh;
+    width: 42.708333333333336vw;
     position: absolute;
     top: 0;
     left: 0;
@@ -160,8 +160,8 @@ body {
 }
 
 .board .cell {
-    height: 100px;
-    width: 100px;
+    height: 10.319917440660475vh;
+    width: 5.208333333333333vw;
     background-color: #ffffff;
     display: flex;
     align-items: center;
@@ -202,8 +202,8 @@ body {
 }
 
 .history .buttons img {
-    height: 50px;
-    width: 50px;
+    height: 5.159958720330238vh;
+    width: 2.6041666666666665vw;
     margin: 0 10px;
     cursor: pointer;
 }
