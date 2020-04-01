@@ -19,8 +19,8 @@
 
 $(document).ready(function () {
     //#region Randomize First Player
-    var namePlayer1 = sessionStorage.getItem("player1");
-    var namePlayer2 = sessionStorage.getItem("player2");
+    var namePlayer1 = (sessionStorage.getItem("player1") == null)? "Player 1" : sessionStorage.getItem("player1");
+    var namePlayer2 = (sessionStorage.getItem("player1") == null)? "Player 1" : sessionStorage.getItem("player2");
     var turnPlayer = "";
     var moves;
 
