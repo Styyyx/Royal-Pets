@@ -68,7 +68,7 @@ $(document).ready(function () {
             $(this).attr("empty", "true").removeAttr("piece").removeAttr("player");
         } else {
             $(this).css("background-image", "url(\"../res/" + player + "Pieces/" +
-                player + "_" + piece + ".png\"").css("background-size", "50px 60px");
+                player + "_" + piece + ".png\"").css("background-size", "80% 90%");
         }
     });
 
@@ -337,7 +337,7 @@ $(document).ready(function () {
 
                 //Southwest
                 else if ((thisRow < targetRow) && (thisColumn > targetColumn)) {
-                    return CheckDiagonalSouthWest(yDist, thisRow, thisColumnt);
+                    return CheckDiagonalSouthWest(yDist, thisRow, thisColumn);
                 }
 
                 //Northwest
@@ -719,7 +719,7 @@ $(document).ready(function () {
             .attr("piece", data.piece)
             .attr("player", data.player)
             .css("background-image", "url(\"../res/" + data.player + "Pieces/" + data.player + "_" + data.piece + ".png\"")
-            .css("background-size", "50px 60px")
+            .css("background-size", "70% 90%")
             .css("background-repeat", "no-repeat")
             .css("background-position", "center");
     }
