@@ -115,7 +115,7 @@ $(document).ready(function () {
                     Debug("EAT", thisPlayer, thisPiece, thisRow, thisColumn);
                     data = { player: "", piece: "", row: "", column: "" };
                     CheckforCheck();
-                    // EndTurn();
+                    EndTurn();
                     ReloadColors();
                 }
                 //When eat fails
@@ -132,7 +132,7 @@ $(document).ready(function () {
                     Debug("MOVE", thisPlayer, thisPiece, thisRow, thisColumn);
                     data = { player: "", piece: "", row: "", column: "" };
                     CheckforCheck();
-                    // EndTurn();
+                    EndTurn();
                     ReloadColors();
                 }
                 //When move fails
