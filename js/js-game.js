@@ -24,26 +24,22 @@ $(window).bind("beforeunload", function () {
     let previousState = [];
     $("[empty]").each(function () {
         let cell = {
-            empty: "",
             piece: "",
             player: "",
             row: "",
             column: ""
         };
 
-        if ($(this).attr("empty") == "true") {
-            cell.empty = "true";
-            cell.row = $(this).attr("row");
-            cell.column = $(this).attr("column");
-        } else {
-            cell.empty = "false";
+        if ($(this).attr("empty") == "false") {
             cell.piece = $(this).attr("piece");
             cell.player = $(this).attr("player");
             cell.row = $(this).attr("row");
             cell.column = $(this).attr("column");
+            previousState.push(cell);
         }
-        previousState.push(cell);
+
     });
+    this.sessionStorage.setItem("state", "reloaded");
     this.sessionStorage.setItem("turnPlayer", this.turnPlayer);
     this.sessionStorage.setItem("previousState", this.JSON.stringify(previousState));
 });
@@ -51,20 +47,14 @@ $(window).bind("beforeunload", function () {
 //Load previous state
 $(window).bind("load", function () {
     if (this.sessionStorage.getItem("previousState") != null) {
+        
         let previousState = this.JSON.parse(this.sessionStorage.getItem("previousState"));
         for (let i = 0; i < previousState.length; i++) {
             let cell = previousState[i];
             this.console.log(cell);
-            if (cell.empty == "true") {
-                $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "true");
-                $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", "");
-                $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", "");
-            } else {
-                $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "false");
-                $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
-                $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
-            }
-
+            $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "false");
+            $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
+            $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
         }
     }
 
@@ -78,6 +68,9 @@ $(window).bind("load", function () {
                 player + "_" + piece + ".png\"").css("background-size", "80% 90%");
         }
     });
+    this.console.log(this.sessionStorage.getItem("state"));
+    this.ReloadColors();
+
 });
 
 //#region Randomize First Player
@@ -86,7 +79,7 @@ var namePlayer2 = (sessionStorage.getItem("player1") == null) ? "Player 1" : ses
 var turnPlayer = "";
 var moves;
 
-if (sessionStorage.getItem("turnPlayer") == "null") {
+if (sessionStorage.getItem("turnPlayer") == null) {
     if (Math.round(Math.random()) == 0) {
         turnPlayer = "dog";
         $("#playerName").text(namePlayer1);
@@ -122,6 +115,7 @@ $(".menu").on("mouseleave", function () {
 //Home Button Click Event
 $("#btnHome").on("click", function () {
     window.location.replace("./home.html");
+    window.sessionStorage.removeItem("turnPlayer");
 });
 
 // Prevents highlighting/selecting elements on drag
@@ -129,7 +123,7 @@ $("*").attr('unselectable', 'on')
     .css('user-select', 'none')
     .bind('selectstart', function () { return false; });
 
-ReloadColors();
+
 
 //Load pieces
 
