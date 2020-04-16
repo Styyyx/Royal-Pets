@@ -51,7 +51,6 @@ $(window).bind("load", function () {
         let previousState = this.JSON.parse(this.sessionStorage.getItem("previousState"));
         for (let i = 0; i < previousState.length; i++) {
             let cell = previousState[i];
-            this.console.log(cell);
             $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "false");
             $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
             $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
@@ -70,7 +69,7 @@ $(window).bind("load", function () {
                 player + "_" + piece + ".png\"").css("background-size", "80% 90%");
         }
     });
-    this.console.log(this.sessionStorage.getItem("state"));
+    this.console.log("state:" + this.sessionStorage.getItem("state"));
     this.ReloadColors();
 
 });
@@ -79,7 +78,7 @@ $(window).bind("load", function () {
 var namePlayer1 = (sessionStorage.getItem("player1") == null) ? "Player 1" : sessionStorage.getItem("player1");
 var namePlayer2 = (sessionStorage.getItem("player1") == null) ? "Player 1" : sessionStorage.getItem("player2");
 var turnPlayer = "";
-var moves;
+var moves, turnCounter = 0;
 
 if (sessionStorage.getItem("turnPlayer") == null) {
     if (Math.round(Math.random()) == 0) {
@@ -119,6 +118,24 @@ $("#btnHome").on("click", function () {
     window.location.replace("./home.html");
     window.sessionStorage.removeItem("turnPlayer");
 });
+
+//New Game Button Click Event
+$("#btnNewGame").on("click", function () {
+    $("[empty]").each(function () {
+        $(this).attr("empty", "true").removeAttr("piece").removeAttr("player");
+    });
+
+    let state = JSON.parse(sessionStorage.getItem("initialState"));
+    for (let i = 0; i < state.length; i++) {
+        let cell = state[i];
+        $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "false");
+        $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
+        $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
+    }
+    location.reload();
+    sessionStorage.setItem("state", "newGame");
+});
+//#endregion
 
 // Prevents highlighting/selecting elements on drag
 $("*").attr('unselectable', 'on')
@@ -777,6 +794,7 @@ function MovePiece(thisRow, thisColumn) {
         .css("background-size", "80% 90%")
         .css("background-repeat", "no-repeat")
         .css("background-position", "center");
+    turnCounter += 1;
 }
 
 /** Checks for blockage along path of piece assuming path is straight horizontal.
@@ -912,10 +930,11 @@ function EndTurn() {
 }
 
 function Debug(action, thisPlayer, thisPiece, thisRow, thisColumn) {
-    console.log(action + " \nFrom row : " + data.row + " || To row : " + thisRow +
-        "\n From column : " + data.column + " || To column : " + thisColumn +
-        "\n Piece moved : " + data.player + " - " + data.piece +
-        "\n Piece eaten : " + thisPlayer + " - " + thisPiece);
+    console.log("Turn #" + turnCounter + "\t Action: " + action + "\n" +
+        "Piece moved: " + data.player + " - " + data.piece +
+        "\n\tfrom\t[row : " + data.row + " || column : " + data.column +
+        "]\n\tto\t\t[row : " + thisRow + " || column : " + thisColumn + "]\n" +
+        "Piece eaten: " + thisPlayer + " - " + thisPiece);
 }
 
 function CheckforCheck() {
@@ -953,11 +972,12 @@ function CheckforCheck() {
             }
         });
         adjacentCells.forEach(cell => {
-            if (cell.attr("check") != "true") {
+            if (cell.attr("check") != "true" && cell.attr("empty") == "true") {
                 moves += 1;
-            } else if (cell.attr("check") == "true") {
             }
         });
+
+        console.log(thisPlayer + " king " + "moves: " + moves);
 
         // if (moves == 0) {
         //     if (thisKing.attr("check") == "true") {
@@ -998,8 +1018,8 @@ function EvalthisCell(thisCell, thisplayer) {
                     enemyRow = enemy.attr("row"),
                     enemyColumn = enemy.attr("column");
                 if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
-                    console.log("Attacker = [Row: " + enemyRow + "\tColumn: " + enemyColumn + "]\n" +
-                        "Defender = [Row: " + thisRow + "\tColumn: " + thisColumn + "]");
+                    console.log(enemyPiece + " at [row: " + enemyRow + " | column: " + enemyColumn +
+                        "]\nCan Check cell at [row: " + thisRow + " | column: " + thisColumn + "]");
                     thisCell.attr("check", "true");
                 } else { break; }
             } else { break; }
@@ -1017,8 +1037,8 @@ function EvalthisCell(thisCell, thisplayer) {
                     enemyRow = enemy.attr("row"),
                     enemyColumn = enemy.attr("column");
                 if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
-                    console.log("Attacker = [Row: " + enemyRow + "\tColumn: " + enemyColumn + "]\n" +
-                        "Defender = [Row: " + thisRow + "\tColumn: " + thisColumn + "]");
+                    console.log(enemyPiece + " at [row: " + enemyRow + " | column: " + enemyColumn +
+                        "]\nCan Check cell at [row: " + thisRow + " | column: " + thisColumn + "]");
                     thisCell.attr("check", "true");
                 } else { break; }
             } else { break; }
@@ -1036,8 +1056,8 @@ function EvalthisCell(thisCell, thisplayer) {
                     enemyRow = enemy.attr("row"),
                     enemyColumn = enemy.attr("column");
                 if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
-                    console.log("Attacker = [Row: " + enemyRow + "\tColumn: " + enemyColumn + "]\n" +
-                        "Defender = [Row: " + thisRow + "\tColumn: " + thisColumn + "]");
+                    console.log(enemyPiece + " at [row: " + enemyRow + " | column: " + enemyColumn +
+                        "]\nCan Check cell at [row: " + thisRow + " | column: " + thisColumn + "]");
                     thisCell.attr("check", "true");
                 } else { break; }
             } else { break; }
@@ -1055,8 +1075,8 @@ function EvalthisCell(thisCell, thisplayer) {
                     enemyRow = enemy.attr("row"),
                     enemyColumn = enemy.attr("column");
                 if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
-                    console.log("Attacker = [Row: " + enemyRow + "\tColumn: " + enemyColumn + "]\n" +
-                        "Defender = [Row: " + thisRow + "\tColumn: " + thisColumn + "]");
+                    console.log(enemyPiece + " at [row: " + enemyRow + " | column: " + enemyColumn +
+                        "]\nCan Check cell at [row: " + thisRow + " | column: " + thisColumn + "]");
                     thisCell.attr("check", "true");
                 } else { break; }
             } else { break; }
@@ -1075,8 +1095,8 @@ function EvalthisCell(thisCell, thisplayer) {
                     enemyRow = enemy.attr("row"),
                     enemyColumn = enemy.attr("column");
                 if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
-                    console.log("Attacker = [Row: " + enemyRow + "\tColumn: " + enemyColumn + "]\n" +
-                        "Defender = [Row: " + thisRow + "\tColumn: " + thisColumn + "]");
+                    console.log(enemyPiece + " at [row: " + enemyRow + " | column: " + enemyColumn +
+                        "]\nCan Check cell at [row: " + thisRow + " | column: " + thisColumn + "]");
                     thisCell.attr("check", "true");
                 } else { break; }
             } else { break; }
@@ -1095,8 +1115,8 @@ function EvalthisCell(thisCell, thisplayer) {
                     enemyRow = enemy.attr("row"),
                     enemyColumn = enemy.attr("column");
                 if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
-                    console.log("Attacker = [Row: " + enemyRow + "\tColumn: " + enemyColumn + "]\n" +
-                        "Defender = [Row: " + thisRow + "\tColumn: " + thisColumn + "]");
+                    console.log(enemyPiece + " at [row: " + enemyRow + " | column: " + enemyColumn +
+                        "]\nCan Check cell at [row: " + thisRow + " | column: " + thisColumn + "]");
                     thisCell.attr("check", "true");
                 } else { break; }
             } else { break; }
@@ -1135,8 +1155,8 @@ function EvalthisCell(thisCell, thisplayer) {
                     enemyRow = enemy.attr("row"),
                     enemyColumn = enemy.attr("column");
                 if (CheckEat(thisRow, thisColumn, enemyPlayer, enemyPiece, enemyRow, enemyColumn)) {
-                    console.log("Attacker = [Row: " + enemyRow + "\tColumn: " + enemyColumn + "]\n" +
-                        "Defender = [Row: " + thisRow + "\tColumn: " + thisColumn + "]");
+                    console.log(enemyPiece + " at [row: " + enemyRow + " | column: " + enemyColumn +
+                        "]\nCan Check cell at [row: " + thisRow + " | column: " + thisColumn + "]");
                     thisCell.attr("check", "true");
                 } else { break; }
             } else { break; }
@@ -1149,14 +1169,14 @@ function EvalthisCell(thisCell, thisplayer) {
     $("[piece='knight']").each(function () {
         if ($(this).attr("player") != thisplayer) {
             if (CheckEat(thisRow, thisColumn, $(this).attr("player"), "knight", $(this).attr("row"), $(this).attr("column"))) {
-                console.log("Attacker = [Knight at Row: " + $(this).attr("row") + "\tColumn: " + $(this).attr("column") +
-                    "]\nDefender = [Row: " + thisRow + "\tColumn: " + thisColumn + "]");
+                console.log("knight at [row: " + $(this).attr("row") + " | column: " + $(this).attr("column") +
+                    "]\nCan Check cell at [row: " + thisRow + " | column: " + thisColumn + "]");
                 thisCell.attr("check", "true");
             }
         }
     });
 }
-    //#endregion
+//#endregion
 
 function CheckMate() {
 
