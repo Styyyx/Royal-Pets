@@ -8,5 +8,4 @@ Authors:
 
 Features:
     -2 Player
-    -Notation History
     -Cute cat and dog chess pieces
