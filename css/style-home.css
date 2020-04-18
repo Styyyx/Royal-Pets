@@ -122,7 +122,6 @@ body {
     z-index: 2;
     height: 50%;
     width: 40%;
-    background-color: white;
     border: 15px solid #DB8B2F;
     border-radius: 30px;
     background-color: #F9DDA6;
@@ -137,14 +136,6 @@ body {
     position: relative;
     left: -30%;
     margin: 2.5% 0 0 0 ;
-}
-
-.overlay#newGame .panel a#btn-exit img {
-    height: 100%;
-    width: 100%;
-    max-height: 5.159958720330238vh;
-    max-width: 2.6041666666666665vw;
-    position: relative;
 }
 
 .overlay#newGame .panel .form {
