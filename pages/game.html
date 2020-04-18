@@ -13,8 +13,9 @@
     <div class="menu">
         <div id="btnHome">HOME</div>
         <div id="btnNewGame">NEW GAME</div>
-        <div id="btnHowToPlay">HOW TO PLAY</div>
-        <div id="btnQuit">QUIT</div>
+        <a href="#howToPlay">
+            <div id="btnHowToPlay">HOW TO PLAY</div>
+        </a>
     </div>
     <div id="turn">
         <img id="playerImg" src="">
@@ -136,6 +137,16 @@
                 <div class="cell" empty="true" row="8" column="6" piece="" player=""></div>
                 <div class="cell cell-gray" empty="true" row="8" column="7" piece="" player=""></div>
                 <div class="cell" empty="true" row="8" column="8" piece="" player=""></div>
+            </div>
+        </div>
+    </div>
+    <div class="overlay" id="howToPlay">
+        <div class="panel">
+            <div class="title">
+                <div>HOW TO PLAY</div>
+                <a href="#">
+                    <img src="../res/exit_button.png">
+                </a>
             </div>
         </div>
     </div>
