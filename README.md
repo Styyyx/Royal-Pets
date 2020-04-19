@@ -4,7 +4,7 @@ A chess game themed cat and dogs, written in html,css and js.
 ***
 ### Authors
 
-Alcantara, Patrick [Facebook](https://www.facebook.com/pema.alcantara/?target="_blank")
+Alcantara, Patrick [Facebook](https://www.facebook.com/pema.alcantara)
 
 Baroma, Hannah
 
