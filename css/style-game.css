@@ -25,7 +25,7 @@ html, body {
 body {
     background-color: #FFDD81;
 }
-    
+
 * {
     box-sizing: border-box;
 }
@@ -33,46 +33,52 @@ body {
 
 /* #region Screen Layout */
 .burger {
-    height: 10vh;
-    width: 5vw;
+    height: 5.159958720330238vh;
+    width: 2.6041666666666665vw;
     position: absolute;
     top: 0;
     left: 0;
     cursor: pointer;
 }
 
-.menu {
-    background-color: #FFE396;
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: auto;
-    display: none;
-    flex-direction: column;
-    z-index: 2;
+.sidenav {
+  height: 100vh;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(80, 3, 3);
+  overflow-x: hidden;
+  padding-top: 70px;
+  transition: 0.3s;
 }
 
-.menu div {
-    font-size: 1.5em;
-    border: 1px solid black;
-    cursor: pointer;
-    padding: 5px;
-    font-family: "Monserrat-SemiBold";
+.sidenav div {
+  padding:  0.4167vw  0.4167vw  0.4167vw 1.67vw;
+  text-decoration: none;
+  font-size: 1.302083vw;
+  font-family: "Monserrat-SemiBold";
+  color: #FFF;
+  display: block;
+  transition: 0.2s;
 }
 
-.menu div:hover {
-    background-color: rgba(255, 255, 255, 0.7);
+.sidenav div:hover {
+  color: #FFDD81;
 }
 
 #turn {
+    position: relative;
     background-color: #F9DDA6;
     height: 100%;
-    max-height: 50px;
+    max-height: 60px;
     min-width: 200px;
     position: absolute;
     bottom: 10%;
     left: 5%;
     border-radius: 50px;
+    border: 5px solid #7A0606;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,6 +86,7 @@ body {
 }
 
 #turn img {
+    right: -10%;
     height: 40px;
     width: 40px;
     margin: 0 25px;
@@ -87,6 +94,7 @@ body {
 
 #turn span {
     font-size: 2em;
+    font-family: "Monserrat-SemiBold";
     margin: 0 25px 0 0;
 }
 
@@ -98,6 +106,7 @@ body {
     display: flex;
     flex-direction: row;
     top: -50px;
+    font-family: "Monserrat-Regular";
 }
 
 .columnLegend div {
@@ -114,6 +123,7 @@ body {
     display: flex;
     flex-direction: column;
     left: -50px;
+    font-family: "Monserrat-Regular";
 }
 
 .rowLegend div {
@@ -142,7 +152,7 @@ body {
 .board .row {
     display: flex;
     flex-direction: row;
-}   
+}
 
 .board .cell {
     height: 10.319917440660475vh;
