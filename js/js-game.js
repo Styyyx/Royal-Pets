@@ -1,10 +1,10 @@
-/** 
+/**
  *  Created by Patrick Alcantara on March 2020
  *  Email: pema.alcantara@gmail.com
- * 
+ *
  *  Graphics by : Reanne Bernardo
  *  Email: reannemaebernardo@gmail.com
- * 
+ *
  *  [Got some help from these sources]
  *  1) On the idea that you can make custom attributes to html elements:
  *      https://www.youtube.com/watch?v=_GC3epPiAvI
@@ -14,7 +14,7 @@
  *      https://stackoverflow.com/questions/27765666/passing-variable-through-javascript-from-one-html-page-to-another-page
  *  4) On how to disable selection while dragging:
  *      https://stackoverflow.com/questions/2700000/how-to-disable-text-selection-using-jquery
- * 
+ *
  */
 
 
@@ -47,7 +47,7 @@ $(window).bind("beforeunload", function () {
 //Load previous state
 $(window).bind("load", function () {
     if (this.sessionStorage.getItem("previousState") != null) {
-        
+
         let previousState = this.JSON.parse(this.sessionStorage.getItem("previousState"));
         for (let i = 0; i < previousState.length; i++) {
             let cell = previousState[i];
@@ -106,10 +106,10 @@ var data = { player: "", piece: "", row: "", column: "" };
 
 //#region Slide Menu
 $(".burger").on("mouseover", function () {
-    $(".menu").css("display", "flex");
+    $(".sidenav").css("width", "15.625vw");
 });
-$(".menu").on("mouseleave", function () {
-    $(".menu").css("display", "none");
+$(".sidenav").on("mouseleave", function () {
+    $(this).css("width", "0");
 });
 
 //Home Button Click Event
@@ -220,7 +220,7 @@ function ReloadColors() {
 
 /**
  * Checks when the player is trying to move one of their own pieces
- * 
+ *
  * @param {*} targetRow Row of target position
  * @param {*} targetColumn Column of target position
  * @param {*} thisPlayer [optional] Whose player is selected piece, default to data.player
@@ -228,7 +228,7 @@ function ReloadColors() {
  * @param {*} thisRow [optional] Current row of selected piece, default to data.row
  * @param {*} thisColumn [optional] Current column of selected piece, default to data.column
  * @returns {boolean} true if move is allowed, else false
- * 
+ *
  */
 function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece = data.piece, thisRow = data.row, thisColumn = data.column) {
     if (thisPiece == "pawn") {
@@ -339,7 +339,7 @@ function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece 
 
 /**
  * Checks when the player has clicked one of their own piece, and is trying to eat a piece of the enemy player.
- * 
+ *
  * @param {*} targetRow Row of target position
  * @param {*} targetColumn  Column of target position
  * @param {*} thisPlayer [optional] Whose player is selected piece, default to data.player
@@ -347,7 +347,7 @@ function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece 
  * @param {*} thisRow [optional] Current row of selected piece, default to data.row
  * @param {*} thisColumn [optional] Current column of selected piece, default to data.column
  * @returns {boolean} true if eat is allowed, else false
- * 
+ *
  */
 function CheckEat(targetRow, targetColumn, thisPlayer = data.player, thisPiece = data.piece, thisRow = data.row, thisColumn = data.column) {
     if (thisPiece == "pawn") {
@@ -781,12 +781,12 @@ function MovePiece(thisRow, thisColumn) {
 }
 
 /** Checks for blockage along path of piece assuming path is straight horizontal.
- * 
+ *
  * @param {*} targetColumn The column of target position
  * @param {*} thisRow Current row of the piece
  * @param {*} thisColumn Current column of the piece.
  * @returns {boolean} true if path is clear, else false.
- * 
+ *
  */
 function CheckHorizontal(targetColumn, thisRow, thisColumn) {
     //Leftwards
@@ -810,12 +810,12 @@ function CheckHorizontal(targetColumn, thisRow, thisColumn) {
 }
 
 /** Checks for blockage along path of piece assuming path is straight vertical.
- * 
+ *
  * @param {*} targetRow The row of target position
  * @param {*} thisRow Current row of the piece.
  * @param {*} thisColumn Current column of the piece.
  * @returns {boolean} true if path is clear, else false.
- * 
+ *
  */
 function CheckVertical(targetRow, thisRow, thisColumn) {
     //Upwards
@@ -839,11 +839,11 @@ function CheckVertical(targetRow, thisRow, thisColumn) {
 }
 
 /** Checks for blockage along path if target location is NORTH-WEST of current location
- * 
+ *
  * @param {*} distance Distance of piece from target location. Can either be X or Y distance
  * @param {*} thisRow Current row of piece.
  * @param {*} thisColumn Current column of piece.
- * 
+ *
  */
 function CheckDiagonalNorthWest(distance, thisRow, thisColumn) {
     for (let i = 1; i < distance; i++) {
@@ -854,11 +854,11 @@ function CheckDiagonalNorthWest(distance, thisRow, thisColumn) {
     return true;
 }
 /** Checks for blockage along path if target location is NORTH-EAST of current location
- * 
+ *
  * @param {*} distance Distance of piece from target location. Can either be X or Y distance
  * @param {*} thisRow Current row of piece.
  * @param {*} thisColumn Current column of piece.
- * 
+ *
  */
 function CheckDiagonalNorthEast(distance, thisRow, thisColumn) {
     for (let i = 1; i < distance; i++) {
@@ -870,11 +870,11 @@ function CheckDiagonalNorthEast(distance, thisRow, thisColumn) {
 }
 
 /** Checks for blockage along path if target location is SOUTH-EAST of current location
- * 
+ *
  * @param {*} distance Distance of piece from target location. Can either be X or Y distance
  * @param {*} thisRow Current row of piece.
  * @param {*} thisColumn Current column of piece, default to data.column.
- * 
+ *
  */
 function CheckDiagonalSouthEast(distance, thisRow, thisColumn) {
     for (let i = 1; i < distance; i++) {
@@ -886,11 +886,11 @@ function CheckDiagonalSouthEast(distance, thisRow, thisColumn) {
 }
 
 /** Checks for blockage along path if target location is SOUTH-WEST of current location
- * 
+ *
  * @param {*} distance Distance of piece from target location. Can either be X or Y distance
  * @param {*} thisRow Current row of piece.
  * @param {*} thisColumn Current column of piece.
- * 
+ *
  */
 function CheckDiagonalSouthWest(distance, thisRow, thisColumn) {
     for (let i = 1; i < distance; i++) {
@@ -964,7 +964,7 @@ function CheckforCheck() {
 
 /**
  * This function checks if there are pieces that can access this cell
- * 
+ *
  *  @param {*} self The cell to be evaluated
  */
 function EvalSelf(self) {
@@ -1120,6 +1120,3 @@ function CheckMate() {
 function StaleMate() {
 
 }
-
-
-

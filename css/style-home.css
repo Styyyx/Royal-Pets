@@ -133,7 +133,7 @@ body {
 
 .overlay#newGame .panel .form span {
     font-size: 1.6666666666666667vw ;
-    font-family: "Monserrat-Medium";
+    font-family: "Monserrat-SemiBold";
     position: relative;
     left: -30%;
     margin: 2.5% 0 0 0 ;
@@ -159,7 +159,7 @@ body {
     height: 4.643962848297214vh;
     font-size: 1.6666666666666667vw;
     margin: 10px 0;
-    font-family: "Monserrat-Medium";
+    font-family: "Monserrat-Regular";
     background-color: #FFEDCA;
     border-style: inset;
     border-radius: 20px;
@@ -192,5 +192,3 @@ body {
 }
 
 /* #endregion */
-
-
