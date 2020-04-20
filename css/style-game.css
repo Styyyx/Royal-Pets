@@ -56,30 +56,18 @@ body {
   transition: 0.3s;
 }
 
-/* <<<<<<< gamepage-revision */
+.sidenav a {
+    text-decoration: none;
+}
+
 .sidenav div {
   padding:  0.4167vw  0.4167vw  0.4167vw 1.67vw;
-  text-decoration: none;
   font-size: 1.302083vw;
   font-family: "Monserrat-SemiBold";
   color: #FFF;
   display: block;
+  cursor: pointer;
   transition: 0.2s;
-  
-/* ======= master
-.menu a {
-    text-decoration: none;
-    color: black;
-}
-
-.menu div {
-    font-size: 1.5em;
-    border: 1px solid black;
-    cursor: pointer;
-    padding: 5px;
-    font-family: "Monserrat-SemiBold";
-*/
-  
 }
 
 .sidenav div:hover {
