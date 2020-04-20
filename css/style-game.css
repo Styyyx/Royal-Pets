@@ -178,6 +178,52 @@ body {
 
 /* #endregion */
 
+/* #region History */
+.history {
+    height: 30vh;
+    width: 25vw;
+    background-color: #F9DDA6;
+    position: absolute;
+    top: 30vh;
+    left: 1vw;
+    border: solid 0.5em #7A0606;
+    border-radius: 35px;
+}
+
+.history ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.history ul::-webkit-scrollbar {
+    z-index: -2;
+    width: 15px;
+    height: 90%;
+    background-color: white;
+    border-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.history ul::-webkit-scrollbar-thumb {
+    background-color: green;
+    border-radius: 10px;
+}
+
+.history ul li {
+    height: 15%;
+    width: 80%;
+    position: relative;
+    left: 10%;
+    text-align: left;
+    font-size: 1em;
+}
+/* #endregion */
+
 /* #region How To Play Overlay */
 .overlay {
     height: 100%;

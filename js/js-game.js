@@ -99,6 +99,7 @@ var usernames = { dog: namePlayer1, cat: namePlayer2 };
 var data = { player: "", piece: "", row: "", column: "" };
 var turnCounter = 0, moves = 0;
 var boardHistory = [];
+var columnLegend = ["A", "B", "C", "D", "E", "F", "G", "H"];
 //#endregion
 
 //#region Dropdown Menu
@@ -167,7 +168,7 @@ $("#btnUndo").on("click", function () {
 		});
 
 		location.reload();
-		
+
 	}
 });
 //#endregion
@@ -228,6 +229,7 @@ $("[empty]").on("click", function () {
 
 		//When trying to eat
 		if ($(this).attr("empty") == "false" && CheckEat(thisRow, thisColumn)) {
+			// LogMove(thisRow, thisColumn, data.row, data.column, "eat");
 			MovePiece(thisRow, thisColumn);
 			TakeSnapShot();
 			Debug("EAT", thisPlayer, thisPiece, thisRow, thisColumn);
@@ -239,6 +241,7 @@ $("[empty]").on("click", function () {
 
 		//When trying to move
 		else if ($(this).attr("empty") == "true" && CheckMove(thisRow, thisColumn)) {
+			// LogMove(thisRow, thisColumn, data.row, data.column);
 			MovePiece(thisRow, thisColumn);
 			TakeSnapShot();
 			Debug("MOVE", thisPlayer, thisPiece, thisRow, thisColumn);
@@ -1032,7 +1035,7 @@ function CheckforMoves() {
 		if (CheckEat(checkerRow, checkerColumn, thisPlayer, thisPiece, thisRow, thisColumn)) {
 			console.log(thisPlayer + " - " + thisPiece + " at [row: " + thisRow + "\tcolumn: " + thisColumn +
 				" can eat checker: " + checkerPiece + " at [row: " + checkerRow + "\tcolumn: " + checkerColumn);
-			$(this).attr("canmove");
+			$(this).attr("canmove", "true");
 			moves += 1;
 		}
 	});
@@ -1047,11 +1050,13 @@ function CheckforMoves() {
 					thisPiece = $(this).attr("piece"),
 					thisPlayer = $(this).attr("player");
 				for (let i = 1; i < xDist; i++) {
+					$("[row=\'" + (kingRow) + "\'][column=\'" + (kingColumn - i) + "\']").attr("checkPath", "true");
 					if ($(this).attr("piece") != "king" && CheckMove(kingRow, kingColumn - i, thisPlayer, thisPiece, thisRow, thisColumn)) {
 						console.log(thisPlayer + " - " + thisPiece +
 							" at [row: " + thisRow + "\tcolumn: " + thisColumn +
 							"]\tcan move to [row: " + kingRow + "\tcolumn: " + (kingColumn - i) + "]");
 						$(this).attr("canmove", "true");
+						moves += 1;
 					}
 				}
 			});
@@ -1064,11 +1069,13 @@ function CheckforMoves() {
 					thisPiece = $(this).attr("piece"),
 					thisPlayer = $(this).attr("player");
 				for (let i = 1; i < xDist; i++) {
-					if ($(this).attr("piece") != "king" && CheckMove(kingRow, kingColumn, thisPlayer + i, thisPiece, thisRow, thisColumn)) {
+					$("[row=\'" + (kingRow) + "\'][column=\'" + (kingColumn + i) + "\']").attr("checkPath", "true");
+					if ($(this).attr("piece") != "king" && CheckMove(kingRow, kingColumn + i, thisPlayer, thisPiece, thisRow, thisColumn)) {
 						console.log(thisPlayer + " - " + thisPiece +
 							" at [row: " + thisRow + "\tcolumn: " + thisColumn +
 							"]\tcan move to [row: " + kingRow + "\tcolumn: " + (kingColumn + i) + "]");
 						$(this).attr("canmove", "true");
+						moves += 1;
 					}
 				}
 			});
@@ -1077,29 +1084,123 @@ function CheckforMoves() {
 	} else if (kingRow > checkerRow) {
 		//Checker is northwest of king
 		if (kingColumn > checkerColumn) {
-
+			$("[player=\'" + kingPlayer + "\']").each(function () {
+				let thisRow = $(this).attr("row"),
+					thisColumn = $(this).attr("column"),
+					thisPiece = $(this).attr("piece"),
+					thisPlayer = $(this).attr("player");
+				for (let i = 1; i < yDist; i++) {
+					$("[row=\'" + (kingRow - i) + "\'][column=\'" + (kingColumn - i) + "\']").attr("checkPath", "true");
+					if ($(this).attr("piece") != "king" && CheckMove((kingRow - i), (kingColumn - i), thisPlayer, thisPiece, thisRow, thisColumn)) {
+						console.log(thisPlayer + " - " + thisPiece +
+							" at [row: " + thisRow + "\tcolumn: " + thisColumn +
+							"]\tcan move to [row: " + (kingRow - i) + "\tcolumn: " + (kingColumn - i) + "]");
+						$(this).attr("canmove", "true");
+						moves += 1;
+					}
+				}
+			});
 		}
+
 		//Checker is directly above king
 		else if (kingColumn == checkerColumn) {
-
+			$("[player=\'" + kingPlayer + "\']").each(function () {
+				let thisRow = $(this).attr("row"),
+					thisColumn = $(this).attr("column"),
+					thisPiece = $(this).attr("piece"),
+					thisPlayer = $(this).attr("player");
+				for (let i = 1; i < yDist; i++) {
+					$("[row=\'" + (kingRow - i) + "\'][column=\'" + (kingColumn) + "\']").attr("checkPath", "true");
+					if ($(this).attr("piece") != "king" && CheckMove((kingRow - i), (kingColumn), thisPlayer, thisPiece, thisRow, thisColumn)) {
+						console.log(thisPlayer + " - " + thisPiece +
+							" at [row: " + thisRow + "\tcolumn: " + thisColumn +
+							"]\tcan move to [row: " + (kingRow - i) + "\tcolumn: " + (kingColumn) + "]");
+						$(this).attr("canmove", "true");
+						moves += 1;
+					}
+				}
+			});
 		}
+		
 		//Checker is northeast of king 
 		else if (kingColumn < checkerColumn) {
-
+			$("[player=\'" + kingPlayer + "\']").each(function () {
+				let thisRow = $(this).attr("row"),
+					thisColumn = $(this).attr("column"),
+					thisPiece = $(this).attr("piece"),
+					thisPlayer = $(this).attr("player");
+				for (let i = 1; i < yDist; i++) {
+					$("[row=\'" + (kingRow - i) + "\'][column=\'" + (kingColumn + i) + "\']").attr("checkPath", "true");
+					if ($(this).attr("piece") != "king" && CheckMove((kingRow - i), (kingColumn + i), thisPlayer, thisPiece, thisRow, thisColumn)) {
+						console.log(thisPlayer + " - " + thisPiece +
+							" at [row: " + thisRow + "\tcolumn: " + thisColumn +
+							"]\tcan move to [row: " + (kingRow - i) + "\tcolumn: " + (kingColumn + i) + "]");
+						$(this).attr("canmove", "true");
+						moves += 1;
+					}
+				}
+			});
 		}
 
 	} else if (kingRow < checkerRow) {
 		//Checker is southwest of king
 		if (kingColumn > checkerColumn) {
-
+			$("[player=\'" + kingPlayer + "\']").each(function () {
+				let thisRow = $(this).attr("row"),
+					thisColumn = $(this).attr("column"),
+					thisPiece = $(this).attr("piece"),
+					thisPlayer = $(this).attr("player");
+				for (let i = 1; i < yDist; i++) {
+					$("[row=\'" + (kingRow + i) + "\'][column=\'" + (kingColumn - i) + "\']").attr("checkPath", "true");
+					if ($(this).attr("piece") != "king" && CheckMove((kingRow + i), (kingColumn - i), thisPlayer, thisPiece, thisRow, thisColumn)) {
+						console.log(thisPlayer + " - " + thisPiece +
+							" at [row: " + thisRow + "\tcolumn: " + thisColumn +
+							"]\tcan move to [row: " + (kingRow + i) + "\tcolumn: " + (kingColumn - i) + "]");
+						$(this).attr("canmove", "true");
+						moves += 1;
+					}
+				}
+			});
 		}
+
 		//Checker is directly below king
 		else if (kingColumn == checkerColumn) {
-
+			$("[player=\'" + kingPlayer + "\']").each(function () {
+				let thisRow = $(this).attr("row"),
+					thisColumn = $(this).attr("column"),
+					thisPiece = $(this).attr("piece"),
+					thisPlayer = $(this).attr("player");
+				for (let i = 1; i < yDist; i++) {
+					$("[row=\'" + (kingRow + i) + "\'][column=\'" + (kingColumn) + "\']").attr("checkPath", "true");
+					if ($(this).attr("piece") != "king" && CheckMove((kingRow + i), (kingColumn), thisPlayer, thisPiece, thisRow, thisColumn)) {
+						console.log(thisPlayer + " - " + thisPiece +
+							" at [row: " + thisRow + "\tcolumn: " + thisColumn +
+							"]\tcan move to [row: " + (kingRow + i) + "\tcolumn: " + (kingColumn) + "]");
+						$(this).attr("canmove", "true");
+						moves += 1;
+					}
+				}
+			});
 		}
+
 		//Checker is southeast of king 
 		else if (kingColumn < checkerColumn) {
-
+			$("[player=\'" + kingPlayer + "\']").each(function () {
+				let thisRow = $(this).attr("row"),
+					thisColumn = $(this).attr("column"),
+					thisPiece = $(this).attr("piece"),
+					thisPlayer = $(this).attr("player");
+				for (let i = 1; i < yDist; i++) {
+					$("[row=\'" + (kingRow + i) + "\'][column=\'" + (kingColumn + i) + "\']").attr("checkPath", "true");
+					if ($(this).attr("piece") != "king" && CheckMove((kingRow + i), (kingColumn + i), thisPlayer, thisPiece, thisRow, thisColumn)) {
+						console.log(thisPlayer + " - " + thisPiece +
+							" at [row: " + thisRow + "\tcolumn: " + thisColumn +
+							"]\tcan move to [row: " + (kingRow + i) + "\tcolumn: " + (kingColumn + i) + "]");
+						$(this).attr("canmove", "true");
+						moves += 1;
+					}
+				}
+			});
 		}
 	}
 }
@@ -1394,6 +1495,23 @@ function TakeSnapShot() {
 }
 
 //#region For Debugging
+function LogMove(targetRow, targetColumn, thisRow, thisColumn, action = "move") {
+	if (action == "eat") {
+		let pieceMoved = $("[row=\'" + thisRow + "\'][column=\'" + thisColumn + "\']"),
+			pieceEaten = $("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']");
+		let text = "[" + pieceMoved.attr("player") + " - " + pieceMoved.attr("piece") + " " +
+			columnLegend[parseInt(pieceMoved.attr("column")) - 1] + pieceMoved.attr("row") + "]" +
+			" X " + "[" + pieceEaten.attr("player") + " - " + pieceEaten.attr("piece") +
+			columnLegend[parseInt(pieceEaten.attr("column")) - 1] + pieceEaten.attr("row") + "]";
+		$(".history ul").append($("<li></li>").text(text));
+	} else {
+		let pieceMoved = $("[row=\'" + thisRow + "\'][column=\'" + thisColumn + "\']");
+		let text = "[" + pieceMoved.attr("player") + " - " + pieceMoved.attr("piece") + " " +
+			columnLegend[parseInt(pieceMoved.attr("column") - 1)] + pieceMoved.attr("row") + "]" +
+			" >>> [ " + columnLegend[parseInt(targetColumn) - 1] + targetRow + " ]";
+		$(".history ul").append($("<li></li>").text(text));
+	}
+}
 
 function ShowBoardHistory() {
 	for (let i = 0; i < boardHistory.length; i++) {
