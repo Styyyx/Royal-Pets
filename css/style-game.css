@@ -35,8 +35,8 @@ body {
 
 /* #region Screen Layout */
 .burger {
-    height: 5.159958720330238vh;
-    width: 2.6041666666666665vw;
+    height: 10vh;
+    width: auto;
     position: absolute;
     top: 0;
     left: 0;
