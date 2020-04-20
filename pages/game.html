@@ -13,8 +13,10 @@
     <div id="sidenav" class="sidenav">
         <div id="btnHome">HOME</div>
         <div id="btnNewGame">NEW GAME</div>
-        <div id="btnHowToPlay">HOW TO PLAY</div>
-        <div id="btnQuit">QUIT</div>
+        <a href="#howToPlay">
+            <div id="btnHowToPlay">HOW TO PLAY</div>
+        </a>
+        <div id="btnUndo">UNDO</div>
     </div>
     <div id="turn">
         <img id="playerImg" src="">
@@ -33,14 +35,22 @@
                 <div>8</div>
             </div>
             <div class="columnLegend">
-                <div>A</div>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <!-- <div>A</div>
                 <div>B</div>
                 <div>C</div>
                 <div>D</div>
                 <div>E</div>
                 <div>F</div>
                 <div>G</div>
-                <div>H</div>
+                <div>H</div> -->
             </div>
             <div class="row">
                 <div class="cell" empty="true" row="1" column="1" piece="" player=""></div>
@@ -128,6 +138,16 @@
                 <div class="cell" empty="true" row="8" column="6" piece="" player=""></div>
                 <div class="cell cell-gray" empty="true" row="8" column="7" piece="" player=""></div>
                 <div class="cell" empty="true" row="8" column="8" piece="" player=""></div>
+            </div>
+        </div>
+    </div>
+    <div class="overlay" id="howToPlay">
+        <div class="panel">
+            <div class="title">
+                <div>HOW TO PLAY</div>
+                <a href="#">
+                    <img src="../res/exit_button.png">
+                </a>
             </div>
         </div>
     </div>

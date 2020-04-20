@@ -19,6 +19,8 @@
 html, body {
     height: 100%;
     width: 100%;
+    padding: 0px;
+    margin: 0px;
     overflow: hidden;
 }
 
@@ -54,6 +56,7 @@ body {
   transition: 0.3s;
 }
 
+/* <<<<<<< gamepage-revision */
 .sidenav div {
   padding:  0.4167vw  0.4167vw  0.4167vw 1.67vw;
   text-decoration: none;
@@ -62,6 +65,21 @@ body {
   color: #FFF;
   display: block;
   transition: 0.2s;
+  
+/* ======= master
+.menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.menu div {
+    font-size: 1.5em;
+    border: 1px solid black;
+    cursor: pointer;
+    padding: 5px;
+    font-family: "Monserrat-SemiBold";
+*/
+  
 }
 
 .sidenav div:hover {
@@ -170,51 +188,57 @@ body {
     background-color: #8A8A8A;
 }
 
-/* #endreion */
-
-/* #region History */
-.history {
-    height: 60%;
-    width: 25%;
-    max-height: 500px;
-    max-width: 300px;
-    background-color: #500303;
-    position: absolute;
-    border-radius: 20px;
-    left: 2.5%;
-    top: 15%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.history .buttons {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 25px;
-}
-
-.history .buttons img {
-    height: 5.159958720330238vh;
-    width: 2.6041666666666665vw;
-    margin: 0 10px;
-    cursor: pointer;
-}
 /* #endregion */
 
-/* #region */
-.graveyard {
-    height: 60%;
-    width: 25%;
-    max-height: 500px;
-    max-width: 300px;
-    background-color: #500303;
+/* #region How To Play Overlay */
+.overlay {
+    height: 100%;
+    width: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: #00000066;
     position: absolute;
-    border-radius: 20px;
-    right: 2.5%;
-    top: 15%;
 }
+
+.overlay:target{
+    display: flex;
+}
+
+.overlay .panel {
+    background-color: #F9DDA6;
+    border: 15px solid #DB8B2F;
+    border-radius: 30px;
+    height: 80vh;
+    width: 40vw;
+}
+
+.overlay .panel .title {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    width: 100%;
+    position: relative;
+    top: 5%;
+}
+
+.overlay .panel .title div {
+    font-size: 2em;
+    font-family: "Monserrat-SemiBold";
+    position: relative;
+    left: 27.5%;
+}
+
+.overlay .panel .title a[href = "#"] {
+    position: relative;
+    left: 42.5%;
+}
+
+.overlay .panel .title a[href = "#"] img {
+    height: 15%;
+    max-height: 70px;
+    min-height: 40px;
+    width: auto;
+}
+
 /* #endregion */
