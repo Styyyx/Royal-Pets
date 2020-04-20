@@ -787,70 +787,17 @@ function ShowMoves() {
 			} else { break; }
 		}
 	} else if (data.piece == "king") {
-		//North
-		if (($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("empty") == "true") &&
-			($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("check") != "true")) {
-			$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").css("background-color", "blue");
-		}
-		// else if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("player") != turnPlayer) {
-		// 	$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").css("background-color", "red");
-		// }
-		//Northeast
-		if (($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") &&
-			($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("check") != "true")) {
-			$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "blue");
-		}
-		// else if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("player") != turnPlayer) {
-		// 	$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "red");
-		// }
-		//East
-		if (($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") &&
-			($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("check") != "true")) {
-			$("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "blue");
-		}
-		// else if ($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("player") != turnPlayer) {
-		// 	$("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "red");
-		// }
-		//Southeast
-		if (($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") &&
-			($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("check") != "true")) {
-			$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "blue");
-		}
-		// else if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("player") != turnPlayer) {
-		// 	$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "red");
-		// }
-		//South+1
-		if (($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("empty") == "true") &&
-			($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("check") != "true")) {
-			$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").css("background-color", "blue");
-		}
-		// else if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").attr("player") != turnPlayer) {
-		// 	$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column)) + "\']").css("background-color", "red");
-		// }
-		//Southwest
-		if (($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") &&
-			($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("check") != "true")) {
-			$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "blue");
-		}
-		// else if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("player") != turnPlayer) {
-		// 	$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
-		// }
-		//West
-		if (($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") &&
-			($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("check") != "true")) {
-			$("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "blue");
-		}
-		// else if ($("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("player") != turnPlayer) {
-		// 	$("[row=\'" + (parseInt(data.row)) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
-		// }
-		//Northwest
-		if (($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") &&
-			($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("check") != "true")) {
-			$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "blue");
-		}
-		// else if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("player") != turnPlayer) {
-		// 	$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
-		// }
+
+		let adjacentCells = GetAdjacent(data.row, data.column);
+		adjacentCells.forEach(cell => {
+			if (cell.attr("check") != "true") {
+				if (cell.attr("empty") == "true") {
+					cell.css("background-color", "blue");
+				} else if (cell.attr("player") != "" && cell.attr("player") != turnPlayer) {
+					cell.css("background-color", "red");
+				}
+			}
+		});
 	}
 	//Set red/blue cell's cursor to pointer
 	$("[empty]").each(function () {
@@ -1029,16 +976,7 @@ function CheckforCheck() {
 		moves = 0;
 
 		//Assess all adjacent cells/pieces
-		let adjacentCells = [
-			$("[row=\'" + (thisKingRow - 1) + "\'][column=\'" + (thisKingColumn - 1) + "\']"),
-			$("[row=\'" + (thisKingRow - 1) + "\'][column=\'" + (thisKingColumn) + "\']"),
-			$("[row=\'" + (thisKingRow - 1) + "\'][column=\'" + (thisKingColumn + 1) + "\']"),
-			$("[row=\'" + (thisKingRow) + "\'][column=\'" + (thisKingColumn + 1) + "\']"),
-			$("[row=\'" + (thisKingRow + 1) + "\'][column=\'" + (thisKingColumn + 1) + "\']"),
-			$("[row=\'" + (thisKingRow + 1) + "\'][column=\'" + (thisKingColumn) + "\']"),
-			$("[row=\'" + (thisKingRow + 1) + "\'][column=\'" + (thisKingColumn - 1) + "\']"),
-			$("[row=\'" + (thisKingRow) + "\'][column=\'" + (thisKingColumn - 1) + "\']"),
-		];
+		let adjacentCells = GetAdjacent(thisKingRow, thisKingColumn);
 
 		if (IsCheck(thisKingRow, thisKingColumn, thisPlayer)) {
 			$(this).attr("check", "true");
@@ -1376,6 +1314,28 @@ function CheckMate() {
 
 function StaleMate() {
 
+}
+
+/**	Returns an array of the adjacent cells of the selected cell
+ * 
+ * @param {*} thisRow 
+ * @param {*} thisColumn 
+ */
+function GetAdjacent(thisRow, thisColumn) {
+	//Safe for NaN
+	thisRow = parseInt(thisRow);
+	thisColumn = parseInt(thisColumn);
+	let adjacentCells = [
+		$("[row=\'" + (thisRow - 1) + "\'][column=\'" + (thisColumn - 1) + "\']"), 	//Northwest
+		$("[row=\'" + (thisRow - 1) + "\'][column=\'" + (thisColumn) + "\']"),			//North
+		$("[row=\'" + (thisRow - 1) + "\'][column=\'" + (thisColumn + 1) + "\']"),	//Northeast
+		$("[row=\'" + (thisRow) + "\'][column=\'" + (thisColumn + 1) + "\']"),			//East
+		$("[row=\'" + (thisRow + 1) + "\'][column=\'" + (thisColumn + 1) + "\']"),	//Southeast
+		$("[row=\'" + (thisRow + 1) + "\'][column=\'" + (thisColumn) + "\']"),			//South
+		$("[row=\'" + (thisRow + 1) + "\'][column=\'" + (thisColumn - 1) + "\']"),	//Southwest
+		$("[row=\'" + (thisRow) + "\'][column=\'" + (thisColumn - 1) + "\']"),			//West
+	];
+	return adjacentCells;
 }
 
 /** Takes a snapshot of the board and stores it in an array
