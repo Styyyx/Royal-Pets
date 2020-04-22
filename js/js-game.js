@@ -32,6 +32,13 @@ $(window).bind("beforeunload", function () {
 
 		previousState.push(cell);
 	});
+
+	this.logHistory = [];
+	$(".history ul li").each(function () {
+		logHistory.push($(this).text());
+	});
+
+	this.sessionStorage.setItem("logHistory", this.JSON.stringify(this.logHistory));
 	this.sessionStorage.setItem("state", "reloaded");
 	this.sessionStorage.setItem("turnPlayer", this.turnPlayer);
 	this.sessionStorage.setItem("boardHistory", this.JSON.stringify(this.boardHistory));
@@ -52,7 +59,7 @@ $(window).bind("load", function () {
 		}
 	}
 
-	if (this.sessionStorage.getItem("boardHistory") != "null") {
+	if (this.sessionStorage.getItem("boardHistory") != null) {
 		this.boardHistory = this.JSON.parse(this.sessionStorage.getItem("boardHistory"));
 	} else {
 		this.boardHistory = [this.JSON.parse(this.sessionStorage.getItem("initialState"))];
@@ -60,6 +67,18 @@ $(window).bind("load", function () {
 	}
 	if (this.sessionStorage.getItem("turnCounter") != null) {
 		this.turnCounter = this.parseInt(this.sessionStorage.getItem("turnCounter"));
+	}
+
+	// $(".history ul li").each(function () {
+	// 	$(this).remove();
+	// });
+
+	if (this.sessionStorage.getItem("logHistory") != null) {
+		this.logHistory = [];
+		this.logHistory = this.JSON.parse(this.sessionStorage.getItem("logHistory"));
+		this.logHistory.forEach(function (log) {
+			$(".history ul").append($("<li></li>").text(log));
+		});
 	}
 
 	this.LoadBoard();
@@ -99,7 +118,8 @@ var usernames = { dog: namePlayer1, cat: namePlayer2 };
 var data = { player: "", piece: "", row: "", column: "" };
 var turnCounter = 0, moves = 0;
 var boardHistory = [];
-var columnLegend = ["A", "B", "C", "D", "E", "F", "G", "H"];
+var columnLegend = ["a", "b", "c", "d", "e", "f", "g", "h"];
+var logHistory = [];
 //#endregion
 
 //#region Dropdown Menu
@@ -117,6 +137,7 @@ $(".sidenav").on("mouseleave", function () {
 $("#btnHome").on("click", function () {
 	window.location.replace("./home.html");
 	window.sessionStorage.removeItem("turnPlayer");
+	sessionStorage.removeItem("logHistory");
 });
 
 //New Game Button Click Event
@@ -140,6 +161,14 @@ $("#btnNewGame").on("click", function () {
 		$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
 		$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
 	}
+
+	this.logHistory = [];
+	$(".history ul li").each(function () {
+		$(this).remove();
+	});
+
+	sessionStorage.setItem("logHistory", JSON.stringify(logHistory));
+
 	boardHistory = [JSON.parse(sessionStorage.getItem("initialState"))];
 	sessionStorage.setItem("boardHistory", JSON.stringify(boardHistory));
 	location.reload();
@@ -229,25 +258,25 @@ $("[empty]").on("click", function () {
 
 		//When trying to eat
 		if ($(this).attr("empty") == "false" && CheckEat(thisRow, thisColumn)) {
-			// LogMove(thisRow, thisColumn, data.row, data.column, "eat");
+			LogMove(thisRow, thisColumn, data.row, data.column, "eat");
 			MovePiece(thisRow, thisColumn);
 			TakeSnapShot();
 			Debug("EAT", thisPlayer, thisPiece, thisRow, thisColumn);
 			data = { player: "", piece: "", row: "", column: "" };
 			CheckforCheck();
-			// EndTurn();
+			EndTurn();
 			ReloadBoard();
 		}
 
 		//When trying to move
 		else if ($(this).attr("empty") == "true" && CheckMove(thisRow, thisColumn)) {
-			// LogMove(thisRow, thisColumn, data.row, data.column);
+			LogMove(thisRow, thisColumn, data.row, data.column);
 			MovePiece(thisRow, thisColumn);
 			TakeSnapShot();
 			Debug("MOVE", thisPlayer, thisPiece, thisRow, thisColumn);
 			data = { player: "", piece: "", row: "", column: "" };
 			CheckforCheck();
-			// EndTurn();
+			EndTurn();
 			ReloadBoard();
 		}
 
@@ -1121,7 +1150,7 @@ function CheckforMoves() {
 				}
 			});
 		}
-		
+
 		//Checker is northeast of king 
 		else if (kingColumn < checkerColumn) {
 			$("[player=\'" + kingPlayer + "\']").each(function () {
@@ -1499,17 +1528,20 @@ function LogMove(targetRow, targetColumn, thisRow, thisColumn, action = "move") 
 	if (action == "eat") {
 		let pieceMoved = $("[row=\'" + thisRow + "\'][column=\'" + thisColumn + "\']"),
 			pieceEaten = $("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']");
-		let text = "[" + pieceMoved.attr("player") + " - " + pieceMoved.attr("piece") + " " +
-			columnLegend[parseInt(pieceMoved.attr("column")) - 1] + pieceMoved.attr("row") + "]" +
-			" X " + "[" + pieceEaten.attr("player") + " - " + pieceEaten.attr("piece") +
-			columnLegend[parseInt(pieceEaten.attr("column")) - 1] + pieceEaten.attr("row") + "]";
+		let text = pieceMoved.attr("player") + " - " + pieceMoved.attr("piece") + " [" +
+			columnLegend[parseInt(pieceMoved.attr("column")) - 1] + pieceMoved.attr("row") +
+			" X " + columnLegend[parseInt(pieceEaten.attr("column")) - 1] + pieceEaten.attr("row") +
+			"] " + pieceEaten.attr("player") + "-" + pieceEaten.attr("piece");
 		$(".history ul").append($("<li></li>").text(text));
 	} else {
 		let pieceMoved = $("[row=\'" + thisRow + "\'][column=\'" + thisColumn + "\']");
-		let text = "[" + pieceMoved.attr("player") + " - " + pieceMoved.attr("piece") + " " +
-			columnLegend[parseInt(pieceMoved.attr("column") - 1)] + pieceMoved.attr("row") + "]" +
-			" >>> [ " + columnLegend[parseInt(targetColumn) - 1] + targetRow + " ]";
-		$(".history ul").append($("<li></li>").text(text));
+		let text = pieceMoved.attr("player") + "-" + pieceMoved.attr("piece") + " [" +
+			columnLegend[parseInt(pieceMoved.attr("column") - 1)] + pieceMoved.attr("row") +
+			" >> " + columnLegend[parseInt(targetColumn) - 1] + targetRow + " ]";
+		$(".history ul").append($("<li></li>").text(text))
+			//This animate function is used so that when the element is added, it will automatically scroll to bottom
+			.animate({ scrollTop: $(this).height() }, 100);
+		logHistory.push(text);
 	}
 }
 
