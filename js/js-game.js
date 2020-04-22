@@ -88,6 +88,12 @@ $(window).bind("load", function () {
 	this.ReloadBoard();
 });
 
+$(document).on("keypress", function (e) {
+	if (e.key == "Enter" && $(".overlay#newGame").css("display") != "none") {
+		$(".overlay#newGame #btn-ok").click();
+	}
+});
+
 //#region Randomize First Player
 var namePlayer1 = (sessionStorage.getItem("player1") == null) ? "Player 1" : sessionStorage.getItem("player1");
 var namePlayer2 = (sessionStorage.getItem("player1") == null) ? "Player 1" : sessionStorage.getItem("player2");
@@ -133,6 +139,7 @@ $(".sidenav").on("mouseleave", function () {
 //#endregion
 
 //#region Buttons
+
 //Home Button Click Event
 $("#btnHome").on("click", function () {
 	window.location.replace("./home.html");
@@ -140,40 +147,77 @@ $("#btnHome").on("click", function () {
 	sessionStorage.removeItem("logHistory");
 });
 
+//#region New Game Interface
+
 //New Game Button Click Event
 $("#btnNewGame").on("click", function () {
-	$("[empty]").each(function () {
-		$(this).attr("empty", "true").removeAttr("piece").removeAttr("player");
-	});
-
-	if (Math.round(Math.random()) == 0) {
-		turnPlayer = "dog";
-		$("#playerName").text(namePlayer1);
-	} else {
-		turnPlayer = "cat";
-		$("#playerName").text(namePlayer2);
-	}
-	turnCounter = 0;
-	let state = JSON.parse(sessionStorage.getItem("initialState"));
-	for (let i = 0; i < state.length; i++) {
-		let cell = state[i];
-		$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "false");
-		$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
-		$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
-	}
-
-	this.logHistory = [];
-	$(".history ul li").each(function () {
-		$(this).remove();
-	});
-
-	sessionStorage.setItem("logHistory", JSON.stringify(logHistory));
-
-	boardHistory = [JSON.parse(sessionStorage.getItem("initialState"))];
-	sessionStorage.setItem("boardHistory", JSON.stringify(boardHistory));
-	location.reload();
-	sessionStorage.setItem("state", "newGame");
+	$(".overlay#newGame").css("display", "flex");
 });
+
+$(".overlay#newGame input").on("click", function () {
+	$(this).select();
+});
+
+$(".overlay#newGame #btn-ok").on("click", function () {
+
+	let input1 = $("input#input-player1"), input2 = $("input#input-player2");
+	if (input1.val() == "" || input2.val() == "") {
+		if (input1.val() == "") {
+			input1.addClass("error");
+			setTimeout(() => {
+				input1.removeClass("error");
+			}, 300);
+		}
+		if (input2.val() == "") {
+			input2.addClass("error");
+			setTimeout(() => {
+				input2.removeClass("error");
+			}, 300);
+		}
+	} else {
+		$("[empty]").each(function () {
+			$(this).attr("empty", "true").removeAttr("piece").removeAttr("player");
+		});
+
+		namePlayer1 = $("input#input-player1").val();
+		sessionStorage.setItem("player1", namePlayer1);
+		namePlayer2 = $("input#input-player2").val();
+		sessionStorage.setItem("player2", namePlayer2);
+
+		if (Math.round(Math.random()) == 0) {
+			turnPlayer = "dog";
+			$("#playerName").text(namePlayer1);
+		} else {
+			turnPlayer = "cat";
+			$("#playerName").text(namePlayer2);
+		}
+		turnCounter = 0;
+		let state = JSON.parse(sessionStorage.getItem("initialState"));
+		for (let i = 0; i < state.length; i++) {
+			let cell = state[i];
+			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "false");
+			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
+			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
+		}
+
+		this.logHistory = [];
+		$(".history ul li").each(function () {
+			$(this).remove();
+		});
+
+		sessionStorage.setItem("logHistory", JSON.stringify(logHistory));
+
+		boardHistory = [JSON.parse(sessionStorage.getItem("initialState"))];
+		sessionStorage.setItem("boardHistory", JSON.stringify(boardHistory));
+		location.reload();
+		sessionStorage.setItem("state", "newGame");
+	}
+});
+
+$(".overlay#newGame #btn-cancel").on("click", function () {
+	$(".overlay#newGame").css("display", "none");
+});
+//#endregion
 
 //End Turn Button (for debugging)
 $("#turn").on("click", function () {
@@ -196,9 +240,15 @@ $("#btnUndo").on("click", function () {
 			thisCell.attr("empty", "false").attr("piece", cell.piece).attr("player", cell.player);
 		});
 
+		$(".history ul li:last-child").remove();
+
 		location.reload();
 
 	}
+});
+
+$(".overlay#endGame img").on("click", function () {
+
 });
 //#endregion
 
@@ -258,6 +308,7 @@ $("[empty]").on("click", function () {
 
 		//When trying to eat
 		if ($(this).attr("empty") == "false" && CheckEat(thisRow, thisColumn)) {
+			turnCounter += 1;
 			LogMove(thisRow, thisColumn, data.row, data.column, "eat");
 			MovePiece(thisRow, thisColumn);
 			TakeSnapShot();
@@ -270,6 +321,7 @@ $("[empty]").on("click", function () {
 
 		//When trying to move
 		else if ($(this).attr("empty") == "true" && CheckMove(thisRow, thisColumn)) {
+			turnCounter += 1;
 			LogMove(thisRow, thisColumn, data.row, data.column);
 			MovePiece(thisRow, thisColumn);
 			TakeSnapShot();
@@ -332,6 +384,11 @@ function ReloadBoard() {
 			});
 		}
 	});
+	if (turnCounter == 0) {
+		$("#btnUndo").css("filter", " grayscale(70%)").css("cursor", "auto");
+	} else {
+		$("#btnUndo").css("filter", "").css("cursor", "pointer");
+	}
 }
 
 /** Checks when the player is trying to move one of their own pieces
@@ -855,7 +912,6 @@ function MovePiece(thisRow, thisColumn) {
 		.css("background-size", "80% 90%")
 		.css("background-repeat", "no-repeat")
 		.css("background-position", "center");
-	turnCounter += 1;
 }
 
 /** Checks for blockage along path of piece assuming path is straight horizontal.
@@ -1475,11 +1531,12 @@ function IsCheck(thisRow, thisColumn, thisPlayer) {
 //#endregion
 
 function CheckMate() {
-
+	alert(usernames[turnPlayer] + " WINS");
+	$(".overlay#endGame").css("display", "block");
 }
 
 function StaleMate() {
-
+	alert("DRAW!");
 }
 
 /**	Returns an array of the adjacent cells of the selected cell
@@ -1505,7 +1562,6 @@ function GetAdjacent(thisRow, thisColumn) {
 }
 
 /** Takes a snapshot of the board and stores it in an array
- * 
  */
 function TakeSnapShot() {
 	let snapShot = [];
@@ -1528,14 +1584,14 @@ function LogMove(targetRow, targetColumn, thisRow, thisColumn, action = "move") 
 	if (action == "eat") {
 		let pieceMoved = $("[row=\'" + thisRow + "\'][column=\'" + thisColumn + "\']"),
 			pieceEaten = $("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']");
-		let text = pieceMoved.attr("player") + " - " + pieceMoved.attr("piece") + " [" +
+		let text = "#" + turnCounter + " " + pieceMoved.attr("player") + " - " + pieceMoved.attr("piece") + " [" +
 			columnLegend[parseInt(pieceMoved.attr("column")) - 1] + pieceMoved.attr("row") +
 			" X " + columnLegend[parseInt(pieceEaten.attr("column")) - 1] + pieceEaten.attr("row") +
 			"] " + pieceEaten.attr("player") + "-" + pieceEaten.attr("piece");
 		$(".history ul").append($("<li></li>").text(text));
 	} else {
 		let pieceMoved = $("[row=\'" + thisRow + "\'][column=\'" + thisColumn + "\']");
-		let text = pieceMoved.attr("player") + "-" + pieceMoved.attr("piece") + " [" +
+		let text = "#" + turnCounter + " " + pieceMoved.attr("player") + "-" + pieceMoved.attr("piece") + " [" +
 			columnLegend[parseInt(pieceMoved.attr("column") - 1)] + pieceMoved.attr("row") +
 			" >> " + columnLegend[parseInt(targetColumn) - 1] + targetRow + " ]";
 		$(".history ul").append($("<li></li>").text(text))
