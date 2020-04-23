@@ -81,7 +81,7 @@ $(window).bind("load", function () {
 		});
 	}
 
-	this.LoadBoard();
+	this.LoadPieces();
 
 	this.console.log("state:" + this.sessionStorage.getItem("state"));
 	this.CheckforCheck();
@@ -242,8 +242,13 @@ $("#btnUndo").on("click", function () {
 
 		$(".history ul li:last-child").remove();
 
-		location.reload();
+		if (turnPlayer == "dog") {
+			turnPlayer = "cat";
+		} else {
+			turnPlayer = "dog";
+		}
 
+		location.reload();
 	}
 });
 
@@ -311,12 +316,14 @@ $("[empty]").on("click", function () {
 			turnCounter += 1;
 			LogMove(thisRow, thisColumn, data.row, data.column, "eat");
 			MovePiece(thisRow, thisColumn);
+			CheckforPromotion();
 			TakeSnapShot();
 			Debug("EAT", thisPlayer, thisPiece, thisRow, thisColumn);
 			data = { player: "", piece: "", row: "", column: "" };
 			CheckforCheck();
 			EndTurn();
 			ReloadBoard();
+			CheckforEnPassant();
 		}
 
 		//When trying to move
@@ -324,12 +331,14 @@ $("[empty]").on("click", function () {
 			turnCounter += 1;
 			LogMove(thisRow, thisColumn, data.row, data.column);
 			MovePiece(thisRow, thisColumn);
+			CheckforPromotion();
 			TakeSnapShot();
 			Debug("MOVE", thisPlayer, thisPiece, thisRow, thisColumn);
 			data = { player: "", piece: "", row: "", column: "" };
 			CheckforCheck();
 			EndTurn();
 			ReloadBoard();
+			CheckforEnPassant();
 		}
 
 		else {
@@ -347,7 +356,7 @@ function ClearBoard() {
 		.css("background-image", "");
 }
 
-function LoadBoard() {
+function LoadPieces() {
 	//Load Pieces
 	$("[empty='false']").each(function () {
 		let piece = $(this).attr("piece"),
@@ -409,26 +418,75 @@ function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece 
 				if (thisRow == 2) {
 					if (targetRow == 3) {
 						return true;
-					} else if (targetRow == 4 &&
-						($("[row = \'3\'][column = \'" + targetColumn + "\']").attr("empty") == "true")) {
+					} else if (targetRow == 4 && $("[row = \'3\'][column = \'" + targetColumn + "\']").attr("empty") == "true") {
+						$("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("enpassant", "true");
 						return true;
-					} else { return false; }
-				} else if (((parseInt(thisRow)) + 1) == targetRow) {
+					}
+					else { return false; }
+				}
+				else if (((parseInt(thisRow)) + 1) == targetRow) {
 					return true;
 				} else { return false; }
+			} else if (thisRow == 5) {
+				if ($("[row=\'" + thisRow + "\'][column=\'" + (parseInt(thisColumn) + 1) + "\']").attr("enpassant") == "true" &&
+					$("[row=\'" + (parseInt(thisRow) + 1) + "\'][column=\'" + (parseInt(thisColumn) + 1) + "\']").attr("empty") == "true" &&
+					targetColumn == (parseInt(thisColumn) + 1)) {
+					$("[row=\'" + thisRow + "\'][column=\'" + (parseInt(thisColumn) + 1) + "\']")
+						.removeAttr("player")
+						.removeAttr("piece")
+						.attr("empty", "true")
+						.removeAttr("enpassant")
+						.css("background-image", "");
+					return true;
+				}
+				if ($("[row=\'" + thisRow + "\'][column=\'" + (parseInt(thisColumn) - 1) + "\']").attr("enpassant") == "true" &&
+					$("[row=\'" + (parseInt(thisRow) + 1) + "\'][column=\'" + (parseInt(thisColumn) - 1) + "\']").attr("empty") == "true" &&
+					targetColumn == (parseInt(thisColumn) - 1)) {
+					$("[row=\'" + thisRow + "\'][column=\'" + (parseInt(thisColumn) - 1) + "\']")
+						.removeAttr("player")
+						.removeAttr("piece")
+						.attr("empty", "true")
+						.removeAttr("enpassant")
+						.css("background-image", "");
+					return true;
+				}
 			} else { return false; }
 		} else if (thisPlayer == "cat") {
 			if (thisColumn == targetColumn) {
 				if (thisRow == 7) {
 					if (targetRow == 6) {
 						return true;
-					} else if (targetRow == 5 &&
-						($("[row = \'6\'][column = \'" + targetColumn + "\']").attr("empty") == "true")) {
+					} else if (targetRow == 5 && $("[row = \'6\'][column = \'" + targetColumn + "\']").attr("empty") == "true") {
+						$("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("enpassant", "true");
 						return true;
-					} else { return false; }
+					}
+					else { return false; }
 				} else if (((parseInt(thisRow)) - 1) == targetRow) {
 					return true;
 				} else { return false; }
+			} else if (thisRow == 4) {
+				if ($("[row=\'" + thisRow + "\'][column=\'" + (parseInt(thisColumn) + 1) + "\']").attr("enpassant") == "true" &&
+					$("[row=\'" + (parseInt(thisRow) - 1) + "\'][column=\'" + (parseInt(thisColumn) + 1) + "\']").attr("empty") == "true" &&
+					targetColumn == (parseInt(thisColumn) + 1)) {
+					$("[row=\'" + thisRow + "\'][column=\'" + (parseInt(thisColumn) + 1) + "\']")
+						.removeAttr("player")
+						.removeAttr("piece")
+						.attr("empty", "true")
+						.removeAttr("enpassant")
+						.css("background-image", "");
+					return true;
+				}
+				if ($("[row=\'" + thisRow + "\'][column=\'" + (parseInt(thisColumn) - 1) + "\']").attr("enpassant") == "true" &&
+					$("[row=\'" + (parseInt(thisRow) - 1) + "\'][column=\'" + (parseInt(thisColumn) - 1) + "\']").attr("empty") == "true" &&
+					targetColumn == (parseInt(thisColumn) - 1)) {
+					$("[row=\'" + thisRow + "\'][column=\'" + (parseInt(thisColumn) - 1) + "\']")
+						.removeAttr("player")
+						.removeAttr("piece")
+						.attr("empty", "true")
+						.removeAttr("enpassant")
+						.css("background-image", "");
+					return true;
+				}
 			} else { return false; }
 		}
 	} else if (thisPiece == "rook") {
@@ -627,6 +685,16 @@ function ShowMoves() {
 				$("[row = \'" + (parseInt(data.row) + 1) + "\'][column = \'" + (parseInt(data.column) - 1) + "\']").attr("player") != turnPlayer) {
 				$("[row = \'" + (parseInt(data.row) + 1) + "\'][column = \'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
 			}
+			if (data.row == 5) {
+				if ($("[row=\'" + data.row + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("enpassant") == "true" &&
+					$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") {
+					$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "red");
+				}
+				if ($("[row=\'" + data.row + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("enpassant") == "true" &&
+					$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") {
+					$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
+				}
+			}
 
 			//Showing possible moves
 			if (data.row == "2") {
@@ -651,6 +719,14 @@ function ShowMoves() {
 			if ($("[row = \'" + (parseInt(data.row) - 1) + "\'][column = \'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "false" &&
 				$("[row = \'" + (parseInt(data.row) - 1) + "\'][column = \'" + (parseInt(data.column) - 1) + "\']").attr("player") != turnPlayer) {
 				$("[row = \'" + (parseInt(data.row) - 1) + "\'][column = \'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
+			}
+			if ($("[row=\'" + data.row + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("enpassant") == "true" &&
+				$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") {
+				$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "red");
+			}
+			if ($("[row=\'" + data.row + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("enpassant") == "true" &&
+				$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") {
+				$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
 			}
 
 			//Showing possible moves
@@ -1090,7 +1166,10 @@ function CheckforCheck() {
 			CheckforMoves();
 		}
 
-		console.log(thisPlayer + " moves: " + moves);
+		console.log(thisPlayer + " king moves : " + moves);
+		//Check if checkmate or stalemate
+
+
 	});
 }
 
@@ -1288,6 +1367,12 @@ function CheckforMoves() {
 			});
 		}
 	}
+}
+
+function CheckforEnPassant() {
+	$("[enpassant='true'][player=\'" + turnPlayer + "\']").each(function () {
+		$(this).removeAttr("enpassant");
+	});
 }
 
 /** This function evaluates the cell if it is accessible by other pieces of the opposite player
@@ -1528,7 +1613,6 @@ function IsCheck(thisRow, thisColumn, thisPlayer) {
 		}
 	});
 }
-//#endregion
 
 function CheckMate() {
 	alert(usernames[turnPlayer] + " WINS");
@@ -1538,6 +1622,40 @@ function CheckMate() {
 function StaleMate() {
 	alert("DRAW!");
 }
+
+//#region Pawn Promotion
+function CheckforPromotion() {
+	if ($("[row='8'][player='dog'][piece='pawn']").length == 1) {
+		ShowPawnPromotes();
+	} else if ($("[row='1'][player='cat'][piece='pawn']").length == 1) {
+		ShowPawnPromotes();
+	}
+}
+
+function ShowPawnPromotes() {
+	$(".overlay#pawnPromotion img.option").each(function () {
+		let piece = $(this).attr("id");
+		$(this).attr("src", "../res/" + turnPlayer + "Pieces/" + turnPlayer + "_" + piece + ".png");
+	});
+	$(".overlay#pawnPromotion").css("display", "flex");
+}
+
+$(".overlay#pawnPromotion img.option").on("click", function () {
+	let pieceSelected = $(this).attr("id");
+	if (turnPlayer == "dog") {
+		$("[row='1'][piece='pawn']").attr("piece", pieceSelected)
+			.css("background-image", "url(\"../res/catPieces/cat_" + pieceSelected + ".png\"")
+			.css("background-size", "80% 90%");
+	} else {
+		$("[row='8'][piece='pawn']").attr("piece", pieceSelected)
+			.css("background-image", "url(\"../res/dogPieces/dog_" + pieceSelected + ".png\"")
+			.css("background-size", "80% 90%");
+	}
+	$(".overlay#pawnPromotion").css("display", "none");
+	TakeSnapShot();
+});
+
+//#endregion
 
 /**	Returns an array of the adjacent cells of the selected cell
  * 

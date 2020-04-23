@@ -225,6 +225,12 @@ body {
     font-size: 0.75em;
     font-family: "Monserrat-SemiBold";
 }
+
+@media only screen and (min-width: 1920px){
+    .history ul li {
+        font-size: 1em;
+    }
+}
 /* #endregion */
 
 /* #region How To Play Overlay */
@@ -347,6 +353,53 @@ body {
 
 /* #endregion */
 
+/* #region PawnPromotion */
+.overlay#pawnPromotion .panel {
+    height: 50vh;
+    width: 25vw;
+    position: absolute;
+    right: 1vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.overlay#pawnPromotion .panel .title {
+    font-size: 1.5em;
+    font-family: "Monserrat-SemiBold";
+    width: auto;
+    margin-bottom: 10%;
+}
+
+.overlay#pawnPromotion .panel div.options {
+    display: flex;
+    flex-direction: row;
+}
+
+.overlay#pawnPromotion .panel div.options div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    width: 100px;
+}
+
+.overlay#pawnPromotion .panel div img {
+    height: 50px;
+    width: 50px;
+    transition: all 0.25s;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.overlay#pawnPromotion .panel img:hover {
+    height: 70px;
+    width: 70px;
+}
+
+/* #endregion */
+
 img#btnUndo {
     height: 10vh;
     width: auto;
@@ -354,7 +407,7 @@ img#btnUndo {
     top: 65vh;
     left: 10vw;
     cursor: pointer;
-    display: none;
+    /* display: none; */
 }
 
 .overlay#endGame img {
