@@ -81,7 +81,7 @@ $(window).bind("load", function () {
 		});
 	}
 
-	this.LoadBoard();
+	this.LoadPieces();
 
 	this.console.log("state:" + this.sessionStorage.getItem("state"));
 	this.CheckforCheck();
@@ -242,8 +242,13 @@ $("#btnUndo").on("click", function () {
 
 		$(".history ul li:last-child").remove();
 
-		location.reload();
+		if (turnPlayer == "dog") {
+			turnPlayer = "cat";
+		} else {
+			turnPlayer = "dog";
+		}
 
+		location.reload();
 	}
 });
 
@@ -311,6 +316,7 @@ $("[empty]").on("click", function () {
 			turnCounter += 1;
 			LogMove(thisRow, thisColumn, data.row, data.column, "eat");
 			MovePiece(thisRow, thisColumn);
+			CheckforPromotion();
 			TakeSnapShot();
 			Debug("EAT", thisPlayer, thisPiece, thisRow, thisColumn);
 			data = { player: "", piece: "", row: "", column: "" };
@@ -324,6 +330,7 @@ $("[empty]").on("click", function () {
 			turnCounter += 1;
 			LogMove(thisRow, thisColumn, data.row, data.column);
 			MovePiece(thisRow, thisColumn);
+			CheckforPromotion();
 			TakeSnapShot();
 			Debug("MOVE", thisPlayer, thisPiece, thisRow, thisColumn);
 			data = { player: "", piece: "", row: "", column: "" };
@@ -347,7 +354,7 @@ function ClearBoard() {
 		.css("background-image", "");
 }
 
-function LoadBoard() {
+function LoadPieces() {
 	//Load Pieces
 	$("[empty='false']").each(function () {
 		let piece = $(this).attr("piece"),
@@ -407,12 +414,10 @@ function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece 
 		if (thisPlayer == "dog") {
 			if (thisColumn == targetColumn) {
 				if (thisRow == 2) {
-					if (targetRow == 3) {
+					if (targetRow == 3 || (targetRow == 4 && $("[row = \'3\'][column = \'" + targetColumn + "\']").attr("empty") == "true")) {
 						return true;
-					} else if (targetRow == 4 &&
-						($("[row = \'3\'][column = \'" + targetColumn + "\']").attr("empty") == "true")) {
-						return true;
-					} else { return false; }
+					}
+					else { return false; }
 				} else if (((parseInt(thisRow)) + 1) == targetRow) {
 					return true;
 				} else { return false; }
@@ -420,12 +425,10 @@ function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece 
 		} else if (thisPlayer == "cat") {
 			if (thisColumn == targetColumn) {
 				if (thisRow == 7) {
-					if (targetRow == 6) {
+					if (targetRow == 6 || (targetRow == 5 && $("[row = \'6\'][column = \'" + targetColumn + "\']").attr("empty") == "true")) {
 						return true;
-					} else if (targetRow == 5 &&
-						($("[row = \'6\'][column = \'" + targetColumn + "\']").attr("empty") == "true")) {
-						return true;
-					} else { return false; }
+					}
+					else { return false; }
 				} else if (((parseInt(thisRow)) - 1) == targetRow) {
 					return true;
 				} else { return false; }
@@ -1090,7 +1093,10 @@ function CheckforCheck() {
 			CheckforMoves();
 		}
 
-		console.log(thisPlayer + " moves: " + moves);
+		console.log(thisPlayer + " king moves : " + moves);
+		//Check if checkmate or stalemate
+
+
 	});
 }
 
@@ -1528,7 +1534,6 @@ function IsCheck(thisRow, thisColumn, thisPlayer) {
 		}
 	});
 }
-//#endregion
 
 function CheckMate() {
 	alert(usernames[turnPlayer] + " WINS");
@@ -1538,6 +1543,40 @@ function CheckMate() {
 function StaleMate() {
 	alert("DRAW!");
 }
+
+//#region Pawn Promotion
+function CheckforPromotion() {
+	if ($("[row='8'][player='dog'][piece='pawn']").length == 1) {
+		ShowPawnPromotes();
+	} else if ($("[row='1'][player='cat'][piece='pawn']").length == 1) {
+		ShowPawnPromotes();
+	}
+}
+
+function ShowPawnPromotes() {
+	$(".overlay#pawnPromotion img.option").each(function () {
+		let piece = $(this).attr("id");
+		$(this).attr("src", "../res/" + turnPlayer + "Pieces/" + turnPlayer + "_" + piece + ".png");
+	});
+	$(".overlay#pawnPromotion").css("display", "flex");
+}
+
+$(".overlay#pawnPromotion img.option").on("click", function () {
+	let pieceSelected = $(this).attr("id");
+	if (turnPlayer == "dog") {
+		$("[row='1'][piece='pawn']").attr("piece", pieceSelected)
+			.css("background-image", "url(\"../res/catPieces/cat_" + pieceSelected + ".png\"")
+			.css("background-size", "80% 90%");
+	} else {
+		$("[row='8'][piece='pawn']").attr("piece", pieceSelected)
+			.css("background-image", "url(\"../res/dogPieces/dog_" + pieceSelected + ".png\"")
+			.css("background-size", "80% 90%");
+	}
+	$(".overlay#pawnPromotion").css("display", "none");
+	TakeSnapShot();
+});
+
+//#endregion
 
 /**	Returns an array of the adjacent cells of the selected cell
  * 
