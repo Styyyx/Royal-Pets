@@ -383,7 +383,7 @@ function ReloadBoard() {
 			if ($(this).attr("player") == turnPlayer) {
 				$(this).css("cursor", "pointer");
 			}
-			$("[player=\'" + $(this).attr("player") + "\'][canMove=\'true\'").each(function () {
+			$("[player=\'" + turnPlayer + "\'][canMove=\'true\'").each(function () {
 				$(this).css("cursor", "pointer");
 			});
 			return;
@@ -490,14 +490,25 @@ function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece 
 			} else { return false; }
 		}
 	} else if (thisPiece == "rook") {
-		//Vertical travel
-		if (targetColumn == thisColumn) {
-			return CheckVertical(targetRow, thisRow, thisColumn);
+		if ($("[piece='king'][player=\'" + thisPlayer + "\']").attr("check") == "true") {
+			if ($("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("checkpath") == "true") {
+				if (targetColumn == thisColumn) {
+					return CheckVertical(targetRow, thisRow, thisColumn);
+				}
+				else if (targetRow == thisRow) {
+					return CheckHorizontal(targetColumn, thisRow, thisColumn);
+				}
+			}
+		} else {
+			if (targetColumn == thisColumn) {
+				return CheckVertical(targetRow, thisRow, thisColumn);
+			}
+			else if (targetRow == thisRow) {
+				return CheckHorizontal(targetColumn, thisRow, thisColumn);
+			}
 		}
-		//Horizontal Travel
-		else if (targetRow == thisRow) {
-			return CheckHorizontal(targetColumn, thisRow, thisColumn);
-		}
+
+
 	} else if (thisPiece == "knight") {
 		let slope = ((Math.abs(parseInt(targetRow) - parseInt(thisRow))) / (Math.abs(parseInt(targetColumn) - parseInt(thisColumn))));
 		if (slope == 2 || slope == 0.5) {
@@ -698,6 +709,16 @@ function ShowMoves() {
 
 			//Showing possible moves
 			if (data.row == "2") {
+				if ($("[row = \'3\'][column = \'" + data.column + "\']").attr("checkpath") == "true") {
+					$("[row = \'3\'][column = \'" + data.column + "\']").css("background-color", "blue");
+					return;
+				}
+
+				if ($("[row = \'4\'][column = \'" + data.column + "\']").attr("checkpath") == "true") {
+					$("[row = \'4\'][column = \'" + data.column + "\']").css("background-color", "blue");
+					return;
+				}
+
 				if ($("[row = \'3\'][column = \'" + data.column + "\']").attr("empty") == "true") {
 					$("[row = \'" + (parseInt(data.row) + 1) + "\'][column = \'" + data.column + "\']").css("background-color", "blue");
 					if ($("[row = \'4\'][column = \'" + data.column + "\']").attr("empty") == "true") {
@@ -731,6 +752,15 @@ function ShowMoves() {
 
 			//Showing possible moves
 			if (data.row == "7") {
+				if ($("[row = \'6\'][column = \'" + data.column + "\']").attr("checkpath") == "true") {
+					$("[row = \'6\'][column = \'" + data.column + "\']").css("background-color", "blue");
+					return;
+				}
+
+				if ($("[row = \'5\'][column = \'" + data.column + "\']").attr("checkpath") == "true") {
+					$("[row = \'5\'][column = \'" + data.column + "\']").css("background-color", "blue");
+					return;
+				}
 				if ($("[row = \'6\'][column = \'" + data.column + "\']").attr("empty") == "true") {
 					$("[row = \'6\'][column = \'" + data.column + "\']").css("background-color", "blue");
 					if ($("[row = \'5\'][column = \'" + data.column + "\']").attr("empty") == "true") {
@@ -745,213 +775,28 @@ function ShowMoves() {
 			}
 		}
 	} else if (data.piece == "rook") {
-		//Upwards
-		for (let i = parseInt(data.row) - 1; i >= 1; i--) {
-			if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("empty") == "false") {
-				if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("player") != turnPlayer) {
-					$("[row = \'" + i + "\'][column = \'" + data.column + "\']").css("background-color", "red");
-				}
-				break;
-			} else {
-				$("[row = \'" + i + "\'][column = \'" + data.column + "\']").css("background", "blue");
-			}
-		}
-		//Downwards
-		for (let i = parseInt(data.row) + 1; i <= 8; i++) {
-			if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("empty") == "false") {
-				if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("player") != turnPlayer) {
-					$("[row = \'" + i + "\'][column = \'" + data.column + "\']").css("background-color", "red");
-				}
-				break;
-			} else {
-				$("[row = \'" + i + "\'][column = \'" + data.column + "\']").css("background", "blue");
-			}
-		}
-		//Leftwards
-		for (let i = parseInt(data.column) - 1; i >= 1; i--) {
-			if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("empty") == "false") {
-				if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("player") != turnPlayer) {
-					$("[row = \'" + data.row + "\'][column = \'" + i + "\']").css("background-color", "red");
-				}
-				break;
-			} else {
-				$("[row = \'" + data.row + "\'][column = \'" + i + "\']").css("background", "blue");
-			}
-		}
-		//Rightwards
-		for (let i = parseInt(data.column) + 1; i <= 8; i++) {
-			if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("empty") == "false") {
-				if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("player") != turnPlayer) {
-					$("[row = \'" + data.row + "\'][column = \'" + i + "\']").css("background-color", "red");
-				}
-				break;
-			} else {
-				$("[row = \'" + data.row + "\'][column = \'" + i + "\']").css("background", "blue");
-			}
-		}
+		ShowMovesStraight(data.row, data.column);
 	} else if (data.piece == "knight") {
-		if ($("[row=\'" + (parseInt(data.row) + 2) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") {
-			$("[row=\'" + (parseInt(data.row) + 2) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "blue");
-		} else if ($("[row=\'" + (parseInt(data.row) + 2) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("player") != turnPlayer) {
-			$("[row=\'" + (parseInt(data.row) + 2) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "red");
-		}
-		if ($("[row=\'" + (parseInt(data.row) + 2) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") {
-			$("[row=\'" + (parseInt(data.row) + 2) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "blue");
-		} else if ($("[row=\'" + (parseInt(data.row) + 2) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("player") != turnPlayer) {
-			$("[row=\'" + (parseInt(data.row) + 2) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
-		}
-		if ($("[row=\'" + (parseInt(data.row) - 2) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("empty") == "true") {
-			$("[row=\'" + (parseInt(data.row) - 2) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "blue");
-		} else if ($("[row=\'" + (parseInt(data.row) - 2) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").attr("player") != turnPlayer) {
-			$("[row=\'" + (parseInt(data.row) - 2) + "\'][column=\'" + (parseInt(data.column) + 1) + "\']").css("background-color", "red");
-		}
-		if ($("[row=\'" + (parseInt(data.row) - 2) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("empty") == "true") {
-			$("[row=\'" + (parseInt(data.row) - 2) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "blue");
-		} else if ($("[row=\'" + (parseInt(data.row) - 2) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").attr("player") != turnPlayer) {
-			$("[row=\'" + (parseInt(data.row) - 2) + "\'][column=\'" + (parseInt(data.column) - 1) + "\']").css("background-color", "red");
-		}
-		if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 2) + "\']").attr("empty") == "true") {
-			$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 2) + "\']").css("background-color", "blue");
-		} else if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 2) + "\']").attr("player") != turnPlayer) {
-			$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) + 2) + "\']").css("background-color", "red");
-		}
-		if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 2) + "\']").attr("empty") == "true") {
-			$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 2) + "\']").css("background-color", "blue");
-		} else if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 2) + "\']").attr("player") != turnPlayer) {
-			$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) + 2) + "\']").css("background-color", "red");
-		}
-		if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 2) + "\']").attr("empty") == "true") {
-			$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 2) + "\']").css("background-color", "blue");
-		} else if ($("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 2) + "\']").attr("player") != turnPlayer) {
-			$("[row=\'" + (parseInt(data.row) + 1) + "\'][column=\'" + (parseInt(data.column) - 2) + "\']").css("background-color", "red");
-		}
-		if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 2) + "\']").attr("empty") == "true") {
-			$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 2) + "\']").css("background-color", "blue");
-		} else if ($("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 2) + "\']").attr("player") != turnPlayer) {
-			$("[row=\'" + (parseInt(data.row) - 1) + "\'][column=\'" + (parseInt(data.column) - 2) + "\']").css("background-color", "red");
-		}
+		let cells = GetKnightCells(data.row, data.column);
+		cells.forEach(function (cell) {
+			if (cell.attr("checkpath") == "true") {
+				cell.css("background-color", "blue");
+				return;
+			}
+		});
+
+		cells.forEach(function (cell) {
+			if (cell.attr("empty") == "true") {
+				cell.css("background-color", "blue");
+			} else if (cell.attr("player") != turnPlayer) {
+				cell.css("background-color", "red");
+			}
+		});
 	} else if (data.piece == "bishop") {
-		//Northeast
-		for (let i = 1; i > 0; i++) {
-			if ($("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").attr("empty") == "true") {
-				$("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").css("background-color", "blue");
-			} else if ($("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").attr("player") != turnPlayer) {
-				$("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").css("background-color", "red");
-				break;
-			}
-			else { break; }
-		}
-		//Northwest
-		for (let i = 1; i > 0; i++) {
-			if ($("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").attr("empty") == "true") {
-				$("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").css("background-color", "blue");
-			} else if ($("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").attr("player") != turnPlayer) {
-				$("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").css("background-color", "red");
-				break;
-			} else { break; }
-		}
-		//Southwest
-		for (let i = 1; i > 0; i++) {
-			if ($("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").attr("empty") == "true") {
-				$("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").css("background-color", "blue");
-			} else if ($("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").attr("player") != turnPlayer) {
-				$("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").css("background-color", "red");
-				break;
-			} else { break; }
-		}
-		//Southeast
-		for (let i = 1; i > 0; i++) {
-			if ($("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").attr("empty") == "true") {
-				$("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").css("background-color", "blue");
-			} else if ($("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").attr("player") != turnPlayer) {
-				$("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").css("background-color", "red");
-				break;
-			} else { break; }
-		}
-
+		ShowMovesDiagonal(data.row, data.column);
 	} else if (data.piece == "queen") {
-		//Upwards
-		for (let i = parseInt(data.row) - 1; i >= 1; i--) {
-			if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("empty") == "false") {
-				if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("player") != turnPlayer) {
-					$("[row = \'" + i + "\'][column = \'" + data.column + "\']").css("background-color", "red");
-				}
-				break;
-			} else {
-				$("[row = \'" + i + "\'][column = \'" + data.column + "\']").css("background", "blue");
-			}
-		}
-		//Downwards
-		for (let i = parseInt(data.row) + 1; i <= 8; i++) {
-			if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("empty") == "false") {
-				if ($("[row = \'" + i + "\'][column = \'" + data.column + "\']").attr("player") != turnPlayer) {
-					$("[row = \'" + i + "\'][column = \'" + data.column + "\']").css("background-color", "red");
-				}
-				break;
-			} else {
-				$("[row = \'" + i + "\'][column = \'" + data.column + "\']").css("background", "blue");
-			}
-		}
-		//Leftwards
-		for (let i = parseInt(data.column) - 1; i >= 1; i--) {
-			if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("empty") == "false") {
-				if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("player") != turnPlayer) {
-					$("[row = \'" + data.row + "\'][column = \'" + i + "\']").css("background-color", "red");
-				}
-				break;
-			} else {
-				$("[row = \'" + data.row + "\'][column = \'" + i + "\']").css("background", "blue");
-			}
-		}
-		//Rightwards
-		for (let i = parseInt(data.column) + 1; i <= 8; i++) {
-			if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("empty") == "false") {
-				if ($("[row = \'" + data.row + "\'][column = \'" + i + "\']").attr("player") != turnPlayer) {
-					$("[row = \'" + data.row + "\'][column = \'" + i + "\']").css("background-color", "red");
-				}
-				break;
-			} else {
-				$("[row = \'" + data.row + "\'][column = \'" + i + "\']").css("background", "blue");
-			}
-		}
-		//Northeast
-		for (let i = 1; i > 0; i++) {
-			if ($("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").attr("empty") == "true") {
-				$("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").css("background-color", "blue");
-			} else if ($("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").attr("player") != turnPlayer) {
-				$("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").css("background-color", "red");
-				break;
-			}
-			else { break; }
-		}
-		//Northwest
-		for (let i = 1; i > 0; i++) {
-			if ($("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").attr("empty") == "true") {
-				$("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").css("background-color", "blue");
-			} else if ($("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").attr("player") != turnPlayer) {
-				$("[row=\'" + (parseInt(data.row) + i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").css("background-color", "red");
-				break;
-			} else { break; }
-		}
-		//Southwest
-		for (let i = 1; i > 0; i++) {
-			if ($("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").attr("empty") == "true") {
-				$("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").css("background-color", "blue");
-			} else if ($("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").attr("player") != turnPlayer) {
-				$("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) - i) + "\']").css("background-color", "red");
-				break;
-			} else { break; }
-		}
-
-		//Southeast
-		for (let i = 1; i > 0; i++) {
-			if ($("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").attr("empty") == "true") {
-				$("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").css("background-color", "blue");
-			} else if ($("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").attr("player") != turnPlayer) {
-				$("[row=\'" + (parseInt(data.row) - i) + "\'][column=\'" + (parseInt(data.column) + i) + "\']").css("background-color", "red");
-				break;
-			} else { break; }
-		}
+		ShowMovesStraight(data.row, data.column);
+		ShowMovesDiagonal(data.row, data.column);
 	} else if (data.piece == "king") {
 
 		let adjacentCells = GetAdjacent(data.row, data.column);
@@ -1112,6 +957,172 @@ function CheckDiagonalSouthWest(distance, thisRow, thisColumn) {
 	return true;
 }
 
+function ShowMovesStraight(thisRow, thisColumn) {
+	thisRow = parseInt(thisRow);
+	thisColumn = parseInt(thisColumn);
+	if ($("[piece='king'][player=\'" + data.player + "\']").attr("check") == "true") {
+		//Horizontal
+		for (let i = thisRow - 1; i >= 1; i--) {
+			if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("checkpath") == "true") {
+				$("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").css("background", "blue");
+				return true;
+			}
+		}
+		for (let i = thisRow + 1; i <= 8; i++) {
+			if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("checkpath") == "true") {
+				$("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").css("background", "blue");
+				return true;
+			}
+		}
+		//Vertical
+		for (let i = parseInt(thisColumn) - 1; i >= 1; i--) {
+			if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("checkpath") == "true") {
+				$("[row = \'" + thisRow + "\'][column = \'" + i + "\']").css("background", "blue");
+				return true;
+			}
+		}
+		for (let i = parseInt(thisColumn) + 1; i <= 8; i++) {
+			if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("checkpath") == "true") {
+				$("[row = \'" + thisRow + "\'][column = \'" + i + "\']").css("background", "blue");
+				return true;
+			}
+		}
+	} else {
+		//Upwards
+		for (let i = thisRow - 1; i >= 1; i--) {
+			if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("empty") == "false") {
+				if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("player") != turnPlayer) {
+					$("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").css("background-color", "red");
+				}
+				break;
+			} else {
+				$("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").css("background", "blue");
+			}
+		}
+		//Downwards
+		for (let i = thisRow + 1; i <= 8; i++) {
+			if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("empty") == "false") {
+				if ($("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").attr("player") != turnPlayer) {
+					$("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").css("background-color", "red");
+				}
+				break;
+			} else {
+				$("[row = \'" + i + "\'][column = \'" + thisColumn + "\']").css("background", "blue");
+			}
+		}
+		//Leftwards
+		for (let i = parseInt(thisColumn) - 1; i >= 1; i--) {
+			if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("empty") == "false") {
+				if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("player") != turnPlayer) {
+					$("[row = \'" + thisRow + "\'][column = \'" + i + "\']").css("background-color", "red");
+				}
+				break;
+			} else {
+				$("[row = \'" + thisRow + "\'][column = \'" + i + "\']").css("background", "blue");
+			}
+		}
+		//Rightwards
+		for (let i = parseInt(thisColumn) + 1; i <= 8; i++) {
+			if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("empty") == "false") {
+				if ($("[row = \'" + thisRow + "\'][column = \'" + i + "\']").attr("player") != turnPlayer) {
+					$("[row = \'" + thisRow + "\'][column = \'" + i + "\']").css("background-color", "red");
+				}
+				break;
+			} else {
+				$("[row = \'" + thisRow + "\'][column = \'" + i + "\']").css("background", "blue");
+			}
+		}
+	}
+}
+
+function ShowMovesDiagonal(thisRow, thisColumn) {
+	thisRow = parseInt(thisRow);
+	thisColumn = parseInt(thisColumn);
+	let dist;
+
+	if ($("[piece='king'][player=\'" + data.player + "\']").attr("check") == "true") {
+		dist = (Math.abs(thisRow - 1) <= Math.abs(thisColumn - 8)) ? Math.abs(thisRow - 1) : Math.abs(thisColumn - 1);
+		for (let i = 1; i <= dist; i++) {
+			if ($("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("checkpath") == "true") {
+				$("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn - i) + "\']").css("background-color", "blue");
+				return true;
+			}
+		}
+		dist = (Math.abs(thisRow - 1) <= Math.abs(thisColumn - 8)) ? Math.abs(thisRow - 1) : Math.abs(thisColumn - 8);
+		for (let i = 1; i <= dist; i++) {
+			if ($("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn + i) + "\']").attr("checkpath") == "true") {
+				$("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn + i) + "\']").css("background-color", "blue");
+				return true;
+			}
+		}
+		dist = (Math.abs(thisRow - 1) <= Math.abs(thisColumn - 8)) ? Math.abs(thisRow - 8) : Math.abs(thisColumn - 8);
+		for (let i = 1; i <= dist; i++) {
+			if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn + i) + "\']").attr("checkpath") == "true") {
+				$("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn + i) + "\']").css("background-color", "blue");
+				return true;
+			}
+		}
+		dist = (Math.abs(thisRow - 1) <= Math.abs(thisColumn - 8)) ? Math.abs(thisRow - 8) : Math.abs(thisColumn - 1);
+		for (let i = 1; i <= dist; i++) {
+			if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("checkpath") == "true") {
+				$("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn - i) + "\']").css("background-color", "blue");
+				return true;
+			}
+		}
+	} else {
+		//Northwest
+		dist = (Math.abs(thisRow - 1) <= Math.abs(thisColumn - 8)) ? Math.abs(thisRow - 1) : Math.abs(thisColumn - 1);
+		for (let i = 1; i <= dist; i++) {
+			if ($("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("empty") == "false") {
+				if ($("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("player") != turnPlayer) {
+					$("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn - i) + "\']").css("background-color", "red");
+					break;
+				} else { break; }
+			} else {
+				$("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn - i) + "\']").css("background-color", "blue");
+			}
+		}
+		//Northeast
+		dist = (Math.abs(thisRow - 1) <= Math.abs(thisColumn - 8)) ? Math.abs(thisRow - 1) : Math.abs(thisColumn - 8);
+		for (let i = 1; i <= dist; i++) {
+			if ($("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn + i) + "\']").attr("empty") == "false") {
+				if ($("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn + i) + "\']").attr("player") != turnPlayer) {
+					$("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn + i) + "\']").css("background-color", "red");
+					break;
+				} else { break; }
+			} else {
+				$("[row=\'" + (thisRow - i) + "\'][column=\'" + (thisColumn + i) + "\']").css("background-color", "blue");
+			}
+		}
+
+		//Southeast
+		dist = (Math.abs(thisRow - 1) <= Math.abs(thisColumn - 8)) ? Math.abs(thisRow - 8) : Math.abs(thisColumn - 8);
+		for (let i = 1; i <= dist; i++) {
+			if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn + i) + "\']").attr("empty") == "false") {
+				if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn + i) + "\']").attr("player") != turnPlayer) {
+					$("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn + i) + "\']").css("background-color", "red");
+					break;
+				} else { break; }
+			} else {
+				$("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn + i) + "\']").css("background-color", "blue");
+			}
+		}
+
+		//Southwest
+		dist = (Math.abs(thisRow - 1) <= Math.abs(thisColumn - 8)) ? Math.abs(thisRow - 8) : Math.abs(thisColumn - 1);
+		for (let i = 1; i <= dist; i++) {
+			if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("empty") == "false") {
+				if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("player") != turnPlayer) {
+					$("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn - i) + "\']").css("background-color", "red");
+					break;
+				} else { break; }
+			} else {
+				$("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn - i) + "\']").css("background-color", "blue");
+			}
+		}
+	}
+}
+
 function EndTurn() {
 	if (turnPlayer == "dog") {
 		turnPlayer = "cat";
@@ -1167,7 +1178,13 @@ function CheckforCheck() {
 		}
 
 		console.log(thisPlayer + " king moves : " + moves);
-		//Check if checkmate or stalemate
+
+		//#region Checkmate
+		if ($(this).attr("check") == true && moves == 0) {
+			CheckMate();
+		}
+
+		//#endregion
 
 
 	});
@@ -1677,6 +1694,21 @@ function GetAdjacent(thisRow, thisColumn) {
 		$("[row=\'" + (thisRow) + "\'][column=\'" + (thisColumn - 1) + "\']"),			//West
 	];
 	return adjacentCells;
+}
+
+function GetKnightCells(thisRow, thisColumn) {
+	thisRow = parseInt(thisRow);
+	thisColumn = parseInt(thisColumn);
+	return [
+		$("[row=\'" + (thisRow - 1) + "\'][column=\'" + (thisColumn - 2) + "\']"),
+		$("[row=\'" + (thisRow - 2) + "\'][column=\'" + (thisColumn - 1) + "\']"),
+		$("[row=\'" + (thisRow - 2) + "\'][column=\'" + (thisColumn + 1) + "\']"),
+		$("[row=\'" + (thisRow - 1) + "\'][column=\'" + (thisColumn + 2) + "\']"),
+		$("[row=\'" + (thisRow + 1) + "\'][column=\'" + (thisColumn + 2) + "\']"),
+		$("[row=\'" + (thisRow + 2) + "\'][column=\'" + (thisColumn + 1) + "\']"),
+		$("[row=\'" + (thisRow + 2) + "\'][column=\'" + (thisColumn - 1) + "\']"),
+		$("[row=\'" + (thisRow + 1) + "\'][column=\'" + (thisColumn - 2) + "\']")
+	];
 }
 
 /** Takes a snapshot of the board and stores it in an array
