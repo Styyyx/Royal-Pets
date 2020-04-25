@@ -2,10 +2,13 @@ $(document).ready(function () {
 
     var namePlayer1, namePlayer2;
 
-    $(document).on("keypress", function (event) {
+    $(document).on("keydown", function (event) {
         console.log("Key : " + event.key + "\tWhich : " + event.which);
-        if (event.key == "Enter" && $("#newGame").css("display") != "none") {
-            $("#btn-ok").click();
+        if (event.key == "Escape" && $("#newGame").css("display") != "none") {
+            $("#btn-cancel").click();
+        }
+        if (event.key == "Escape" && $("#howToPlay").css("display") != "none") {
+            $("#btn-exit").click();
         }
     });
 
@@ -42,8 +45,8 @@ $(document).ready(function () {
         }
     });
 
-    $("#btn-exit").click(function () {
-        $("#input-player1").val("");
-        $("#input-player2").val("");
-    });
+    // $("#btn-exit").click(function () {
+    //     $("#input-player1").val("");
+    //     $("#input-player2").val("");
+    // });
 });
