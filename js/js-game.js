@@ -511,61 +511,80 @@ function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece 
 
 	} else if (thisPiece == "knight") {
 		let slope = ((Math.abs(parseInt(targetRow) - parseInt(thisRow))) / (Math.abs(parseInt(targetColumn) - parseInt(thisColumn))));
-		if (slope == 2 || slope == 0.5) {
-			return true;
+		if ($("[piece='king'][player=\'" + data.player + "\']").attr("check") == "true") {
+			if ($("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("checkpath") == "true") {
+				return true;
+			}
+		} else {
+			if (slope == 2 || slope == 0.5) {
+				return true;
+			}
 		}
 	} else if (thisPiece == "bishop") {
 		let yDist = Math.abs(parseInt(targetRow) - parseInt(thisRow));
 		let xDist = Math.abs(parseInt(targetColumn) - parseInt(thisColumn));
 		let slope = yDist / xDist;
-		if (slope == 1) {
-			//Northeast
-			if ((thisRow > targetRow) && (thisColumn < targetColumn)) {
-				return CheckDiagonalNorthEast(yDist, thisRow, thisColumn);
+		if ($("[piece='king'][player=\'" + data.player + "\']").attr("check") == "true") {
+			if ($("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("checkpath") == "true") {
+				return true;
 			}
+		} else {
+			if (slope == 1) {
+				//Northeast
+				if ((thisRow > targetRow) && (thisColumn < targetColumn)) {
+					return CheckDiagonalNorthEast(yDist, thisRow, thisColumn);
+				}
 
-			//Southeast
-			else if ((thisRow < targetRow) && (thisColumn < targetColumn)) {
-				return CheckDiagonalSouthEast(yDist, thisRow, thisColumn);
-			}
+				//Southeast
+				else if ((thisRow < targetRow) && (thisColumn < targetColumn)) {
+					return CheckDiagonalSouthEast(yDist, thisRow, thisColumn);
+				}
 
-			//Southwest
-			else if ((thisRow < targetRow) && (thisColumn > targetColumn)) {
-				return CheckDiagonalSouthWest(yDist, thisRow, thisColumn);
-			}
+				//Southwest
+				else if ((thisRow < targetRow) && (thisColumn > targetColumn)) {
+					return CheckDiagonalSouthWest(yDist, thisRow, thisColumn);
+				}
 
-			//Northwest
-			else if ((thisRow > targetRow) && (thisColumn > targetColumn)) {
-				return CheckDiagonalNorthWest(yDist, thisRow, thisColumn);
-			}
-		} else { return false; }
+				//Northwest
+				else if ((thisRow > targetRow) && (thisColumn > targetColumn)) {
+					return CheckDiagonalNorthWest(yDist, thisRow, thisColumn);
+				}
+
+			} else { return false; }
+		}
 	} else if (thisPiece == "queen") {
 		let yDist = Math.abs(parseInt(targetRow) - parseInt(thisRow));
 		let xDist = Math.abs(parseInt(targetColumn) - parseInt(thisColumn));
 		let slope = yDist / xDist;
-		if (xDist == 0) {
-			return CheckVertical(targetRow, thisRow, thisColumn);
-		} else if (yDist == 0) {
-			return CheckHorizontal(targetColumn, thisRow, thisColumn);
-		} else if (slope == 1) {
-			//Northeast
-			if ((thisRow > targetRow) && (thisColumn < targetColumn)) {
-				return CheckDiagonalNorthEast(yDist, thisRow, thisColumn);
+		if ($("[piece='king'][player=\'" + data.player + "\']").attr("check") == "true") {
+			if ($("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("checkpath") == "true") {
+				return true;
 			}
+		} else {
+			if (xDist == 0) {
+				return CheckVertical(targetRow, thisRow, thisColumn);
+			} else if (yDist == 0) {
+				return CheckHorizontal(targetColumn, thisRow, thisColumn);
+			} else if (slope == 1) {
+				//Northeast
+				if ((thisRow > targetRow) && (thisColumn < targetColumn)) {
+					return CheckDiagonalNorthEast(yDist, thisRow, thisColumn);
+				}
 
-			//Southeast
-			else if ((thisRow < targetRow) && (thisColumn < targetColumn)) {
-				return CheckDiagonalSouthEast(yDist, thisRow, thisColumn);
-			}
+				//Southeast
+				else if ((thisRow < targetRow) && (thisColumn < targetColumn)) {
+					return CheckDiagonalSouthEast(yDist, thisRow, thisColumn);
+				}
 
-			//Southwest
-			else if ((thisRow < targetRow) && (thisColumn > targetColumn)) {
-				return CheckDiagonalSouthWest(yDist, thisRow, thisColumn);
-			}
+				//Southwest
+				else if ((thisRow < targetRow) && (thisColumn > targetColumn)) {
+					return CheckDiagonalSouthWest(yDist, thisRow, thisColumn);
+				}
 
-			//Northwest
-			else if ((thisRow > targetRow) && (thisColumn > targetColumn)) {
-				return CheckDiagonalNorthWest(yDist, thisRow, thisColumn);
+				//Northwest
+				else if ((thisRow > targetRow) && (thisColumn > targetColumn)) {
+					return CheckDiagonalNorthWest(yDist, thisRow, thisColumn);
+				}
 			}
 		}
 	} else if (thisPiece == "king") {
@@ -1671,7 +1690,6 @@ $(".overlay#pawnPromotion img.option").on("click", function () {
 	$(".overlay#pawnPromotion").css("display", "none");
 	TakeSnapShot();
 });
-
 //#endregion
 
 /**	Returns an array of the adjacent cells of the selected cell
