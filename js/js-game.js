@@ -1154,7 +1154,7 @@ function EndTurn() {
 }
 
 function CheckforCheck() {
-	//Remove all checks
+	//Refresh check/ers
 	$("[check]").each(function () {
 		$(this).removeAttr("check");
 	});
@@ -1199,8 +1199,10 @@ function CheckforCheck() {
 		console.log(thisPlayer + " king moves : " + moves);
 
 		//#region Checkmate
-		if ($(this).attr("check") == true && moves == 0) {
+		if ($(this).attr("check") == "true" && moves == 0) {
 			CheckMate();
+			$("[checker='true']").css("background-color","red");
+			$("[check='true'][piece='king']").css("background-color","pink");
 		}
 
 		//#endregion
@@ -1689,9 +1691,19 @@ $(".overlay#pawnPromotion img.option").on("click", function () {
 	}
 	$(".overlay#pawnPromotion").css("display", "none");
 	TakeSnapShot();
+	setTimeout(CheckforCheck(), 500);
 });
 //#endregion
 
+//#region EndGame
+$(".overlay#endGame img#btnOk").on("click", function(){
+	if ($(".overlay#endGame").css("display") != "none") {
+		location.replace("./home.html");
+	}
+});
+//#endregion
+
+//#region Ease of Code
 /**	Returns an array of the adjacent cells of the selected cell
  * 
  * @param {*} thisRow 
@@ -1728,6 +1740,7 @@ function GetKnightCells(thisRow, thisColumn) {
 		$("[row=\'" + (thisRow + 1) + "\'][column=\'" + (thisColumn - 2) + "\']")
 	];
 }
+//#endregion
 
 /** Takes a snapshot of the board and stores it in an array
  */
