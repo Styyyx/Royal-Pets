@@ -1,12 +1,16 @@
 # Royal-Cats
+
 A chess game themed cat and dogs, written in html,css and js.
+***
+### Authors
 
-Authors:
-    -Alcantara, Patrick
-    -Baroma, Hannah
-    -Bernardo, Reanne
+Alcantara, Patrick [Facebook](https://www.facebook.com/pema.alcantara)
 
-Features:
-    -2 Player
-    -Notation History
-    -Cute cat and dog chess pieces
+Baroma, Hannah
+
+Bernardo, Reanne
+***
+### Features
+
+    2 Player
+    Cute cat and dog chess pieces

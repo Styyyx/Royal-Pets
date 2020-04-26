@@ -10,11 +10,12 @@
 
 <body>
     <img class="burger" src="../res/burger.png">
-    <div class="menu">
+    <div id="sidenav" class="sidenav">
         <div id="btnHome">HOME</div>
         <div id="btnNewGame">NEW GAME</div>
-        <div id="btnHowToPlay">HOW TO PLAY</div>
-        <div id="btnQuit">QUIT</div>
+        <a href="#howToPlay">
+            <div id="btnHowToPlay">HOW TO PLAY</div>
+        </a>
     </div>
     <div id="turn">
         <img id="playerImg" src="">
@@ -33,35 +34,43 @@
                 <div>8</div>
             </div>
             <div class="columnLegend">
-                <div>A</div>
-                <div>B</div>
-                <div>C</div>
-                <div>D</div>
-                <div>E</div>
-                <div>F</div>
-                <div>G</div>
-                <div>H</div>
+                <!-- <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div> -->
+                <div>a</div>
+                <div>b</div>
+                <div>c</div>
+                <div>d</div>
+                <div>e</div>
+                <div>f</div>
+                <div>g</div>
+                <div>h</div>
             </div>
             <div class="row">
-                <div class="cell" empty="false" row="1" column="1" piece="rook" player="dog"></div>
-                <div class="cell cell-gray" empty="false" row="1" column="2" piece="knight" player="dog"></div>
-                <div class="cell" empty="false" row="1" column="3" piece="bishop" player="dog"></div>
-                <div class="cell cell-gray" empty="false" row="1" column="4" piece="queen" player="dog"></div>
-                <div class="cell" empty="false" row="1" column="5" piece="king" player="dog"></div>
-                <div class="cell cell-gray" empty="false" row="1" column="6" piece="bishop" player="dog"></div>
-                <div class="cell" empty="false" row="1" column="7" piece="knight" player="dog"></div>
-                <div class="cell cell-gray" empty="false" row="1" column="8" piece="rook" player="dog"></div>
+                <div class="cell" empty="true" row="1" column="1" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="1" column="2" piece="" player=""></div>
+                <div class="cell" empty="true" row="1" column="3" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="1" column="4" piece="" player=""></div>
+                <div class="cell" empty="true" row="1" column="5" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="1" column="6" piece="" player=""></div>
+                <div class="cell" empty="true" row="1" column="7" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="1" column="8" piece="" player=""></div>
             </div>
 
             <div class="row">
-                <div class="cell cell-gray" empty="false" row="2" column="1" piece="pawn" player="dog"></div>
-                <div class="cell" empty="false" row="2" column="2" piece="pawn" player="dog"></div>
-                <div class="cell cell-gray" empty="false" row="2" column="3" piece="pawn" player="dog"></div>
-                <div class="cell" empty="false" row="2" column="4" piece="pawn" player="dog"></div>
-                <div class="cell cell-gray" empty="false" row="2" column="5" piece="pawn" player="dog"></div>
-                <div class="cell" empty="false" row="2" column="6" piece="pawn" player="dog"></div>
-                <div class="cell cell-gray" empty="false" row="2" column="7" piece="pawn" player="dog"></div>
-                <div class="cell" empty="false" row="2" column="8" piece="pawn" player="dog"></div>
+                <div class="cell cell-gray" empty="true" row="2" column="1" piece="" player=""></div>
+                <div class="cell" empty="true" row="2" column="2" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="2" column="3" piece="" player=""></div>
+                <div class="cell" empty="true" row="2" column="4" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="2" column="5" piece="" player=""></div>
+                <div class="cell" empty="true" row="2" column="6" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="2" column="7" piece="" player=""></div>
+                <div class="cell" empty="true" row="2" column="8" piece="" player=""></div>
             </div>
 
             <div class="row">
@@ -109,35 +118,85 @@
             </div>
 
             <div class="row">
-                <div class="cell" empty="false" row="7" column="1" piece="pawn" player="cat"></div>
-                <div class="cell cell-gray" empty="false" row="7" column="2" piece="pawn" player="cat"></div>
-                <div class="cell" empty="false" row="7" column="3" piece="pawn" player="cat"></div>
-                <div class="cell cell-gray" empty="false" row="7" column="4" piece="pawn" player="cat"></div>
-                <div class="cell" empty="false" row="7" column="5" piece="pawn" player="cat"></div>
-                <div class="cell cell-gray" empty="false" row="7" column="6" piece="pawn" player="cat"></div>
-                <div class="cell" empty="false" row="7" column="7" piece="pawn" player="cat"></div>
-                <div class="cell cell-gray" empty="false" row="7" column="8" piece="pawn" player="cat"></div>
+                <div class="cell" empty="true" row="7" column="1" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="7" column="2" piece="" player=""></div>
+                <div class="cell" empty="true" row="7" column="3" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="7" column="4" piece="" player=""></div>
+                <div class="cell" empty="true" row="7" column="5" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="7" column="6" piece="" player=""></div>
+                <div class="cell" empty="true" row="7" column="7" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="7" column="8" piece="" player=""></div>
             </div>
 
             <div class="row">
-                <div class="cell cell-gray" empty="false" row="8" column="1" piece="rook" player="cat"></div>
-                <div class="cell" empty="false" row="8" column="2" piece="knight" player="cat"></div>
-                <div class="cell cell-gray" empty="false" row="8" column="3" piece="bishop" player="cat"></div>
-                <div class="cell" empty="false" row="8" column="4" piece="queen" player="cat"></div>
-                <div class="cell cell-gray" empty="false" row="8" column="5" piece="king" player="cat"></div>
-                <div class="cell" empty="false" row="8" column="6" piece="bishop" player="cat"></div>
-                <div class="cell cell-gray" empty="false" row="8" column="7" piece="knight" player="cat"></div>
-                <div class="cell" empty="false" row="8" column="8" piece="rook" player="cat"></div>
+                <div class="cell cell-gray" empty="true" row="8" column="1" piece="" player=""></div>
+                <div class="cell" empty="true" row="8" column="2" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="8" column="3" piece="" player=""></div>
+                <div class="cell" empty="true" row="8" column="4" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="8" column="5" piece="" player=""></div>
+                <div class="cell" empty="true" row="8" column="6" piece="" player=""></div>
+                <div class="cell cell-gray" empty="true" row="8" column="7" piece="" player=""></div>
+                <div class="cell" empty="true" row="8" column="8" piece="" player=""></div>
             </div>
         </div>
-        <!-- <div class="history">
-            <div class="buttons">
-                <img src="../res/undo_button.png">
-                <img src="../res/options_button.png">
-                <img src="../res/redo_button.png">
+    </div>
+    <div class="history">
+        <ul>
+
+        </ul>
+    </div>
+    <img id="btnUndo" src="../res/undo_button.png">
+    <div class="overlay" id="howToPlay">
+        <div class="panel">
+            <div class="title">
+                <div>HOW TO PLAY</div>
+                <a href="#">
+                    <img src="../res/exit_button.png">
+                </a>
             </div>
         </div>
-        <div class="graveyard"></div> -->
+    </div>
+    <div class="overlay" id="newGame">
+        <div class="panel">
+            <div class="form">
+                <span>PLAYER 1 (DOG):</span>
+                <input type="text" id="input-player1" maxlength="12" value="Player 1">
+                <span>PLAYER 2 (CAT):</span>
+                <input type="text" id="input-player2" maxlength="12" value="Player 2">
+                <div class="buttons">
+                    <img src="../res/ok_button.png" id="btn-ok">
+                    <img src="../res/cancel_button.png" id="btn-cancel">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="overlay" id="endGame">
+        <img src="../res/ok_button.png">
+    </div>
+    <div class="overlay" id="pawnPromotion">
+        <div class="panel">
+            <div class="title">Promote pawn to:</div>
+            <div class="options">
+                <div>
+                    <img class="option" id="queen">
+                    <span>Queen</span>
+                </div>
+                <div>
+                    <img class="option" id="bishop">
+                    <span>Bishop</span>
+                </div>
+            </div>
+            <div class="options">
+                <div>
+                    <img class="option" id="rook">
+                    <span>Rook</span>
+                </div>
+                <div>
+                    <img class="option" id="knight">
+                    <span>Knight</span>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/js-game.js"></script>
