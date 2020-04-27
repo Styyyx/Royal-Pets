@@ -4,6 +4,9 @@ $(document).ready(function () {
 
     $(document).on("keydown", function (event) {
         console.log("Key : " + event.key + "\tWhich : " + event.which);
+        if (event.key == "Enter" && $("#newGame").css("display") != "none"){
+            $("#btn-ok").click();
+        }
         if (event.key == "Escape" && $("#newGame").css("display") != "none") {
             $("#btn-cancel").click();
         }
