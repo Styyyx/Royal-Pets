@@ -183,3 +183,84 @@ body {
 }
 
 /* #endregion */
+
+/* #region How To Play panel */
+.overlay#howToPlay .panel {
+    z-index: 2;
+    height: 65%;
+    width: 40%;
+    border: 15px solid #DB8B2F;
+    border-radius: 30px;
+    background-color: #F9DDA6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay#howToPlay .panel .slide {
+    max-height: 65%;
+    max-width: 40%;
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay#howToPlay .panel .slide .title {
+    font-size: 2.0833333333333335vw;
+    font-family: "Monserrat-SemiBold";
+    position: relative;
+    margin-bottom: 1.0416666666666667vw;
+}
+
+.overlay#howToPlay .panel .slide .sub-title {
+    font-size: 1.6666666666666667vw;
+    font-family: "Monserrat-SemiBold";
+    position: relative;
+}
+
+.overlay#howToPlay .panel .slide .desc {
+    font-size: 1.1458333333333333vw;
+    font-family: "Monserrat-Regular";
+    position: relative;
+    justify-content: center;
+    text-align: center;
+    max-width: 70%;
+    margin: 1.1458333333333333vw 0 1.1458333333333333vw 0;
+}
+
+.overlay#howToPlay .panel .slide .pageNum {
+    font-size: 1.1458333333333333vw;
+    font-family: "Monserrat-Regular";
+    margin-bottom: 0.5208333333333334vw;
+}
+
+.overlay#howToPlay .panel .slide .pieces img {
+    height: 20.63983488132095vh;
+    width: 7.291666666666667vw;
+    position: relative;
+    margin: 0 0 0.5208333333333334vw 0;
+}
+
+.overlay#howToPlay .panel .slide .buttons img {
+    height: 5.159958720330238vh;
+    width: auto;
+    cursor: pointer;
+}
+
+.overlay#howToPlay .panel .buttons #btn-exit {
+    /* position: absolute; */
+    top: 20.5%;
+    left: 65.6%;
+}
+
+.overlay#howToPlay .panel .buttons #arrow-left {
+    padding-right: 0.2604166666666667vw;
+}
+
+.overlay#howToPlay .panel .buttons #arrow-right {
+    padding-left: 0.2604166666666667vw;
+}
+
+/* #endregion */
