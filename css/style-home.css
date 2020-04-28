@@ -187,7 +187,7 @@ body {
 /* #region How To Play panel */
 .overlay#howToPlay .panel {
     z-index: 2;
-    height: 65%;
+    height: 70%;
     width: 40%;
     border: 15px solid #DB8B2F;
     border-radius: 30px;
@@ -198,13 +198,19 @@ body {
 }
 
 .overlay#howToPlay .panel .slide {
-    max-height: 65%;
+    max-height: 70%;
     max-width: 40%;
-    display: flex;
     position: absolute;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    display: flex;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.overlay#howToPlay .panel .active-slide {
+    opacity: 1;
 }
 
 .overlay#howToPlay .panel .slide .title {
@@ -243,24 +249,28 @@ body {
     margin: 0 0 0.5208333333333334vw 0;
 }
 
-.overlay#howToPlay .panel .slide .buttons img {
+.overlay#howToPlay .panel .buttons img {
     height: 5.159958720330238vh;
     width: auto;
     cursor: pointer;
+    position: absolute;
 }
 
 .overlay#howToPlay .panel .buttons #btn-exit {
-    /* position: absolute; */
-    top: 20.5%;
+    position: absolute;
+    top: 18%;
     left: 65.6%;
 }
 
-.overlay#howToPlay .panel .buttons #arrow-left {
+.overlay#howToPlay .panel .buttons #previous {
     padding-right: 0.2604166666666667vw;
+    top: 76.5%;
+    left: 47%;
 }
 
-.overlay#howToPlay .panel .buttons #arrow-right {
+.overlay#howToPlay .panel .buttons #next {
     padding-left: 0.2604166666666667vw;
+    top: 76.5%;
 }
 
 /* #endregion */
