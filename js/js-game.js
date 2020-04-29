@@ -88,10 +88,16 @@ $(window).bind("load", function () {
 	this.ReloadBoard();
 });
 
-$(document).on("keypress", function (e) {
-	if (e.key == "Enter" && $(".overlay#newGame").css("display") != "none") {
-		$(".overlay#newGame #btn-ok").click();
+$(document).on("keydown", function (e) {
+	if (e.key == "Enter" && $("#newGame").css("display") != "none") {
+		$("#btn-ok").click();
 	}
+    if (e.key == "Escape" && $("#newGame").css("display") != "none") {
+        $("#btn-cancel").click();
+    }
+    if (e.key == "Escape" && $("#howToPlay").css("display") != "none") {
+        $("#btn-exit").click();
+    }
 });
 
 //#region Randomize First Player
@@ -146,6 +152,62 @@ $("#btnHome").on("click", function () {
 	window.sessionStorage.removeItem("turnPlayer");
 	sessionStorage.removeItem("logHistory");
 });
+
+// How to Play Button Click event
+$("#btnHowToPlay").on("click", function () {
+    const slides = $('.slide');
+    var activeSlide = 0;
+
+    showSlide(activeSlide);
+
+    function showSlide(n) {
+        $(slides[activeSlide]).removeClass('active-slide');
+        $(slides[n]).addClass('active-slide');
+        activeSlide = n;
+        if(activeSlide === 0){
+            $('#previous').css('display', 'none');
+        }
+        else{
+            $('#previous').css('display', 'flex');
+        }
+        if(activeSlide === slides.length-1){
+            $('#next').css('display', 'none');
+        }
+        else{
+            $('#next').css('display', 'flex');
+        }
+    };
+
+    $('#previous').on('click', function (){
+        showSlide(activeSlide - 1);
+    });
+    $('#next').on('click', function (){
+        showSlide(activeSlide + 1);
+    });
+    $('#btn-exit').on('click', function(){
+        showSlide(0);
+    });
+
+    $(document).on('keydown', function (event) {
+        if (event.which == 37) {
+            if(activeSlide === 0){
+                $('#previous').css('display', 'none');
+            } else {
+                $('#previous').click();
+            }
+        }
+        if (event.which == 39) {
+            if(activeSlide === slides.length-1){
+                $('#next').click(false);
+            } else {
+                $('#next').click();
+            }
+        }
+    });
+});
+
+//#endregion
+
 
 //#region New Game Interface
 
@@ -263,7 +325,7 @@ $("*").attr('unselectable', 'on')
 	.bind('selectstart', function () { return false; });
 
 /** Main Function
- * 
+ *
  * 	this is fired every time a cell/piece is clicked
  */
 $("[empty]").on("click", function () {
@@ -401,7 +463,7 @@ function ReloadBoard() {
 }
 
 /** Checks when the player is trying to move one of their own pieces
- * 
+ *
  * @param {*} targetRow Row of target position
  * @param {*} targetColumn Column of target position
  * @param {*} thisPlayer [optional] Whose player is selected piece, default to data.player
@@ -598,7 +660,7 @@ function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece 
 }
 
 /** Checks when the player has clicked one of their own piece, and is trying to eat a piece of the enemy player.
- * 
+ *
  * @param {*} targetRow Row of target position
  * @param {*} targetColumn  Column of target position
  * @param {*} thisPlayer [optional] Whose player is selected piece, default to data.player
@@ -1263,7 +1325,7 @@ function CheckforMoves() {
 				}
 			});
 		}
-		//Checker is right of king 
+		//Checker is right of king
 		else if (kingColumn < checkerColumn) {
 			$("[player=\'" + kingPlayer + "\']").each(function () {
 				let thisRow = $(this).attr("row"),
@@ -1324,7 +1386,7 @@ function CheckforMoves() {
 			});
 		}
 
-		//Checker is northeast of king 
+		//Checker is northeast of king
 		else if (kingColumn < checkerColumn) {
 			$("[player=\'" + kingPlayer + "\']").each(function () {
 				let thisRow = $(this).attr("row"),
@@ -1385,7 +1447,7 @@ function CheckforMoves() {
 			});
 		}
 
-		//Checker is southeast of king 
+		//Checker is southeast of king
 		else if (kingColumn < checkerColumn) {
 			$("[player=\'" + kingPlayer + "\']").each(function () {
 				let thisRow = $(this).attr("row"),
@@ -1414,10 +1476,10 @@ function CheckforEnPassant() {
 }
 
 /** This function evaluates the cell if it is accessible by other pieces of the opposite player
- * 
- * @param {*} thisRow 
- * @param {*} thisColumn 
- * @param {*} thisPlayer 
+ *
+ * @param {*} thisRow
+ * @param {*} thisColumn
+ * @param {*} thisPlayer
  */
 function IsCheck(thisRow, thisColumn, thisPlayer) {
 	let dist;
@@ -1609,7 +1671,7 @@ function IsCheck(thisRow, thisColumn, thisPlayer) {
 	}
 	//#endregion
 
-	//#region From Southwest  
+	//#region From Southwest
 	dist = (Math.abs(thisRow - 8) <= Math.abs(thisColumn - 1)) ? Math.abs(thisRow - 8) : Math.abs(thisColumn - 1);
 	for (let i = 1; i <= dist; i++) {
 		if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("empty") == "false") {
@@ -1705,9 +1767,9 @@ $(".overlay#endGame img#btnOk").on("click", function(){
 
 //#region Ease of Code
 /**	Returns an array of the adjacent cells of the selected cell
- * 
- * @param {*} thisRow 
- * @param {*} thisColumn 
+ *
+ * @param {*} thisRow
+ * @param {*} thisColumn
  */
 function GetAdjacent(thisRow, thisColumn) {
 	//Safe for NaN
