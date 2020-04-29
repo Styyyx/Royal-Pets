@@ -249,6 +249,12 @@ body {
     margin: 0 0 0.5208333333333334vw 0;
 }
 
+.overlay#howToPlay .panel .slide .castling .en-passant img {
+    height: 22.703818369453046vh;
+    width: auto;
+    position: relative;
+}
+
 .overlay#howToPlay .panel .buttons img {
     height: 5.159958720330238vh;
     width: auto;
