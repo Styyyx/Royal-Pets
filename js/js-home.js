@@ -98,16 +98,16 @@ $(document).ready(function () {
         $(slides[n]).addClass('active-slide');
         activeSlide = n;
         if(activeSlide === 0){
-            $("#previous").css('display', 'none');
+            $('#previous').css('display', 'none');
         }
         else{
-            $("#previous").css('display', 'flex');
+            $('#previous').css('display', 'flex');
         }
         if(activeSlide === slides.length-1){
-            $("#next").css('display', 'none');
+            $('#next').css('display', 'none');
         }
         else{
-            $("#next").css('display', 'flex');
+            $('#next').css('display', 'flex');
         }
     };
 
@@ -118,33 +118,26 @@ $(document).ready(function () {
         showSlide(activeSlide + 1);
     });
 
-    // $('#btn-exit').on('click', function(){
-    // });
+    $('#btn-exit').on('click', function(){
+        showSlide(0);
+    });
 
-    // $(document).on("keydown", function (event) {
-    //     if (event.which == 37) {
-    //         $('#previous').click();
-    //     }
-    //     if (event.which == 39) {
-    //         $('#next').click();
-    //     }
-    // });
-
-    // function showNextSlide() {
-    //   showSlide(currentSlide + 1);
-    // }
-    //
-    // function showPreviousSlide() {
-    //   showSlide(currentSlide - 1);
-    // }
-
-    // $(document).on("keypress", function (event) {
-    //     if (event.which === 32) {
-    //         $(".slide").removeClass("inactive-slide");
-    //         $(".slide").addClass("active-slide");
-    //         console.log("yoyoyooyoyooyo");
-    //     }
-    // });
+    $(document).on('keydown', function (event) {
+        if (event.which == 37) {
+            if(activeSlide === 0){
+                $('#previous').css('display', 'none');
+            } else {
+                $('#previous').click();
+            }
+        }
+        if (event.which == 39) {
+            if(activeSlide === slides.length-1){
+                $('#next').click(false);
+            } else {
+                $('#next').click();
+            }
+        }
+    });
 
     // $("#btn-exit").click(function () {
     //     $("#input-player1").val("");
