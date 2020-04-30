@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="../res/icon.png">
 </head>
 
-<body>
+<body   >
     <div class="wrapper"><img id="logo" src="../res/Logo.png"></div>
 
     <div class="menu">
@@ -31,10 +31,10 @@
                 <input type="text" id="input-player1" maxlength="12" value="Player 1">
                 <span>PLAYER 2 (CAT):</span>
                 <input type="text" id="input-player2" maxlength="12" value="Player 2">
-                <div class="buttons">
-                    <img src="../res/ok_button.png" id="btn-ok">
-                    <a href="#">
-                        <img src="../res/cancel_button.png" id="btn-cancel">
+                <div class="newGameButtons">
+                    <div class="button" id="btn-ok">OK</div>
+                    <a href="#" class="button">
+                        <div id="btn-cancel">CANCEL</div>
                     </a>
                 </div>
             </div>
@@ -151,12 +151,18 @@
                 </div>
                 <span class="pageNum">8/8</span>
             </div>
-            <div class="buttons">
+            <div class="howToPlayButtons">
                 <a href="#">
-                    <img src="../res/exit_button.png" id="btn-exit">
+                    <div class="buttons">
+                        <img src="../res/exit_button.png" id="btn-exit">
+                    </div>
                 </a>
-                <img src="../res/arrow_left.png" id="previous">
-                <img src="../res/arrow_right.png" id="next">
+                <div class="buttons">
+                    <img src="../res/arrow_left.png" id="previous">
+                </div>
+                <div class="buttons">
+                    <img src="../res/arrow_right.png" id="next">
+                </div>
             </div>
         </div>
     </div>

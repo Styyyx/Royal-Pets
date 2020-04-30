@@ -16,6 +16,38 @@
 /* #endregion */
 
 /* #region Animations */
+.button:hover {
+    transform: scale(1.1, 1.1);
+    background-color: #FC6602;
+}
+
+.button:active {
+    background-color: #D35400;
+}
+
+.overlay#newGame .panel .form .newGameButtons .button:hover {
+    transform: scale(1.1, 1.1);
+    background-color: #FC6602;
+}
+
+.overlay#newGame .panel .form .newGameButtons .button:active {
+    background-color: #D35400;
+}
+
+/* .overlay#howToPlay .panel .howToPlayButtons .buttons:hover {
+    transform: scale(1.1);
+} */
+.overlay#howToPlay .panel .howToPlayButtons .buttons #btn-exit:hover{
+    transform: scale(1.1, 1.1);
+}
+
+.overlay#howToPlay .panel .howToPlayButtons .buttons #previous:hover{
+    transform: scale(1.1, 1.1);
+}
+
+.overlay#howToPlay .panel .howToPlayButtons .buttons #next:hover{
+    transform: scale(1.1, 1.1);
+}
 
 /* #endregion */
 
@@ -34,6 +66,13 @@ body {
 
 * {
     box-sizing: border-box;
+    cursor: url("../res/custom_pointer.png"), auto;
+    /* cursor: url("../res/custom_pointer_grab.png"), grab; */
+}
+
+cursor {
+    height: 20px;
+    width: 20px;
 }
 /* #endregion */
 
@@ -50,6 +89,7 @@ body {
 .wrapper #logo {
     height: auto;
     width: 90%;
+    filter: drop-shadow(10px 5px 5px #72370F);
 }
 
 .menu {
@@ -64,8 +104,8 @@ body {
     text-decoration: none;
     font-size: 1.25vw;
     color: #ffffff;
-    padding: 0.5em 0.5em;
-    margin: 0.2em 0;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    margin: 0.4em 0 0.4em 0;
     background-color: #EA7221;
     border: 0.2em solid #72370F;
     border-radius: 2.6041666666666665vw;
@@ -73,6 +113,7 @@ body {
     text-align: center;
     font-family: "Monserrat-Semibold";
     cursor: pointer;
+    transition: 0.2s;
 }
 
 .menu span {
@@ -135,14 +176,11 @@ body {
     font-family: "Monserrat-SemiBold";
     position: relative;
     left: -30%;
-    margin: 2.5% 0 0 0 ;
-}
-
-.overlay#newGame .panel .form {
-    display: flex;
-    flex-direction: column;
+    margin: 2.5% 0 0 0;
     align-items: center;
     justify-content: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .overlay#newGame .panel .form input {
@@ -161,25 +199,20 @@ body {
     border: 1.5px solid red;
 }
 
-.overlay#newGame .panel .form .buttons {
+.overlay#newGame .panel .form .newGameButtons a {  
+    text-decoration: none;
+}
+
+.overlay#newGame .panel .form .newGameButtons {  
     display: flex;
-    flex-direction: row;
-    margin-top: 5%;
+    align-items: center;
+    justify-content: center;
 }
 
-.overlay#newGame .panel .form .buttons img {
-    margin: 0 10px;
-}
-
-.overlay#newGame .panel .form .buttons #btn-ok {
-    height: 5.159958720330238vh;
-    cursor: pointer;
-}
-
-.overlay#newGame .panel .form .buttons #btn-cancel {
-    height: 5.159958720330238vh;
-    width: auto;
-    cursor: pointer;
+.overlay#newGame .panel .form .newGameButtons .button {
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    margin: 1em 1em 0 1em;
+    width: 100%;
 }
 
 /* #endregion */
@@ -255,28 +288,33 @@ body {
     position: relative;
 }
 
-.overlay#howToPlay .panel .buttons img {
+.overlay#howToPlay .panel .howToPlayButtons .buttons img {
     height: 5.159958720330238vh;
     width: auto;
     cursor: pointer;
     position: absolute;
+    transition: 0.2s;
 }
 
-.overlay#howToPlay .panel .buttons #btn-exit {
+.overlay#howToPlay .panel .howToPlayButtons .buttons #btn-exit {
     position: absolute;
     top: 18%;
     left: 65.6%;
+    transition: 0.2s;
 }
 
-.overlay#howToPlay .panel .buttons #previous {
+.overlay#howToPlay .panel .howToPlayButtons .buttons #previous {
     padding-right: 0.2604166666666667vw;
     top: 76.5%;
     left: 47%;
+    transition: 0.2s;
+
 }
 
-.overlay#howToPlay .panel .buttons #next {
+.overlay#howToPlay .panel .howToPlayButtons .buttons #next {
     padding-left: 0.2604166666666667vw;
     top: 76.5%;
+    transition: 0.2s;
 }
 
 /* #endregion */
