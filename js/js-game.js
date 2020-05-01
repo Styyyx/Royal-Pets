@@ -205,9 +205,7 @@ $("#btnHowToPlay").on("click", function () {
         }
     });
 });
-
 //#endregion
-
 
 //#region New Game Interface
 
@@ -328,7 +326,7 @@ $("*").attr('unselectable', 'on')
  *
  * 	this is fired every time a cell/piece is clicked
  */
-$("[empty]").on("click", function () {
+$("[empty]").on("click", function () {	
 	let thisPlayer = $(this).attr("player"),
 		thisPiece = $(this).attr("piece"),
 		thisRow = $(this).attr("row"),
@@ -364,7 +362,6 @@ $("[empty]").on("click", function () {
 				data = { player: thisPlayer, piece: thisPiece, row: thisRow, column: thisColumn };
 				ShowMoves();
 			}
-
 		}
 	}
 	//When selecting cell other than own pieces
@@ -425,7 +422,7 @@ function LoadPieces() {
 			player = $(this).attr("player");
 
 		$(this)
-			.css("background-image", "url(\"../res/" + player + "Pieces/" + player + "_" + piece + ".png\"").css("background-size", "80% 90%");
+			.css("background-image", "url(\"../res/" + player + "Pieces/" + player + "_" + piece + ".png\"").css("background-size", "70% 90%");
 	});
 }
 
@@ -911,7 +908,7 @@ function MovePiece(thisRow, thisColumn) {
 		.attr("piece", data.piece)
 		.attr("player", data.player)
 		.css("background-image", "url(\"../res/" + data.player + "Pieces/" + data.player + "_" + data.piece + ".png\"")
-		.css("background-size", "80% 90%")
+		.css("background-size", "70% 90%")
 		.css("background-repeat", "no-repeat")
 		.css("background-position", "center");
 }
@@ -1745,11 +1742,11 @@ $(".overlay#pawnPromotion img.option").on("click", function () {
 	if (turnPlayer == "dog") {
 		$("[row='1'][piece='pawn']").attr("piece", pieceSelected)
 			.css("background-image", "url(\"../res/catPieces/cat_" + pieceSelected + ".png\"")
-			.css("background-size", "80% 90%");
+			.css("background-size", "70% 90%");
 	} else {
 		$("[row='8'][piece='pawn']").attr("piece", pieceSelected)
 			.css("background-image", "url(\"../res/dogPieces/dog_" + pieceSelected + ".png\"")
-			.css("background-size", "80% 90%");
+			.css("background-size", "70% 90%");
 	}
 	$(".overlay#pawnPromotion").css("display", "none");
 	TakeSnapShot();
