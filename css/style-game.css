@@ -29,6 +29,7 @@ body {
 }
 
 * {
+    cursor: url(../res/custom_default.cur), pointer;
     box-sizing: border-box;
 }
 /* #endregion */
@@ -66,7 +67,7 @@ body {
   font-family: "Monserrat-SemiBold";
   color: #FFF;
   display: block;
-  cursor: pointer;
+  cursor: url(../res/custom_pointer.cur), pointer;
   transition: 0.2s;
 }
 
@@ -302,17 +303,16 @@ body {
 
 .overlay#newGame .panel .form .buttons img {
     margin: 0 10px;
+    cursor: url(../res/custom_pointer.cur), pointer;
 }
 
 .overlay#newGame .panel .form .buttons #btn-ok {
     height: 5.159958720330238vh;
-    cursor: pointer;
 }
 
 .overlay#newGame .panel .form .buttons #btn-cancel {
     height: 5.159958720330238vh;
     width: auto;
-    cursor: pointer;
 }
 
 /* #endregion */
@@ -391,7 +391,7 @@ body {
 .overlay#howToPlay .panel .buttons img {
     height: 5.159958720330238vh;
     width: auto;
-    cursor: pointer;
+    cursor: url(../res/custom_pointer.cur), pointer;
     position: absolute;
 }
 
