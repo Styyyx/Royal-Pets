@@ -50,6 +50,12 @@
     cursor: url(../res/custom_grab.cur), auto;
 }
 
+.overlay#pawnPromotion .panel img:hover {
+    height: 12.38390092879257vh;
+    width: 4.6875vw;
+    cursor: url(../res/custom_pointer.cur), pointer;
+}
+
 /* #endregion */
 
 /* #region Base */
@@ -75,7 +81,7 @@ body {
 
 /* #region Screen Layout */
 .burger {
-    height: 10vh;
+    height: 7.223942208462332vh;
     width: auto;
     position: absolute;
     top: 0;
@@ -118,13 +124,13 @@ body {
     position: relative;
     background-color: #FFE3CF;
     height: 100%;
-    max-height: 60px;
-    min-width: 200px;
+    max-height: 6.191950464396285vh;
+    min-width: 10.416666666666666vw;
     position: absolute;
     bottom: 10%;
     left: 5%;
-    border-radius: 50px;
-    border: 5px solid #7A0606;
+    border-radius: 2.6041666666666665vw;
+    border: 0.2604166666666667vw solid #7A0606;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -134,16 +140,16 @@ body {
 
 #turn img {
     right: -10%;
-    height: 40px;
-    width: 40px;
-    margin: 0 25px;
+    height: 4.12796697626419vh;
+    width: 2.0833333333333335vw;
+    margin: 0 1.3020833333333333vw;
     cursor: url(../res/custom_pointer.cur), pointer;
 }
 
 #turn span {
     font-size: 2em;
     font-family: "Monserrat-SemiBold";
-    margin: 0 25px 0 0;
+    margin: 0 1.3020833333333333vw 0 0;
     cursor: url(../res/custom_pointer.cur), pointer;
 }
 /* #endregion */
@@ -173,7 +179,7 @@ body {
     position: absolute;
     display: flex;
     flex-direction: row;
-    top: -50px;
+    top: -65px;
     font-family: "Monserrat-Regular";
 }
 
@@ -190,7 +196,7 @@ body {
     position: absolute;
     display: flex;
     flex-direction: column;
-    left: -50px;
+    left: -65px;
     font-family: "Monserrat-Regular";
 }
 
@@ -204,8 +210,8 @@ body {
 }
 
 .board {
-    height: 84.6233230134159vh;
-    width: 42.708333333333336vw;
+    height: 83.59133126934985vh;
+    width: 42.1875vw;
     position: absolute;
     left: 30%;
     top: 10%;
@@ -213,8 +219,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 5px solid #7A0606;
-    outline: 5px solid #500303;
+    border: 0.5208333333333334vw solid #7A0606;
+    outline: 0.5208333333333334vw solid #500303;
 }
 
 .board .row {
@@ -231,7 +237,7 @@ body {
     justify-content: center;
     background-repeat: no-repeat;
     background-position: center;
-    border: 5px solid rgba(255, 255, 255, 0.5);
+    border: 0.2604166666666667vw solid rgba(255, 255, 255, 0.5);
 }
 
 .board .cell-gray {
@@ -249,7 +255,7 @@ body {
     top: 30vh;
     left: 1vw;
     border: solid 0.5em #7A0606;
-    border-radius: 35px;
+    border-radius: 1.8229166666666667vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -267,17 +273,17 @@ body {
 
 .history ul::-webkit-scrollbar {
     z-index: -2;
-    width: 15px;
+    width: 0.78125vw;
     height: 90%;
     background-color: #7A0606;
-    border-radius: 10px;
-    border-top-right-radius: 10px;
+    border-radius: 0.5208333333333334vw;
+    border-top-right-radius: 0.5208333333333334vw;
     cursor: url(../res/custom_pointer.cur), pointer;
 }
 
 .history ul::-webkit-scrollbar-thumb {
     background-color: #EA7221;
-    border-radius: 10px;
+    border-radius: 0.5208333333333334vw;
     cursor: url(../res/custom_pointer.cur), pointer;
 }
 
@@ -319,8 +325,8 @@ body {
     z-index: 2;
     height: 50%;
     width: 40%;
-    border: 15px solid #EB8313;
-    border-radius: 30px;
+    border: 0.78125vw solid #EB8313;
+    border-radius: 1.5625vw;
     background-color: #FFD3B5;
     display: flex;
     align-items: center;
@@ -343,16 +349,16 @@ body {
     width: 100%;
     height: 4.643962848297214vh;
     font-size: 1.6666666666666667vw;
-    margin: 10px 0;
+    margin: 0.5208333333333334vw 0;
     font-family: "Monserrat-Regular";
     background-color: #FFE3CF;
     border-style: inset;
-    border-radius: 20px;
-    padding: 12px 20px;
+    border-radius: 1.0416666666666667vw;
+    padding: 0.625vw 1.0416666666666667vw;
 }
 
 .overlay#newGame .panel .form input.error {
-    border: 1.5px solid red;
+    border: 0.078125vw solid red;
 }
 
 .overlay#newGame .panel .form .buttons {
@@ -381,8 +387,8 @@ body {
     z-index: 2;
     height: 70%;
     width: 40%;
-    border: 15px solid #EB8313;
-    border-radius: 30px;
+    border: 0.78125vw solid #EB8313;
+    border-radius: 1.5625vw;
     background-color: #FFD3B5;
     display: flex;
     align-items: center;
@@ -473,7 +479,6 @@ body {
     top: 76.5%;
     left: 47%;
     transition: 0.2s;
-
 }
 
 .overlay#howToPlay .panel .howToPlayButtons .buttons #next {
@@ -497,6 +502,7 @@ body {
 .overlay#pawnPromotion .panel .title {
     font-size: 1.5em;
     font-family: "Monserrat-SemiBold";
+    color: #FFFFFF;
     width: auto;
     margin-bottom: 10%;
 }
@@ -511,22 +517,22 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100px;
-    width: 100px;
-}
-
-.overlay#pawnPromotion .panel div img {
-    height: 50px;
-    width: 50px;
-    transition: all 0.25s;
+    height: 15.479876160990711vh;
+    width: 7.8125vw;
     margin: 10px;
 }
 
-.overlay#pawnPromotion .panel img:hover {
-    height: 70px;
-    width: 70px;
+.overlay#pawnPromotion .panel .options span {
+    font-family: "Monserrat-Regular";
+    color: #FFFFFF;
 }
 
+.overlay#pawnPromotion .panel div img {
+    height: 10.319917440660475vh;
+    width: 3.6458333333333335vw;
+    transition: all 0.2s;
+    margin: 0.5208333333333334vw;
+}
 /* #endregion */
 
 img#btnUndo {
@@ -543,7 +549,7 @@ img#btnUndo {
     height: 10vh;
     width: auto;
     position: absolute;
-    bottom: 50px;
-    right: 50px;
+    bottom: 2.6041666666666665vw;
+    right: 2.6041666666666665vw;
     cursor: url(../res/custom_pointer.cur), pointer;
 }
