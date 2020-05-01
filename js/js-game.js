@@ -289,12 +289,12 @@ $(".overlay#newGame #btn-cancel").on("click", function () {
 //#endregion
 
 //End Turn Button (for debugging)
-$("#turn").on("click", function () {
-	EndTurn();
-	ReloadBoard();
-}).on("mouseover", function () {
-	$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
-});
+// $("#turn").on("click", function () {
+// 	EndTurn();
+// 	ReloadBoard();
+// }).on("mouseover", function () {
+// 	$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
+// });
 
 //Step Back in boardHistory
 $("#btnUndo").on("click", function () {

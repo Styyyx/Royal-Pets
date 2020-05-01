@@ -129,7 +129,6 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    cursor: url(../res/custom_pointer.cur), pointer;
 }
 
 #turn img {
@@ -137,14 +136,12 @@ body {
     height: 4.12796697626419vh;
     width: 2.0833333333333335vw;
     margin: 0 1.3020833333333333vw;
-    cursor: url(../res/custom_pointer.cur), pointer;
 }
 
 #turn span {
     font-size: 2em;
     font-family: "Monserrat-SemiBold";
     margin: 0 1.3020833333333333vw 0 0;
-    cursor: url(../res/custom_pointer.cur), pointer;
 }
 /* #endregion */
 
