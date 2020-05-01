@@ -111,6 +111,10 @@ body {
     transition: 0.2s;
 }
 
+.button div {
+    cursor: pointer;
+}
+
 .menu span {
     font-size: 2.0833333333333335vw;
     margin: 2.5%;
@@ -277,7 +281,13 @@ body {
     margin: 0 0 0.5208333333333334vw 0;
 }
 
-.overlay#howToPlay .panel .slide .castling .en-passant img {
+.overlay#howToPlay .panel .slide .castling img {
+    height: 22.703818369453046vh;
+    width: auto;
+    position: relative;
+}
+
+.overlay#howToPlay .panel .slide .en-passant img {
     height: 22.703818369453046vh;
     width: auto;
     position: relative;
