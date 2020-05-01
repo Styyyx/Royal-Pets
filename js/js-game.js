@@ -29,6 +29,9 @@ $(window).bind("beforeunload", function () {
 			row: $(this).attr("row"),
 			column: $(this).attr("column")
 		};
+		if ($(this).attr("castle") == "true") {
+			cell.castle = "true";
+		}
 
 		previousState.push(cell);
 	});
@@ -56,6 +59,9 @@ $(window).bind("load", function () {
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "false");
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
+			if (cell.castle == "true") {
+				$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("castle", "true");
+			}
 		}
 	}
 
@@ -92,12 +98,12 @@ $(document).on("keydown", function (e) {
 	if (e.key == "Enter" && $("#newGame").css("display") != "none") {
 		$("#btn-ok").click();
 	}
-    if (e.key == "Escape" && $("#newGame").css("display") != "none") {
-        $("#btn-cancel").click();
-    }
-    if (e.key == "Escape" && $("#howToPlay").css("display") != "none") {
-        $("#btn-exit").click();
-    }
+	if (e.key == "Escape" && $("#newGame").css("display") != "none") {
+		$("#btn-cancel").click();
+	}
+	if (e.key == "Escape" && $("#howToPlay").css("display") != "none") {
+		$("#btn-exit").click();
+	}
 });
 
 //#region Randomize First Player
@@ -155,55 +161,55 @@ $("#btnHome").on("click", function () {
 
 // How to Play Button Click event
 $("#btnHowToPlay").on("click", function () {
-    const slides = $('.slide');
-    var activeSlide = 0;
+	const slides = $('.slide');
+	var activeSlide = 0;
 
-    showSlide(activeSlide);
+	showSlide(activeSlide);
 
-    function showSlide(n) {
-        $(slides[activeSlide]).removeClass('active-slide');
-        $(slides[n]).addClass('active-slide');
-        activeSlide = n;
-        if(activeSlide === 0){
-            $('#previous').css('display', 'none');
-        }
-        else{
-            $('#previous').css('display', 'flex');
-        }
-        if(activeSlide === slides.length-1){
-            $('#next').css('display', 'none');
-        }
-        else{
-            $('#next').css('display', 'flex');
-        }
-    }
+	function showSlide(n) {
+		$(slides[activeSlide]).removeClass('active-slide');
+		$(slides[n]).addClass('active-slide');
+		activeSlide = n;
+		if (activeSlide === 0) {
+			$('#previous').css('display', 'none');
+		}
+		else {
+			$('#previous').css('display', 'flex');
+		}
+		if (activeSlide === slides.length - 1) {
+			$('#next').css('display', 'none');
+		}
+		else {
+			$('#next').css('display', 'flex');
+		}
+	}
 
-    $('#previous').on('click', function (){
-        showSlide(activeSlide - 1);
-    });
-    $('#next').on('click', function (){
-        showSlide(activeSlide + 1);
-    });
-    $('#btn-exit').on('click', function(){
-        showSlide(0);
-    });
+	$('#previous').on('click', function () {
+		showSlide(activeSlide - 1);
+	});
+	$('#next').on('click', function () {
+		showSlide(activeSlide + 1);
+	});
+	$('#btn-exit').on('click', function () {
+		showSlide(0);
+	});
 
-    $(document).on('keydown', function (event) {
-        if (event.which == 37) {
-            if(activeSlide === 0){
-                $('#previous').css('display', 'none');
-            } else {
-                $('#previous').click();
-            }
-        }
-        if (event.which == 39) {
-            if(activeSlide === slides.length-1){
-                $('#next').click(false);
-            } else {
-                $('#next').click();
-            }
-        }
-    });
+	$(document).on('keydown', function (event) {
+		if (event.which == 37) {
+			if (activeSlide === 0) {
+				$('#previous').css('display', 'none');
+			} else {
+				$('#previous').click();
+			}
+		}
+		if (event.which == 39) {
+			if (activeSlide === slides.length - 1) {
+				$('#next').click(false);
+			} else {
+				$('#next').click();
+			}
+		}
+	});
 });
 //#endregion
 
@@ -258,6 +264,9 @@ $(".overlay#newGame #btn-ok").on("click", function () {
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "false");
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
+			if (cell.castle == "true") {
+				$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("castle", "true");
+			}
 		}
 
 		this.logHistory = [];
@@ -326,7 +335,7 @@ $("*").attr('unselectable', 'on')
  *
  * 	this is fired every time a cell/piece is clicked
  */
-$("[empty]").on("click", function () {	
+$("[empty]").on("click", function () {
 	let thisPlayer = $(this).attr("player"),
 		thisPiece = $(this).attr("piece"),
 		thisRow = $(this).attr("row"),
@@ -375,6 +384,9 @@ $("[empty]").on("click", function () {
 			turnCounter += 1;
 			LogMove(thisRow, thisColumn, data.row, data.column, "eat");
 			MovePiece(thisRow, thisColumn);
+			if (data.piece == "rook" || data.piece == "king") {
+				$("[row=\'" + data.row + "\'][column=\'" + data.column + "\']").removeAttr("castle");
+			}
 			CheckforPromotion();
 			TakeSnapShot();
 			Debug("EAT", thisPlayer, thisPiece, thisRow, thisColumn);
@@ -390,6 +402,9 @@ $("[empty]").on("click", function () {
 			turnCounter += 1;
 			LogMove(thisRow, thisColumn, data.row, data.column);
 			MovePiece(thisRow, thisColumn);
+			if (data.piece == "rook" || data.piece == "king") {
+				$("[row=\'" + data.row + "\'][column=\'" + data.column + "\']").removeAttr("castle");
+			}
 			CheckforPromotion();
 			TakeSnapShot();
 			Debug("MOVE", thisPlayer, thisPiece, thisRow, thisColumn);
@@ -649,9 +664,18 @@ function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece 
 	} else if (thisPiece == "king") {
 		let xDist = Math.abs(targetColumn - thisColumn);
 		let yDist = Math.abs(targetRow - thisRow);
-		if (($("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("check") != "true") &&
-			(xDist == 1 || xDist == 0) && (yDist == 1 || yDist == 0)) {
-			return true;
+		if ($("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("check") != "true") {
+			if ((xDist == 1 || xDist == 0) && (yDist == 1 || yDist == 0)) {
+				return true;
+			} else if (yDist == 0) {
+				if (targetColumn == "7" && CheckCastleKingSide(thisPlayer, thisRow)) {
+					MovePiece(thisRow, "6", thisRow, "8", thisPlayer, "rook");
+					return true;
+				} else if (targetColumn == "3" && CheckCastleQueenSide(thisPlayer, thisRow)) {
+					MovePiece(thisRow, "4", thisRow, "1", thisPlayer, "rook");
+					return true;
+				}
+			}
 		} else { return false; }
 	}
 }
@@ -887,6 +911,14 @@ function ShowMoves() {
 				}
 			}
 		});
+
+		if (CheckCastleKingSide(data.player, data.row)) {
+			$("[row=\'" + data.row + "\'][column='7']").css("background-color", "blue");
+		}
+		if (CheckCastleQueenSide(data.player, data.row)) {
+			$("[row=\'" + data.row + "\'][column='3']").css("background-color", "blue");
+		}
+
 	}
 	//Set red/blue cell's cursor to pointer
 	$("[empty]").each(function () {
@@ -896,18 +928,27 @@ function ShowMoves() {
 	});
 }
 
-function MovePiece(thisRow, thisColumn) {
-	$("[row = \'" + data.row + "\'][column = \'" + data.column + "\']")
+/** Moves piece to target row and column
+ * 
+ * @param {*} targetRow 
+ * @param {*} targetColumn 
+ * @param {*} thisRow [Optional] Default to data.row
+ * @param {*} thisColumn [Optional] Default to data.column
+ * @param {*} thisPlayer [Optional] Default to data.player
+ * @param {*} thisPiece [Optional] Default to data.piece
+ */
+function MovePiece(targetRow, targetColumn, thisRow = data.row, thisColumn = data.column, thisPlayer = data.player, thisPiece = data.piece) {
+	$("[row = \'" + thisRow + "\'][column = \'" + thisColumn + "\']")
 		.attr("empty", "true")
 		.removeAttr("piece")
 		.removeAttr("player")
 		.css("background-image", "")
 		.css("background-size", "");
-	$("[row = \'" + thisRow + "\'][column = \'" + thisColumn + "\']")
+	$("[row = \'" + targetRow + "\'][column = \'" + targetColumn + "\']")
 		.attr("empty", "false")
-		.attr("piece", data.piece)
-		.attr("player", data.player)
-		.css("background-image", "url(\"../res/" + data.player + "Pieces/" + data.player + "_" + data.piece + ".png\"")
+		.attr("piece", thisPiece)
+		.attr("player", thisPlayer)
+		.css("background-image", "url(\"../res/" + thisPlayer + "Pieces/" + thisPlayer + "_" + thisPiece + ".png\"")
 		.css("background-size", "70% 90%")
 		.css("background-repeat", "no-repeat")
 		.css("background-position", "center");
@@ -1260,8 +1301,8 @@ function CheckforCheck() {
 		//#region Checkmate
 		if ($(this).attr("check") == "true" && moves == 0) {
 			CheckMate();
-			$("[checker='true']").css("background-color","red");
-			$("[check='true'][piece='king']").css("background-color","pink");
+			$("[checker='true']").css("background-color", "red");
+			$("[check='true'][piece='king']").css("background-color", "pink");
 		}
 
 		//#endregion
@@ -1709,6 +1750,8 @@ function IsCheck(thisRow, thisColumn, thisPlayer) {
 			}
 		}
 	});
+
+	return false;
 }
 
 function CheckMate() {
@@ -1754,8 +1797,32 @@ $(".overlay#pawnPromotion img.option").on("click", function () {
 });
 //#endregion
 
+//#region Castling
+function CheckCastleKingSide(thisPlayer, thisRow) {
+	// console.log("row = " + thisRow + "\tplayer = " + thisPlayer);
+	let thisKing = $("[piece='king'][player=\'" + thisPlayer + "\']"),
+		rightRook = $("[row=\'" + thisRow + "\'][column='8']");
+	if (thisKing.attr("castle") == "true" && thisKing.attr("check") != "true" && rightRook.attr("castle") == "true" &&
+		!(IsCheck(thisRow, "6", thisPlayer)) && $("[row=\'" + thisRow + "\'][column='6']").attr("empty") == "true" &&
+		!(IsCheck(thisRow, "7", thisPlayer)) && $("[row=\'" + thisRow + "\'][column='7']").attr("empty") == "true") {
+		return true;
+	} else { return false; }
+}
+
+function CheckCastleQueenSide(thisPlayer, thisRow) {
+	let thisKing = $("[piece='king'][player=\'" + thisPlayer + "\']"),
+		leftRook = $("[row=\'" + thisRow + "\'][column='1']");
+	if (thisKing.attr("castle") == "true" && thisKing.attr("check") != "true" && leftRook.attr("castle") == "true" &&
+		!(IsCheck(thisRow, "4", thisPlayer)) && $("[row=\'" + thisRow + "\'][column='4']").attr("empty") == "true" &&
+		!(IsCheck(thisRow, "3", thisPlayer)) && $("[row=\'" + thisRow + "\'][column='3']").attr("empty") == "true" &&
+		$("[row=\'" + thisRow + "\'][column='3']").attr("empty") == "true") {
+		return true;
+	} else { return false; }
+}
+//#endregion
+
 //#region EndGame
-$(".overlay#endGame img#btnOk").on("click", function(){
+$(".overlay#endGame img#btnOk").on("click", function () {
 	if ($(".overlay#endGame").css("display") != "none") {
 		location.replace("./home.html");
 	}

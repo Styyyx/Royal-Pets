@@ -44,14 +44,14 @@ $(document).ready(function () {
             window.sessionStorage.setItem("player1", namePlayer1);
             window.sessionStorage.setItem("player2", namePlayer2);
             let initialState = [
-                { piece: "rook", player: "dog", row: "1", column: "1" },
+                { piece: "rook", player: "dog", row: "1", column: "1", castle: "true"},
                 { piece: "bishop", player: "dog", row: "1", column: "2" },
                 { piece: "knight", player: "dog", row: "1", column: "3" },
                 { piece: "queen", player: "dog", row: "1", column: "4" },
-                { piece: "king", player: "dog", row: "1", column: "5" },
+                { piece: "king", player: "dog", row: "1", column: "5", castle: "true"},
                 { piece: "knight", player: "dog", row: "1", column: "6" },
                 { piece: "bishop", player: "dog", row: "1", column: "7" },
-                { piece: "rook", player: "dog", row: "1", column: "8" },
+                { piece: "rook", player: "dog", row: "1", column: "8", castle: "true"},
 
                 { piece: "pawn", player: "dog", row: "2", column: "1" },
                 { piece: "pawn", player: "dog", row: "2", column: "2" },
@@ -71,14 +71,14 @@ $(document).ready(function () {
                 { piece: "pawn", player: "cat", row: "7", column: "7" },
                 { piece: "pawn", player: "cat", row: "7", column: "8" },
 
-                { piece: "rook", player: "cat", row: "8", column: "1" },
+                { piece: "rook", player: "cat", row: "8", column: "1", castle: "true"},
                 { piece: "bishop", player: "cat", row: "8", column: "2" },
                 { piece: "knight", player: "cat", row: "8", column: "3" },
                 { piece: "queen", player: "cat", row: "8", column: "4" },
-                { piece: "king", player: "cat", row: "8", column: "5" },
+                { piece: "king", player: "cat", row: "8", column: "5", castle: "true"},
                 { piece: "knight", player: "cat", row: "8", column: "6" },
                 { piece: "bishop", player: "cat", row: "8", column: "7" },
-                { piece: "rook", player: "cat", row: "8", column: "8" },
+                { piece: "rook", player: "cat", row: "8", column: "8", castle: "true"},
             ];
             window.sessionStorage.setItem("previousState", JSON.stringify(initialState));
             window.sessionStorage.setItem("initialState", JSON.stringify(initialState));
