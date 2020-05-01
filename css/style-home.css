@@ -66,14 +66,9 @@ body {
 
 * {
     box-sizing: border-box;
-    cursor: url("../res/custom_pointer.png"), auto;
-    /* cursor: url("../res/custom_pointer_grab.png"), grab; */
+    cursor: url("../res/custom_default.png"), auto;
 }
 
-cursor {
-    height: 20px;
-    width: 20px;
-}
 /* #endregion */
 
 /* #region Initial */
