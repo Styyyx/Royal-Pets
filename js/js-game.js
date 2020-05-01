@@ -281,13 +281,13 @@ $(".overlay#newGame #btn-cancel").on("click", function () {
 });
 //#endregion
 
-//End Turn Button (for debugging)
-$("#turn").on("click", function () {
-	EndTurn();
-	ReloadBoard();
-}).on("mouseover", function () {
-	$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
-});
+// //End Turn Button (for debugging)
+// $("#turn").on("click", function () {
+// 	EndTurn();
+// 	ReloadBoard();
+// }).on("mouseover", function () {
+// 	$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
+// });
 
 //Step Back in boardHistory
 $("#btnUndo").on("click", function () {
@@ -443,7 +443,7 @@ function ReloadBoard() {
 		if ($(this).attr("check") == "true") {
 			$(this).css("background-color", "violet");
 			if ($(this).attr("player") == turnPlayer) {
-				$(this).css("cursor", "url(../res/custom_p.cur), pointer");
+				$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
 			}
 			$("[player=\'" + turnPlayer + "\'][canMove=\'true\'").each(function () {
 				$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
@@ -894,7 +894,7 @@ function ShowMoves() {
 	//Set red/blue cell's cursor to pointer
 	$("[empty]").each(function () {
 		if ($(this).css("background-color") == "rgb(0, 0, 255)" || $(this).css("background-color") == "rgb(255, 0, 0)") {
-			$(this).css("cursor", "pointer");
+			$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
 		}
 	});
 }
@@ -1713,6 +1713,7 @@ function IsCheck(thisRow, thisColumn, thisPlayer) {
 		}
 	});
 }
+//#endregion
 
 function CheckMate() {
 	alert(usernames[turnPlayer] + " WINS");
@@ -1755,6 +1756,10 @@ $(".overlay#pawnPromotion img.option").on("click", function () {
 	TakeSnapShot();
 	setTimeout(CheckforCheck(), 500);
 });
+//#endregion
+
+//#region Castling
+
 //#endregion
 
 //#region EndGame
