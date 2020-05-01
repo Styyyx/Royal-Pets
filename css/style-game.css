@@ -200,6 +200,16 @@ body {
     font-size: 2em;
 }
 
+@media only screen and (max-width: 1366px) {
+    .rowLegend {
+        left: -45px;
+    }
+
+    .columnLegend {
+        top: -50px;
+    }
+}
+
 .board {
     height: 83.59133126934985vh;
     width: 42.1875vw;
