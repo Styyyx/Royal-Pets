@@ -72,6 +72,7 @@ body {
 }
 
 * {
+    cursor: url(../res/custom_default.cur), pointer;
     box-sizing: border-box;
     cursor: url(../res/custom_default.cur), auto;
 }
@@ -110,6 +111,7 @@ body {
   font-family: "Monserrat-SemiBold";
   color: #FFF;
   display: block;
+  cursor: url(../res/custom_pointer.cur), pointer;
   transition: 0.2s;
 }
 
@@ -359,20 +361,24 @@ body {
     border: 0.078125vw solid red;
 }
 
-.overlay#newGame .panel .form .newGameButtons a {  
-    text-decoration: none;
-}
-
-.overlay#newGame .panel .form .newGameButtons {  
+.overlay#newGame .panel .form .buttons {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
+    margin-top: 5%;
 }
 
-.overlay#newGame .panel .form .newGameButtons .button {
-    padding: 0.5em 0.5em 0.5em 0.5em;
-    margin: 1em 1em 0 1em;
-    width: 100%;
+.overlay#newGame .panel .form .buttons img {
+    margin: 0 10px;
+    cursor: url(../res/custom_pointer.cur), pointer;
+}
+
+.overlay#newGame .panel .form .buttons #btn-ok {
+    height: 5.159958720330238vh;
+}
+
+.overlay#newGame .panel .form .buttons #btn-cancel {
+    height: 5.159958720330238vh;
+    width: auto;
 }
 /* #endregion */
 
