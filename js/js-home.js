@@ -137,9 +137,4 @@ $(document).ready(function () {
             }
         }
     });
-
-    // $("#btn-exit").click(function () {
-    //     $("#input-player1").val("");
-    //     $("#input-player2").val("");
-    // });
 });
