@@ -289,12 +289,12 @@ $(".overlay#newGame #btn-cancel").on("click", function () {
 //#endregion
 
 //End Turn Button (for debugging)
-$("#turn").on("click", function () {
-	EndTurn();
-	ReloadBoard();
-}).on("mouseover", function () {
-	$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
-});
+// $("#turn").on("click", function () {
+// 	EndTurn();
+// 	ReloadBoard();
+// }).on("mouseover", function () {
+// 	$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
+// });
 
 //Step Back in boardHistory
 $("#btnUndo").on("click", function () {
@@ -303,6 +303,35 @@ $("#btnUndo").on("click", function () {
 		console.log("Turn Counter = " + turnCounter);
 
 		ClearBoard();
+
+		/** [PROBLEM]
+		 * 
+		 * 	Description: king||rook piece when moved will lose castle viability,
+		 * 		but if undo is executed, king||rook piece does not regain castle viability.
+		 * 
+		 * 	Comment: This fixes it but at the same time, theoretically if a king||rook without castle viability,
+		 * 	 	is moved to its initial position, then moved, then undo, it will gain castle viability.
+		 * 
+		 */
+		// let lastMove = logHistory[logHistory.length - 1];
+		// if (lastMove.match(/>>/) != null) {
+		// 	let lastMoveFrom = lastMove.match(/\w\d(?=\s>>)/),
+		// 		lastMoveTo = lastMove.match(/(?<=>>\s)\w\d/),
+		// 		lastMovePlayer = lastMove.match(/(dog|cat)/),
+		// 		lastMovePiece = lastMove.match(/(?<=-)\w+/);
+
+		// 	if (lastMovePiece == "king") {
+		// 		if (lastMovePlayer == "dog" && (lastMoveFrom == "e1" &&
+		// 			(lastMoveTo == "f1" || lastMoveTo == "g1" || lastMoveTo == "d1" || lastMoveTo == "c1" ||
+		// 				lastMoveTo == "d2" || lastMoveTo == "e2" || lastMoveTo == "f2"))) {
+		// 			$("[row='1'][column='5']").attr("castle", "true");
+		// 		} else if (lastMovePlayer == "cat" && (lastMoveFrom == "e8" &&
+		// 			(lastMoveTo == "f8" || lastMoveTo == "g8" || lastMoveTo == "d8" || lastMoveTo == "c8" ||
+		// 				lastMoveTo == "d7" || lastMoveTo == "e7" || lastMoveTo == "f7"))) {
+		// 			$("[row='8'][column='5']").attr("castle", "true");
+		// 		}
+		// 	}
+		// }
 
 		boardHistory[turnCounter].forEach(function (cell) {
 			thisCell = $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']");
@@ -321,9 +350,6 @@ $("#btnUndo").on("click", function () {
 	}
 });
 
-$(".overlay#endGame img").on("click", function () {
-
-});
 //#endregion
 
 // Prevents highlighting/selecting elements on drag
@@ -1896,11 +1922,12 @@ function LogMove(targetRow, targetColumn, thisRow, thisColumn, action = "move") 
 			" X " + columnLegend[parseInt(pieceEaten.attr("column")) - 1] + pieceEaten.attr("row") +
 			"] " + pieceEaten.attr("player") + "-" + pieceEaten.attr("piece");
 		$(".history ul").append($("<li></li>").text(text));
+		logHistory.push(text);
 	} else {
 		let pieceMoved = $("[row=\'" + thisRow + "\'][column=\'" + thisColumn + "\']");
 		let text = "#" + turnCounter + " " + pieceMoved.attr("player") + "-" + pieceMoved.attr("piece") + " [" +
 			columnLegend[parseInt(pieceMoved.attr("column") - 1)] + pieceMoved.attr("row") +
-			" >> " + columnLegend[parseInt(targetColumn) - 1] + targetRow + " ]";
+			" >> " + columnLegend[parseInt(targetColumn) - 1] + targetRow + "]";
 		$(".history ul").append($("<li></li>").text(text))
 			//This animate function is used so that when the element is added, it will automatically scroll to bottom
 			.animate({ scrollTop: $(this).height() }, 100);
