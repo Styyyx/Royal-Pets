@@ -31,12 +31,9 @@
 }
 
 .overlay#newGame .panel .form .newGameButtons .button:active {
-    background-color: #D35400;
+    background-color: #9C4003;
 }
 
-/* .overlay#howToPlay .panel .howToPlayButtons .buttons:hover {
-    transform: scale(1.1);
-} */
 .overlay#howToPlay .panel .howToPlayButtons .buttons #btn-exit:hover{
     transform: scale(1.1, 1.1);
 }

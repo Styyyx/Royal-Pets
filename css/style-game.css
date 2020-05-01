@@ -15,6 +15,43 @@
 }
 /* #endregion */
 
+/* #region Animations */
+.button:hover {
+    transform: scale(1.1, 1.1);
+    background-color: #DE5800;
+}
+
+.button:active {
+    background-color: #D35400;
+}
+
+.overlay#newGame .panel .form .newGameButtons .button:hover {
+    transform: scale(1.1, 1.1);
+    background-color: #DE5800;
+}
+
+.overlay#newGame .panel .form .newGameButtons .button:active {
+    background-color: #9C4003;
+}
+
+.overlay#howToPlay .panel .howToPlayButtons .buttons #btn-exit:hover{
+    transform: scale(1.1, 1.1);
+}
+
+.overlay#howToPlay .panel .howToPlayButtons .buttons #previous:hover{
+    transform: scale(1.1, 1.1);
+}
+
+.overlay#howToPlay .panel .howToPlayButtons .buttons #next:hover{
+    transform: scale(1.1, 1.1);
+}
+
+.board .cell:hover {
+    cursor: url(../res/custom_grab.cur), auto;
+}
+
+/* #endregion */
+
 /* #region Base */
 html, body {
     height: 100%;
@@ -25,12 +62,14 @@ html, body {
 }
 
 body {
-    background-color: #FFDD81;
+    background-color: #FFD3B5;
 }
 
 * {
     box-sizing: border-box;
+    cursor: url(../res/custom_default.cur), auto;
 }
+
 /* #endregion */
 
 /* #region Screen Layout */
@@ -40,7 +79,6 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    cursor: pointer;
 }
 
 .sidenav {
@@ -66,17 +104,17 @@ body {
   font-family: "Monserrat-SemiBold";
   color: #FFF;
   display: block;
-  cursor: pointer;
   transition: 0.2s;
 }
 
 .sidenav div:hover {
-  color: #FFDD81;
+  color: #FFD3B5;
+  cursor: url(../res/custom_pointer.cur), pointer;
 }
 
 #turn {
     position: relative;
-    background-color: #F9DDA6;
+    background-color: #FFE3CF;
     height: 100%;
     max-height: 60px;
     min-width: 200px;
@@ -89,6 +127,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: row;
+    cursor: url(../res/custom_pointer.cur), pointer;
 }
 
 #turn img {
@@ -96,15 +135,36 @@ body {
     height: 40px;
     width: 40px;
     margin: 0 25px;
+    cursor: url(../res/custom_pointer.cur), pointer;
 }
 
 #turn span {
     font-size: 2em;
     font-family: "Monserrat-SemiBold";
     margin: 0 25px 0 0;
+    cursor: url(../res/custom_pointer.cur), pointer;
+}
+/* #endregion */
+
+.button {
+    text-decoration: none;
+    font-size: 1.25vw;
+    color: #ffffff;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    margin: 0.4em 0 0.4em 0;
+    background-color: #FA771E;
+    border: 0.2em solid #72370F;
+    border-radius: 2.6041666666666665vw;
+    width: 17.5%;
+    text-align: center;
+    font-family: "Monserrat-Semibold";
+    cursor: url(../res/custom_pointer.cur), pointer;
+    transition: 0.2s;
 }
 
-/* #endregion */
+.button div {
+    cursor: url(../res/custom_pointer.cur), pointer;
+}
 
 /* #region Board Layout*/
 .columnLegend {
@@ -182,7 +242,7 @@ body {
 .history {
     height: 30vh;
     width: 25vw;
-    background-color: #F9DDA6;
+    background-color: #FFE3CF;
     position: absolute;
     top: 30vh;
     left: 1vw;
@@ -210,11 +270,13 @@ body {
     background-color: #7A0606;
     border-radius: 10px;
     border-top-right-radius: 10px;
+    cursor: url(../res/custom_pointer.cur), pointer;
 }
 
 .history ul::-webkit-scrollbar-thumb {
     background-color: #EA7221;
     border-radius: 10px;
+    cursor: url(../res/custom_pointer.cur), pointer;
 }
 
 .history ul li {
@@ -255,9 +317,9 @@ body {
     z-index: 2;
     height: 50%;
     width: 40%;
-    border: 15px solid #DB8B2F;
+    border: 15px solid #EB8313;
     border-radius: 30px;
-    background-color: #F9DDA6;
+    background-color: #FFD3B5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -268,14 +330,11 @@ body {
     font-family: "Monserrat-SemiBold";
     position: relative;
     left: -30%;
-    margin: 2.5% 0 0 0 ;
-}
-
-.overlay#newGame .panel .form {
-    display: flex;
-    flex-direction: column;
+    margin: 2.5% 0 0 0;
     align-items: center;
     justify-content: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .overlay#newGame .panel .form input {
@@ -284,7 +343,7 @@ body {
     font-size: 1.6666666666666667vw;
     margin: 10px 0;
     font-family: "Monserrat-Regular";
-    background-color: #FFEDCA;
+    background-color: #FFE3CF;
     border-style: inset;
     border-radius: 20px;
     padding: 12px 20px;
@@ -294,27 +353,21 @@ body {
     border: 1.5px solid red;
 }
 
-.overlay#newGame .panel .form .buttons {
+.overlay#newGame .panel .form .newGameButtons a {  
+    text-decoration: none;
+}
+
+.overlay#newGame .panel .form .newGameButtons {  
     display: flex;
-    flex-direction: row;
-    margin-top: 5%;
+    align-items: center;
+    justify-content: center;
 }
 
-.overlay#newGame .panel .form .buttons img {
-    margin: 0 10px;
+.overlay#newGame .panel .form .newGameButtons .button {
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    margin: 1em 1em 0 1em;
+    width: 100%;
 }
-
-.overlay#newGame .panel .form .buttons #btn-ok {
-    height: 5.159958720330238vh;
-    cursor: pointer;
-}
-
-.overlay#newGame .panel .form .buttons #btn-cancel {
-    height: 5.159958720330238vh;
-    width: auto;
-    cursor: pointer;
-}
-
 /* #endregion */
 
 /* #region How To Play panel */
@@ -322,9 +375,9 @@ body {
     z-index: 2;
     height: 70%;
     width: 40%;
-    border: 15px solid #DB8B2F;
+    border: 15px solid #EB8313;
     border-radius: 30px;
-    background-color: #F9DDA6;
+    background-color: #FFD3B5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -382,34 +435,45 @@ body {
     margin: 0 0 0.5208333333333334vw 0;
 }
 
-.overlay#howToPlay .panel .slide .castling .en-passant img {
+.overlay#howToPlay .panel .slide .castling img {
     height: 22.703818369453046vh;
     width: auto;
     position: relative;
 }
 
-.overlay#howToPlay .panel .buttons img {
-    height: 5.159958720330238vh;
+.overlay#howToPlay .panel .slide .en-passant img {
+    height: 22.703818369453046vh;
     width: auto;
-    cursor: pointer;
-    position: absolute;
+    position: relative;
 }
 
-.overlay#howToPlay .panel .buttons #btn-exit {
+.overlay#howToPlay .panel .howToPlayButtons .buttons img {
+    height: 5.159958720330238vh;
+    width: auto;
+    cursor: url(../res/custom_pointer.cur), pointer;
+    position: absolute;
+    transition: 0.2s;
+}
+
+.overlay#howToPlay .panel .howToPlayButtons .buttons #btn-exit {
     position: absolute;
     top: 18%;
     left: 65.6%;
+    transition: 0.2s;
 }
 
-.overlay#howToPlay .panel .buttons #previous {
+.overlay#howToPlay .panel .howToPlayButtons .buttons #previous {
     padding-right: 0.2604166666666667vw;
     top: 76.5%;
     left: 47%;
+    transition: 0.2s;
+
 }
 
-.overlay#howToPlay .panel .buttons #next {
+.overlay#howToPlay .panel .howToPlayButtons .buttons #next {
     padding-left: 0.2604166666666667vw;
     top: 76.5%;
+    transition: 0.2s;
 }
 /* #endregion */
 
@@ -449,7 +513,6 @@ body {
     height: 50px;
     width: 50px;
     transition: all 0.25s;
-    cursor: pointer;
     margin: 10px;
 }
 
@@ -466,7 +529,7 @@ img#btnUndo {
     position: absolute;
     top: 65vh;
     left: 10vw;
-    cursor: pointer;
+    cursor: url(../res/custom_pointer.cur), pointer;
     /* display: none; */
 }
 
@@ -476,5 +539,5 @@ img#btnUndo {
     position: absolute;
     bottom: 50px;
     right: 50px;
-    cursor: pointer;
+    cursor: url(../res/custom_pointer.cur), pointer;
 }

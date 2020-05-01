@@ -286,7 +286,7 @@ $("#turn").on("click", function () {
 	EndTurn();
 	ReloadBoard();
 }).on("mouseover", function () {
-	$(this).css("cursor", "pointer");
+	$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
 });
 
 //Step Back in boardHistory
@@ -436,29 +436,29 @@ function ReloadBoard() {
 		} else {
 			$(this).css("background-color", "#ffffff");
 		}
-		$(this).css("cursor", "auto");
+		$(this).css("cursor", "url(../res/custom_default.cur), auto");
 	});
 
 	$("[piece=\'king\']").each(function () {
 		if ($(this).attr("check") == "true") {
 			$(this).css("background-color", "violet");
 			if ($(this).attr("player") == turnPlayer) {
-				$(this).css("cursor", "pointer");
+				$(this).css("cursor", "url(../res/custom_p.cur), pointer");
 			}
 			$("[player=\'" + turnPlayer + "\'][canMove=\'true\'").each(function () {
-				$(this).css("cursor", "pointer");
+				$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
 			});
 			return;
 		} else {
 			$("[player=\'" + turnPlayer + "\']").each(function () {
-				$(this).css("cursor", "pointer");
+				$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
 			});
 		}
 	});
 	if (turnCounter == 0) {
-		$("#btnUndo").css("filter", " grayscale(70%)").css("cursor", "auto");
+		$("#btnUndo").css("filter", " grayscale(70%)").css("cursor", "url(../res/custom_default.cur), auto");
 	} else {
-		$("#btnUndo").css("filter", "").css("cursor", "pointer");
+		$("#btnUndo").css("filter", "").css("cursor", "url(../res/custom_pointer.cur), pointer");
 	}
 }
 
