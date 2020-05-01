@@ -18,7 +18,7 @@
 /* #region Animations */
 .button:hover {
     transform: scale(1.1, 1.1);
-    background-color: #FC6602;
+    background-color: #DE5800;
 }
 
 .button:active {
@@ -27,7 +27,7 @@
 
 .overlay#newGame .panel .form .newGameButtons .button:hover {
     transform: scale(1.1, 1.1);
-    background-color: #FC6602;
+    background-color: #DE5800;
 }
 
 .overlay#newGame .panel .form .newGameButtons .button:active {
@@ -61,7 +61,7 @@ html, body {
 }
 
 body {
-    background-color: #FFDD81;
+    background-color: #FFD3B5;
 }
 
 * {
@@ -103,7 +103,7 @@ body {
     color: #ffffff;
     padding: 0.5em 0.5em 0.5em 0.5em;
     margin: 0.4em 0 0.4em 0;
-    background-color: #EA7221;
+    background-color: #FA771E;
     border: 0.2em solid #72370F;
     border-radius: 2.6041666666666665vw;
     width: 17.5%;
@@ -164,9 +164,9 @@ body {
     z-index: 2;
     height: 50%;
     width: 40%;
-    border: 15px solid #DB8B2F;
+    border: 15px solid #EB8313;
     border-radius: 30px;
-    background-color: #F9DDA6;
+    background-color: #FFD3B5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -190,7 +190,7 @@ body {
     font-size: 1.6666666666666667vw;
     margin: 10px 0;
     font-family: "Monserrat-Regular";
-    background-color: #FFEDCA;
+    background-color: #FFE3CF;
     border-style: inset;
     border-radius: 20px;
     padding: 12px 20px;
@@ -223,9 +223,9 @@ body {
     z-index: 2;
     height: 70%;
     width: 40%;
-    border: 15px solid #DB8B2F;
+    border: 15px solid #EB8313;
     border-radius: 30px;
-    background-color: #F9DDA6;
+    background-color: #FFD3B5;
     display: flex;
     align-items: center;
     justify-content: center;
