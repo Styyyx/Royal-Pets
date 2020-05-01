@@ -108,7 +108,7 @@ $(document).ready(function () {
         else{
             $('#next').css('display', 'flex');
         }
-    };
+    }
 
     $('#previous').on('click', function (){
         showSlide(activeSlide - 1);
