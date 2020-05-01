@@ -46,10 +46,6 @@
     transform: scale(1.1, 1.1);
 }
 
-.board .cell:hover {
-    cursor: url(../res/custom_grab.cur), auto;
-}
-
 .overlay#pawnPromotion .panel img:hover {
     height: 12.38390092879257vh;
     width: 4.6875vw;
