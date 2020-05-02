@@ -339,11 +339,14 @@ body {
     border: black 2px solid;
     margin: 5px;
     cursor: url(../res/custom_pointer.cur), pointer;
-    filter: grayscale(0.7);
     transition: 0.2s;
 }
 
 .audioButtons .toggleBtn:hover {
     transform: scale(1.1);
+}
+
+.audioButtons .toggleBtn#btn-music {
+    filter: grayscale(0.7);
 }
 /* #endregion */
