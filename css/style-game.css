@@ -315,10 +315,6 @@ body {
     position: absolute;
 }
 
-.overlay:target{
-    display: flex;
-}
-
 /* #endregion */
 
 /* #region New Game Panel */
@@ -532,14 +528,22 @@ body {
 }
 /* #endregion */
 
-img#btnUndo {
-    height: 10vh;
-    width: auto;
+/* #region */
+.btnGroup {
     position: absolute;
     top: 65vh;
-    left: 10vw;
+    left: 5vw;
+    display: flex;
+    flex-direction: row;
+}
+
+.btnGroup img {
+    height: 10vh;
+    width: auto;
+    margin: 5px;
     cursor: url(../res/custom_pointer.cur), pointer;
 }
+/* #endregion */
 
 .overlay#endGame img {
     height: 10vh;

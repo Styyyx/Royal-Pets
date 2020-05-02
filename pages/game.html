@@ -11,11 +11,9 @@
 <body>
     <img class="burger" src="../res/burger.png">
     <div id="sidenav" class="sidenav">
-        <div id="btnHome">HOME</div>
-        <div id="btnNewGame">NEW GAME</div>
-        <a href="#howToPlay">
-            <div id="btnHowToPlay">HOW TO PLAY</div>
-        </a>
+        <div id="btnHome" class="sound-btnClick">HOME</div>
+        <div id="btnNewGame" class="sound-btnClick">NEW GAME</div>
+        <div id="btnHowToPlay" class="sound-btnClick">HOW TO PLAY</div>
     </div>
     <div id="turn">
         <img id="playerImg" src="">
@@ -145,9 +143,13 @@
 
         </ul>
     </div>
-    <img id="btnUndo" src="../res/undo_button.png">
-    <div id=btnMusic></div>
-    <div id=btnSound></div>
+    <div class="btnGroup">
+        <img id="btnUndo" src="../res/undo_button.png" class="sound-btnClick">
+        <img id="btnMusic" src="../res/music_off.png" class="sound-btnClick">
+        <img id="btnSound" src="../res/sound_on.png" class="sound-btnClick">
+    </div>
+
+
     <div class="overlay" id="howToPlay">
         <div class="panel">
             <div class="slide">
@@ -201,7 +203,7 @@
                 <div class="desc">Bishop moves diagonally any number of squares,
                     forwards or backwards.
                     One bishop moves along the light-colored squares
-                     and the other bishop moves along the dark-colored squares.
+                    and the other bishop moves along the dark-colored squares.
                 </div>
                 <span class="pageNum">4/8</span>
             </div>
@@ -213,7 +215,7 @@
                 </div>
                 <span class="sub-title">QUEEN</span>
                 <div class="desc">Queen can be moved any number of unoccupied squares in a
-                     straight line vertically, horizontally, or diagonally.
+                    straight line vertically, horizontally, or diagonally.
                 </div>
                 <span class="pageNum">5/8</span>
             </div>
@@ -240,9 +242,9 @@
                 <div class="desc">Castling is a special move in chess that uses
                     both a rook and the king.
                     In castling, the king is moved two squares
-                     toward the rook, and the rook moves
-                     past the king to the square right next
-                     to where the king has moved.
+                    toward the rook, and the rook moves
+                    past the king to the square right next
+                    to where the king has moved.
                 </div>
                 <span class="pageNum">7/8</span>
             </div>
@@ -260,15 +262,13 @@
                 <span class="pageNum">8/8</span>
             </div>
             <div class="howToPlayButtons">
-                <a href="#">
-                    <div class="buttons">
-                        <img src="../res/exit_button.png" id="btn-exit">
-                    </div>
-                </a>
-                <div class="buttons">
+                <div class="buttons sound-btnClick">
+                    <img src="../res/exit_button.png" id="btn-exit">
+                </div>
+                <div class="buttons sound-btnClick">
                     <img src="../res/arrow_left.png" id="previous">
                 </div>
-                <div class="buttons">
+                <div class="buttons sound-btnClick">
                     <img src="../res/arrow_right.png" id="next">
                 </div>
             </div>
@@ -282,10 +282,8 @@
                 <span>PLAYER 2 (CAT):</span>
                 <input type="text" id="input-player2" maxlength="12" value="Player 2">
                 <div class="newGameButtons">
-                    <div class="button" id="btn-ok">OK</div>
-                    <a href="#" class="button">
-                        <div id="btn-cancel">CANCEL</div>
-                    </a>
+                    <div class="button sound-btnClick" id="btn-ok">OK</div>
+                    <div class="button sound-btnClick" id="btn-cancel">CANCEL</div>
                 </div>
             </div>
         </div>
@@ -318,6 +316,17 @@
             </div>
         </div>
     </div>
+
+    <audio loop id="music">
+        <source src="../res/sound/background.wav" type="audio/wav">
+    </audio>
+    <audio id="sound-buttonClick">
+        <source src="../res/sound/click_button.wav" type="audio/wav">
+    </audio>
+    <audio id="sound-buttonHover">
+        <source src="../res/sound/hover_button.wav" type="audio/wav">
+    </audio>
+
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/js-game.js"></script>
 </body>
