@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     var namePlayer1, namePlayer2;
 
     $(document).on("keydown", function (event) {
@@ -18,15 +17,35 @@ $(document).ready(function () {
         $(this).select();
     });
 
-    //#region Background Music Handler
+    //#region Music Handler
+    var enableSound = true;
+
     $(".audioButtons .toggleBtn#btn-music").on("click", function () {
         let audio = $("audio#music").get(0);
         if (audio.paused == true) {
+            audio.currentTime = 0;
             audio.play();
-            $(this).css("filter","grayscale(0)");
+            $(this).css("filter", "grayscale(0)");
         } else {
             audio.pause();
-            $(this).css("filter","grayscale(0.7)");
+            $(this).css("filter", "grayscale(0.7)");
+        }
+    });
+
+    $(".audioButtons .toggleBtn#btn-sound").on("click", function () {
+        if (enableSound == true) {
+            enableSound = false;
+            $(this).css("filter", "grayscale(0.7)");
+        } else {
+            enableSound = true;
+            $(this).css("filter", "grayscale(0)");
+        }
+    });
+
+    $(".sound-btnClick").on("click", function () {
+        if (enableSound == true) {
+            $("audio#sound-buttonClick").get(0).play();
+            $("audio#sound-buttonClick").get(0).currentTime = 0;
         }
     });
     //#endregion
