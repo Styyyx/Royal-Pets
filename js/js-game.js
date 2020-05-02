@@ -161,6 +161,7 @@ $("#btnHome").on("click", function () {
 
 // How to Play Button Click event
 $("#btnHowToPlay").on("click", function () {
+	$(".overlay#howToPlay").css("display","flex");
 	const slides = $('.slide');
 	var activeSlide = 0;
 
@@ -192,6 +193,7 @@ $("#btnHowToPlay").on("click", function () {
 	});
 	$('#btn-exit').on('click', function () {
 		showSlide(0);
+		$(".overlay#howToPlay").css("display","none");
 	});
 
 	$(document).on('keydown', function (event) {
@@ -211,7 +213,6 @@ $("#btnHowToPlay").on("click", function () {
 		}
 	});
 });
-//#endregion
 
 //#region New Game Interface
 
@@ -347,6 +348,42 @@ $("#btnUndo").on("click", function () {
 		}
 
 		location.reload();
+	}
+});
+
+//Music & Sound Buttons
+var enableSound = true;
+$(".btnGroup #btnMusic").on("click", function () {
+	let audio = $("audio#music").get(0);
+	if (audio.paused == true) {
+		audio.currentTime = 0;
+		audio.play();
+		$(this).attr("src", "../res/music_on.png");
+	} else {
+		audio.pause();
+		$(this).attr("src", "../res/music_off.png");
+	}
+});
+
+$(".btnGroup #btnSound").on("click", function () {
+	if (enableSound == true) {
+		enableSound = false;
+		$(this).attr("src", "../res/sound_off.png");
+	} else {
+		enableSound = true;
+		$(this).attr("src", "../res/sound_on.png");
+	}
+});
+
+$(".sound-btnClick").on("click", function () {
+	if (enableSound == true) {
+			$("audio#sound-buttonClick").get(0).play();
+			$("audio#sound-buttonClick").get(0).currentTime = 0;
+	}
+}).on("mouseover",function(){
+	if (enableSound == true){
+			$("audio#sound-buttonHover").get(0).play();
+			$("audio#sound-buttonHover").get(0).currentTime = 0;
 	}
 });
 
