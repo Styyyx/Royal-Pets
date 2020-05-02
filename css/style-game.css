@@ -539,7 +539,6 @@ img#btnUndo {
     top: 65vh;
     left: 10vw;
     cursor: url(../res/custom_pointer.cur), pointer;
-    /* display: none; */
 }
 
 .overlay#endGame img {
