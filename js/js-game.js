@@ -29,6 +29,9 @@ $(window).bind("beforeunload", function () {
 			row: $(this).attr("row"),
 			column: $(this).attr("column")
 		};
+		if ($(this).attr("castle") == "true") {
+			cell.castle = "true";
+		}
 
 		previousState.push(cell);
 	});
@@ -56,6 +59,9 @@ $(window).bind("load", function () {
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "false");
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
+			if (cell.castle == "true") {
+				$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("castle", "true");
+			}
 		}
 	}
 
@@ -88,9 +94,15 @@ $(window).bind("load", function () {
 	this.ReloadBoard();
 });
 
-$(document).on("keypress", function (e) {
-	if (e.key == "Enter" && $(".overlay#newGame").css("display") != "none") {
-		$(".overlay#newGame #btn-ok").click();
+$(document).on("keydown", function (e) {
+	if (e.key == "Enter" && $("#newGame").css("display") != "none") {
+		$("#btn-ok").click();
+	}
+	if (e.key == "Escape" && $("#newGame").css("display") != "none") {
+		$("#btn-cancel").click();
+	}
+	if (e.key == "Escape" && $("#howToPlay").css("display") != "none") {
+		$("#btn-exit").click();
 	}
 });
 
@@ -147,6 +159,60 @@ $("#btnHome").on("click", function () {
 	sessionStorage.removeItem("logHistory");
 });
 
+// How to Play Button Click event
+$("#btnHowToPlay").on("click", function () {
+	const slides = $('.slide');
+	var activeSlide = 0;
+
+	showSlide(activeSlide);
+
+	function showSlide(n) {
+		$(slides[activeSlide]).removeClass('active-slide');
+		$(slides[n]).addClass('active-slide');
+		activeSlide = n;
+		if (activeSlide === 0) {
+			$('#previous').css('display', 'none');
+		}
+		else {
+			$('#previous').css('display', 'flex');
+		}
+		if (activeSlide === slides.length - 1) {
+			$('#next').css('display', 'none');
+		}
+		else {
+			$('#next').css('display', 'flex');
+		}
+	}
+
+	$('#previous').on('click', function () {
+		showSlide(activeSlide - 1);
+	});
+	$('#next').on('click', function () {
+		showSlide(activeSlide + 1);
+	});
+	$('#btn-exit').on('click', function () {
+		showSlide(0);
+	});
+
+	$(document).on('keydown', function (event) {
+		if (event.which == 37) {
+			if (activeSlide === 0) {
+				$('#previous').css('display', 'none');
+			} else {
+				$('#previous').click();
+			}
+		}
+		if (event.which == 39) {
+			if (activeSlide === slides.length - 1) {
+				$('#next').click(false);
+			} else {
+				$('#next').click();
+			}
+		}
+	});
+});
+//#endregion
+
 //#region New Game Interface
 
 //New Game Button Click Event
@@ -198,6 +264,9 @@ $(".overlay#newGame #btn-ok").on("click", function () {
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("empty", "false");
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("player", cell.player);
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
+			if (cell.castle == "true") {
+				$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("castle", "true");
+			}
 		}
 
 		this.logHistory = [];
@@ -220,12 +289,12 @@ $(".overlay#newGame #btn-cancel").on("click", function () {
 //#endregion
 
 //End Turn Button (for debugging)
-$("#turn").on("click", function () {
-	EndTurn();
-	ReloadBoard();
-}).on("mouseover", function () {
-	$(this).css("cursor", "pointer");
-});
+// $("#turn").on("click", function () {
+// 	EndTurn();
+// 	ReloadBoard();
+// }).on("mouseover", function () {
+// 	$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
+// });
 
 //Step Back in boardHistory
 $("#btnUndo").on("click", function () {
@@ -234,6 +303,35 @@ $("#btnUndo").on("click", function () {
 		console.log("Turn Counter = " + turnCounter);
 
 		ClearBoard();
+
+		/** [PROBLEM]
+		 * 
+		 * 	Description: king||rook piece when moved will lose castle viability,
+		 * 		but if undo is executed, king||rook piece does not regain castle viability.
+		 * 
+		 * 	Comment: This fixes it but at the same time, theoretically if a king||rook without castle viability,
+		 * 	 	is moved to its initial position, then moved, then undo, it will gain castle viability.
+		 * 
+		 */
+		// let lastMove = logHistory[logHistory.length - 1];
+		// if (lastMove.match(/>>/) != null) {
+		// 	let lastMoveFrom = lastMove.match(/\w\d(?=\s>>)/),
+		// 		lastMoveTo = lastMove.match(/(?<=>>\s)\w\d/),
+		// 		lastMovePlayer = lastMove.match(/(dog|cat)/),
+		// 		lastMovePiece = lastMove.match(/(?<=-)\w+/);
+
+		// 	if (lastMovePiece == "king") {
+		// 		if (lastMovePlayer == "dog" && (lastMoveFrom == "e1" &&
+		// 			(lastMoveTo == "f1" || lastMoveTo == "g1" || lastMoveTo == "d1" || lastMoveTo == "c1" ||
+		// 				lastMoveTo == "d2" || lastMoveTo == "e2" || lastMoveTo == "f2"))) {
+		// 			$("[row='1'][column='5']").attr("castle", "true");
+		// 		} else if (lastMovePlayer == "cat" && (lastMoveFrom == "e8" &&
+		// 			(lastMoveTo == "f8" || lastMoveTo == "g8" || lastMoveTo == "d8" || lastMoveTo == "c8" ||
+		// 				lastMoveTo == "d7" || lastMoveTo == "e7" || lastMoveTo == "f7"))) {
+		// 			$("[row='8'][column='5']").attr("castle", "true");
+		// 		}
+		// 	}
+		// }
 
 		boardHistory[turnCounter].forEach(function (cell) {
 			thisCell = $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']");
@@ -252,9 +350,6 @@ $("#btnUndo").on("click", function () {
 	}
 });
 
-$(".overlay#endGame img").on("click", function () {
-
-});
 //#endregion
 
 // Prevents highlighting/selecting elements on drag
@@ -263,7 +358,7 @@ $("*").attr('unselectable', 'on')
 	.bind('selectstart', function () { return false; });
 
 /** Main Function
- * 
+ *
  * 	this is fired every time a cell/piece is clicked
  */
 $("[empty]").on("click", function () {
@@ -302,7 +397,6 @@ $("[empty]").on("click", function () {
 				data = { player: thisPlayer, piece: thisPiece, row: thisRow, column: thisColumn };
 				ShowMoves();
 			}
-
 		}
 	}
 	//When selecting cell other than own pieces
@@ -316,6 +410,9 @@ $("[empty]").on("click", function () {
 			turnCounter += 1;
 			LogMove(thisRow, thisColumn, data.row, data.column, "eat");
 			MovePiece(thisRow, thisColumn);
+			if (data.piece == "rook" || data.piece == "king") {
+				$("[row=\'" + data.row + "\'][column=\'" + data.column + "\']").removeAttr("castle");
+			}
 			CheckforPromotion();
 			TakeSnapShot();
 			Debug("EAT", thisPlayer, thisPiece, thisRow, thisColumn);
@@ -331,6 +428,9 @@ $("[empty]").on("click", function () {
 			turnCounter += 1;
 			LogMove(thisRow, thisColumn, data.row, data.column);
 			MovePiece(thisRow, thisColumn);
+			if (data.piece == "rook" || data.piece == "king") {
+				$("[row=\'" + data.row + "\'][column=\'" + data.column + "\']").removeAttr("castle");
+			}
 			CheckforPromotion();
 			TakeSnapShot();
 			Debug("MOVE", thisPlayer, thisPiece, thisRow, thisColumn);
@@ -363,7 +463,7 @@ function LoadPieces() {
 			player = $(this).attr("player");
 
 		$(this)
-			.css("background-image", "url(\"../res/" + player + "Pieces/" + player + "_" + piece + ".png\"").css("background-size", "80% 90%");
+			.css("background-image", "url(\"../res/" + player + "Pieces/" + player + "_" + piece + ".png\"").css("background-size", "70% 90%");
 	});
 }
 
@@ -374,34 +474,34 @@ function ReloadBoard() {
 		} else {
 			$(this).css("background-color", "#ffffff");
 		}
-		$(this).css("cursor", "auto");
+		$(this).css("cursor", "url(../res/custom_default.cur), auto");
 	});
 
 	$("[piece=\'king\']").each(function () {
 		if ($(this).attr("check") == "true") {
 			$(this).css("background-color", "violet");
 			if ($(this).attr("player") == turnPlayer) {
-				$(this).css("cursor", "pointer");
+				$(this).css("cursor", "url(../res/custom_p.cur), pointer");
 			}
 			$("[player=\'" + turnPlayer + "\'][canMove=\'true\'").each(function () {
-				$(this).css("cursor", "pointer");
+				$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
 			});
 			return;
 		} else {
 			$("[player=\'" + turnPlayer + "\']").each(function () {
-				$(this).css("cursor", "pointer");
+				$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
 			});
 		}
 	});
 	if (turnCounter == 0) {
-		$("#btnUndo").css("filter", " grayscale(70%)").css("cursor", "auto");
+		$("#btnUndo").css("filter", " grayscale(70%)").css("cursor", "url(../res/custom_default.cur), auto");
 	} else {
-		$("#btnUndo").css("filter", "").css("cursor", "pointer");
+		$("#btnUndo").css("filter", "").css("cursor", "url(../res/custom_pointer.cur), pointer");
 	}
 }
 
 /** Checks when the player is trying to move one of their own pieces
- * 
+ *
  * @param {*} targetRow Row of target position
  * @param {*} targetColumn Column of target position
  * @param {*} thisPlayer [optional] Whose player is selected piece, default to data.player
@@ -590,15 +690,24 @@ function CheckMove(targetRow, targetColumn, thisPlayer = data.player, thisPiece 
 	} else if (thisPiece == "king") {
 		let xDist = Math.abs(targetColumn - thisColumn);
 		let yDist = Math.abs(targetRow - thisRow);
-		if (($("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("check") != "true") &&
-			(xDist == 1 || xDist == 0) && (yDist == 1 || yDist == 0)) {
-			return true;
+		if ($("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").attr("check") != "true") {
+			if ((xDist == 1 || xDist == 0) && (yDist == 1 || yDist == 0)) {
+				return true;
+			} else if (yDist == 0) {
+				if (targetColumn == "7" && CheckCastleKingSide(thisPlayer, thisRow)) {
+					MovePiece(thisRow, "6", thisRow, "8", thisPlayer, "rook");
+					return true;
+				} else if (targetColumn == "3" && CheckCastleQueenSide(thisPlayer, thisRow)) {
+					MovePiece(thisRow, "4", thisRow, "1", thisPlayer, "rook");
+					return true;
+				}
+			}
 		} else { return false; }
 	}
 }
 
 /** Checks when the player has clicked one of their own piece, and is trying to eat a piece of the enemy player.
- * 
+ *
  * @param {*} targetRow Row of target position
  * @param {*} targetColumn  Column of target position
  * @param {*} thisPlayer [optional] Whose player is selected piece, default to data.player
@@ -828,6 +937,14 @@ function ShowMoves() {
 				}
 			}
 		});
+
+		if (CheckCastleKingSide(data.player, data.row)) {
+			$("[row=\'" + data.row + "\'][column='7']").css("background-color", "blue");
+		}
+		if (CheckCastleQueenSide(data.player, data.row)) {
+			$("[row=\'" + data.row + "\'][column='3']").css("background-color", "blue");
+		}
+
 	}
 	//Set red/blue cell's cursor to pointer
 	$("[empty]").each(function () {
@@ -837,19 +954,28 @@ function ShowMoves() {
 	});
 }
 
-function MovePiece(thisRow, thisColumn) {
-	$("[row = \'" + data.row + "\'][column = \'" + data.column + "\']")
+/** Moves piece to target row and column
+ * 
+ * @param {*} targetRow 
+ * @param {*} targetColumn 
+ * @param {*} thisRow [Optional] Default to data.row
+ * @param {*} thisColumn [Optional] Default to data.column
+ * @param {*} thisPlayer [Optional] Default to data.player
+ * @param {*} thisPiece [Optional] Default to data.piece
+ */
+function MovePiece(targetRow, targetColumn, thisRow = data.row, thisColumn = data.column, thisPlayer = data.player, thisPiece = data.piece) {
+	$("[row = \'" + thisRow + "\'][column = \'" + thisColumn + "\']")
 		.attr("empty", "true")
 		.removeAttr("piece")
 		.removeAttr("player")
 		.css("background-image", "")
 		.css("background-size", "");
-	$("[row = \'" + thisRow + "\'][column = \'" + thisColumn + "\']")
+	$("[row = \'" + targetRow + "\'][column = \'" + targetColumn + "\']")
 		.attr("empty", "false")
-		.attr("piece", data.piece)
-		.attr("player", data.player)
-		.css("background-image", "url(\"../res/" + data.player + "Pieces/" + data.player + "_" + data.piece + ".png\"")
-		.css("background-size", "80% 90%")
+		.attr("piece", thisPiece)
+		.attr("player", thisPlayer)
+		.css("background-image", "url(\"../res/" + thisPlayer + "Pieces/" + thisPlayer + "_" + thisPiece + ".png\"")
+		.css("background-size", "70% 90%")
 		.css("background-repeat", "no-repeat")
 		.css("background-position", "center");
 }
@@ -1201,8 +1327,8 @@ function CheckforCheck() {
 		//#region Checkmate
 		if ($(this).attr("check") == "true" && moves == 0) {
 			CheckMate();
-			$("[checker='true']").css("background-color","red");
-			$("[check='true'][piece='king']").css("background-color","pink");
+			$("[checker='true']").css("background-color", "red");
+			$("[check='true'][piece='king']").css("background-color", "pink");
 		}
 
 		//#endregion
@@ -1263,7 +1389,7 @@ function CheckforMoves() {
 				}
 			});
 		}
-		//Checker is right of king 
+		//Checker is right of king
 		else if (kingColumn < checkerColumn) {
 			$("[player=\'" + kingPlayer + "\']").each(function () {
 				let thisRow = $(this).attr("row"),
@@ -1324,7 +1450,7 @@ function CheckforMoves() {
 			});
 		}
 
-		//Checker is northeast of king 
+		//Checker is northeast of king
 		else if (kingColumn < checkerColumn) {
 			$("[player=\'" + kingPlayer + "\']").each(function () {
 				let thisRow = $(this).attr("row"),
@@ -1385,7 +1511,7 @@ function CheckforMoves() {
 			});
 		}
 
-		//Checker is southeast of king 
+		//Checker is southeast of king
 		else if (kingColumn < checkerColumn) {
 			$("[player=\'" + kingPlayer + "\']").each(function () {
 				let thisRow = $(this).attr("row"),
@@ -1414,10 +1540,10 @@ function CheckforEnPassant() {
 }
 
 /** This function evaluates the cell if it is accessible by other pieces of the opposite player
- * 
- * @param {*} thisRow 
- * @param {*} thisColumn 
- * @param {*} thisPlayer 
+ *
+ * @param {*} thisRow
+ * @param {*} thisColumn
+ * @param {*} thisPlayer
  */
 function IsCheck(thisRow, thisColumn, thisPlayer) {
 	let dist;
@@ -1609,7 +1735,7 @@ function IsCheck(thisRow, thisColumn, thisPlayer) {
 	}
 	//#endregion
 
-	//#region From Southwest  
+	//#region From Southwest
 	dist = (Math.abs(thisRow - 8) <= Math.abs(thisColumn - 1)) ? Math.abs(thisRow - 8) : Math.abs(thisColumn - 1);
 	for (let i = 1; i <= dist; i++) {
 		if ($("[row=\'" + (thisRow + i) + "\'][column=\'" + (thisColumn - i) + "\']").attr("empty") == "false") {
@@ -1650,6 +1776,8 @@ function IsCheck(thisRow, thisColumn, thisPlayer) {
 			}
 		}
 	});
+
+	return false;
 }
 
 function CheckMate() {
@@ -1683,11 +1811,11 @@ $(".overlay#pawnPromotion img.option").on("click", function () {
 	if (turnPlayer == "dog") {
 		$("[row='1'][piece='pawn']").attr("piece", pieceSelected)
 			.css("background-image", "url(\"../res/catPieces/cat_" + pieceSelected + ".png\"")
-			.css("background-size", "80% 90%");
+			.css("background-size", "70% 90%");
 	} else {
 		$("[row='8'][piece='pawn']").attr("piece", pieceSelected)
 			.css("background-image", "url(\"../res/dogPieces/dog_" + pieceSelected + ".png\"")
-			.css("background-size", "80% 90%");
+			.css("background-size", "70% 90%");
 	}
 	$(".overlay#pawnPromotion").css("display", "none");
 	TakeSnapShot();
@@ -1695,8 +1823,32 @@ $(".overlay#pawnPromotion img.option").on("click", function () {
 });
 //#endregion
 
+//#region Castling
+function CheckCastleKingSide(thisPlayer, thisRow) {
+	// console.log("row = " + thisRow + "\tplayer = " + thisPlayer);
+	let thisKing = $("[piece='king'][player=\'" + thisPlayer + "\']"),
+		rightRook = $("[row=\'" + thisRow + "\'][column='8']");
+	if (thisKing.attr("castle") == "true" && thisKing.attr("check") != "true" && rightRook.attr("castle") == "true" &&
+		!(IsCheck(thisRow, "6", thisPlayer)) && $("[row=\'" + thisRow + "\'][column='6']").attr("empty") == "true" &&
+		!(IsCheck(thisRow, "7", thisPlayer)) && $("[row=\'" + thisRow + "\'][column='7']").attr("empty") == "true") {
+		return true;
+	} else { return false; }
+}
+
+function CheckCastleQueenSide(thisPlayer, thisRow) {
+	let thisKing = $("[piece='king'][player=\'" + thisPlayer + "\']"),
+		leftRook = $("[row=\'" + thisRow + "\'][column='1']");
+	if (thisKing.attr("castle") == "true" && thisKing.attr("check") != "true" && leftRook.attr("castle") == "true" &&
+		!(IsCheck(thisRow, "4", thisPlayer)) && $("[row=\'" + thisRow + "\'][column='4']").attr("empty") == "true" &&
+		!(IsCheck(thisRow, "3", thisPlayer)) && $("[row=\'" + thisRow + "\'][column='3']").attr("empty") == "true" &&
+		$("[row=\'" + thisRow + "\'][column='3']").attr("empty") == "true") {
+		return true;
+	} else { return false; }
+}
+//#endregion
+
 //#region EndGame
-$(".overlay#endGame img#btnOk").on("click", function(){
+$(".overlay#endGame img#btnOk").on("click", function () {
 	if ($(".overlay#endGame").css("display") != "none") {
 		location.replace("./home.html");
 	}
@@ -1705,9 +1857,9 @@ $(".overlay#endGame img#btnOk").on("click", function(){
 
 //#region Ease of Code
 /**	Returns an array of the adjacent cells of the selected cell
- * 
- * @param {*} thisRow 
- * @param {*} thisColumn 
+ *
+ * @param {*} thisRow
+ * @param {*} thisColumn
  */
 function GetAdjacent(thisRow, thisColumn) {
 	//Safe for NaN
@@ -1770,11 +1922,12 @@ function LogMove(targetRow, targetColumn, thisRow, thisColumn, action = "move") 
 			" X " + columnLegend[parseInt(pieceEaten.attr("column")) - 1] + pieceEaten.attr("row") +
 			"] " + pieceEaten.attr("player") + "-" + pieceEaten.attr("piece");
 		$(".history ul").append($("<li></li>").text(text));
+		logHistory.push(text);
 	} else {
 		let pieceMoved = $("[row=\'" + thisRow + "\'][column=\'" + thisColumn + "\']");
 		let text = "#" + turnCounter + " " + pieceMoved.attr("player") + "-" + pieceMoved.attr("piece") + " [" +
 			columnLegend[parseInt(pieceMoved.attr("column") - 1)] + pieceMoved.attr("row") +
-			" >> " + columnLegend[parseInt(targetColumn) - 1] + targetRow + " ]";
+			" >> " + columnLegend[parseInt(targetColumn) - 1] + targetRow + "]";
 		$(".history ul").append($("<li></li>").text(text))
 			//This animate function is used so that when the element is added, it will automatically scroll to bottom
 			.animate({ scrollTop: $(this).height() }, 100);

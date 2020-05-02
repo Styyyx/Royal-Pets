@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="../res/icon.png">
 </head>
 
-<body>
+<body   >
     <div class="wrapper"><img id="logo" src="../res/Logo.png"></div>
 
     <div class="menu">
@@ -31,142 +31,141 @@
                 <input type="text" id="input-player1" maxlength="12" value="Player 1">
                 <span>PLAYER 2 (CAT):</span>
                 <input type="text" id="input-player2" maxlength="12" value="Player 2">
-                <div class="buttons">
-                    <img src="../res/ok_button.png" id="btn-ok">
-                    <a href="#">
-                        <img src="../res/cancel_button.png" id="btn-cancel">
+                <div class="newGameButtons">
+                    <div class="button" id="btn-ok">OK</div>
+                    <a href="#" class="button">
+                        <div id="btn-cancel">CANCEL</div>
                     </a>
                 </div>
             </div>
         </div>
     </div>
     <div class="overlay" id="howToPlay">
-            <div class="panel">
-                <div class="slide">
-                    <span class="title">HOW TO PLAY</span>
-                    <div class="pieces">
-                        <img src="../res/catPieces/cat_pawn.png">
-                        <img src="../res/dogPieces/dog_pawn.png">
-                    </div>
-                    <span class="sub-title">PAWN</span>
-                    <div class="desc">Except on its first move,
-                        a pawn may only move one square at a time.
-                        Eats diagonally.
-                    </div>
-                    <span class="pageNum">1/8</span>
-                    <div class="buttons">
-                        <a href="#">
-                            <img src="../res/exit_button.png" id="btn-exit">
-                        </a>
-                        <img src="../res/arrow_left.png" id="previous">
-                        <img src="../res/arrow_right.png" id="next">
-                    </div>
+        <div class="panel">
+            <div class="slide">
+                <span class="title">HOW TO PLAY</span>
+                <div class="pieces">
+                    <img src="../res/catPieces/cat_pawn.png">
+                    <img src="../res/dogPieces/dog_pawn.png">
                 </div>
-                <!-- <div class="slide">
-                    <span class="title">HOW TO PLAY</span>
-                    <div class="pieces">
-                        <img src="../res/catPieces/cat_rook.png">
-                        <img src="../res/dogPieces/dog_rook.png">
-                    </div>
-                    <span class="sub-title">ROOK</span>
-                    <div class="desc">The rook moves horizontally or vertically,
-                        through any number of unoccupied squares.
-                        Eats horizontally or vertically. Special move: Castling
-                    </div>
-                    <span class="pageNum">2/8</span>
-                    <div class="buttons">
-                        <a href="#">
-                            <img src="../res/exit_button.png" id="btn-exit">
-                        </a>
-                        <img src="../res/arrow_left.png" id="previous">
-                        <img src="../res/arrow_right.png" id="next">
-                    </div>
+                <span class="sub-title">PAWN</span>
+                <div class="desc">Except on its first move,
+                    a pawn may only move one square at a time.
+                    Eats diagonally.
                 </div>
-                <div class="slide">
-                    <span class="title">HOW TO PLAY</span>
-                    <div class="pieces">
-                        <img src="../res/catPieces/cat_knight.png">
-                        <img src="../res/dogPieces/dog_knight.png">
-                    </div>
-                    <span class="sub-title">KNIGHT</span>
-                    <div class="desc">Moves and eats to a square that is two
-                        squares away horizontally
-                        and one square vertically,
-                        or two squares vertically
-                        and one square horizontally.
-                    </div>
-                    <span class="pageNum">3/8</span>
-                    <div class="buttons">
-                        <a href="#">
-                            <img src="../res/exit_button.png" id="btn-exit">
-                        </a>
-                        <img src="../res/arrow_left.png" id="previous">
-                        <img src="../res/arrow_right.png" id="next">
-                    </div>
+                <span class="pageNum">1/8</span>
+            </div>
+            <div class="slide">
+                <span class="title">HOW TO PLAY</span>
+                <div class="pieces">
+                    <img src="../res/catPieces/cat_rook.png">
+                    <img src="../res/dogPieces/dog_rook.png">
                 </div>
-                <div class="slide">
-                    <span class="title">HOW TO PLAY</span>
-                    <div class="pieces">
-                        <img src="../res/catPieces/cat_bishop.png">
-                        <img src="../res/dogPieces/dog_bishop.png">
-                    </div>
-                    <span class="sub-title">BISHOP</span>
-                    <div class="desc">Bishop moves diagonally any number of squares,
-                        forwards or backwards.
-                        One bishop moves along the light-colored squares
-                         and the other bishop moves along the dark-colored squares.
-                    </div>
-                    <span class="pageNum">4/8</span>
-                    <div class="buttons">
-                        <a href="#">
-                            <img src="../res/exit_button.png" id="btn-exit">
-                        </a>
-                        <img src="../res/arrow_left.png" id="previous">
-                        <img src="../res/arrow_right.png" id="next">
-                    </div>
+                <span class="sub-title">ROOK</span>
+                <div class="desc">The rook moves horizontally or vertically,
+                    through any number of unoccupied squares.
+                    Eats horizontally or vertically. Special move: Castling
                 </div>
-                <div class="slide">
-                    <span class="title">HOW TO PLAY</span>
-                    <div class="pieces">
-                        <img src="../res/catPieces/cat_queen.png">
-                        <img src="../res/dogPieces/dog_queen.png">
-                    </div>
-                    <span class="sub-title">QUEEN</span>
-                    <div class="desc">Queen can be moved any number of unoccupied squares in a
-                         straight line vertically, horizontally, or diagonally.
-                    </div>
-                    <span class="pageNum">5/8</span>
-                    <div class="buttons">
-                        <a href="#">
-                            <img src="../res/exit_button.png" id="btn-exit">
-                        </a>
-                        <img src="../res/arrow_left.png" id="previous">
-                        <img src="../res/arrow_right.png" id="next">
-                    </div>
+                <span class="pageNum">2/8</span>
+            </div>
+            <div class="slide">
+                <span class="title">HOW TO PLAY</span>
+                <div class="pieces">
+                    <img src="../res/catPieces/cat_knight.png">
+                    <img src="../res/dogPieces/dog_knight.png">
                 </div>
-                <div class="slide">
-                    <span class="title">HOW TO PLAY</span>
-                    <div class="pieces">
-                        <img src="../res/catPieces/cat_king.png">
-                        <img src="../res/dogPieces/dog_king.png">
-                    </div>
-                    <span class="sub-title">KING</span>
-                    <div class="desc">A king can move one square in any direction
-                        (horizontally, vertically, or diagonally)
-                        Unless the square is already occupied by a friendly piece
-                        or the move would place the king in check.
-                    </div>
-                    <span class="pageNum">6/8</span>
+                <span class="sub-title">KNIGHT</span>
+                <div class="desc">Moves and eats to a square that is two
+                    squares away horizontally
+                    and one square vertically,
+                    or two squares vertically
+                    and one square horizontally.
+                </div>
+                <span class="pageNum">3/8</span>
+            </div>
+            <div class="slide">
+                <span class="title">HOW TO PLAY</span>
+                <div class="pieces">
+                    <img src="../res/catPieces/cat_bishop.png">
+                    <img src="../res/dogPieces/dog_bishop.png">
+                </div>
+                <span class="sub-title">BISHOP</span>
+                <div class="desc">Bishop moves diagonally any number of squares,
+                    forwards or backwards.
+                    One bishop moves along the light-colored squares
+                     and the other bishop moves along the dark-colored squares.
+                </div>
+                <span class="pageNum">4/8</span>
+            </div>
+            <div class="slide">
+                <span class="title">HOW TO PLAY</span>
+                <div class="pieces">
+                    <img src="../res/catPieces/cat_queen.png">
+                    <img src="../res/dogPieces/dog_queen.png">
+                </div>
+                <span class="sub-title">QUEEN</span>
+                <div class="desc">Queen can be moved any number of unoccupied squares in a
+                     straight line vertically, horizontally, or diagonally.
+                </div>
+                <span class="pageNum">5/8</span>
+            </div>
+            <div class="slide">
+                <span class="title">HOW TO PLAY</span>
+                <div class="pieces">
+                    <img src="../res/catPieces/cat_king.png">
+                    <img src="../res/dogPieces/dog_king.png">
+                </div>
+                <span class="sub-title">KING</span>
+                <div class="desc">A king can move one square in any direction
+                    (horizontally, vertically, or diagonally)
+                    Unless the square is already occupied by a friendly piece
+                    or the move would place the king in check.
+                </div>
+                <span class="pageNum">6/8</span>
+            </div>
+            <div class="slide">
+                <span class="title">HOW TO PLAY</span>
+                <div class="castling">
+                    <img src="../res/castling.png">
+                </div>
+                <span class="sub-title">CASTLING</span>
+                <div class="desc">Castling is a special move in chess that uses
+                    both a rook and the king.
+                    In castling, the king is moved two squares
+                     toward the rook, and the rook moves
+                     past the king to the square right next
+                     to where the king has moved.
+                </div>
+                <span class="pageNum">7/8</span>
+            </div>
+            <div class="slide">
+                <span class="title">HOW TO PLAY</span>
+                <div class="en-passant">
+                    <img src="../res/en_passant.png">
+                </div>
+                <span class="sub-title">EN PASSANT</span>
+                <div class="desc">En passant is a special pawn capture that
+                    can only occur only immediately after the pawn move
+                    two squares from its staring square.
+                    The enemy pawn can capture it had it advance only one square.
+                </div>
+                <span class="pageNum">8/8</span>
+            </div>
+            <div class="howToPlayButtons">
+                <a href="#">
                     <div class="buttons">
-                        <a href="#">
-                            <img src="../res/exit_button.png" id="btn-exit">
-                        </a>
-                        <img src="../res/arrow_left.png" id="previous">
-                        <img src="../res/arrow_right.png" id="next">
+                        <img src="../res/exit_button.png" id="btn-exit">
                     </div>
-                </div> -->
+                </a>
+                <div class="buttons">
+                    <img src="../res/arrow_left.png" id="previous">
+                </div>
+                <div class="buttons">
+                    <img src="../res/arrow_right.png" id="next">
+                </div>
             </div>
         </div>
+    </div>
 
     <script src="../js/jquery-3.4.1.min.js"></script>
     <script src="../js/js-home.js"></script>
