@@ -335,8 +335,6 @@ body {
 .audioButtons .toggleBtn {
     height: 5vh;
     width: 2.5vw;
-    background-color: orange;
-    border: black 2px solid;
     margin: 5px;
     cursor: url(../res/custom_pointer.cur), pointer;
     transition: 0.2s;
@@ -344,9 +342,5 @@ body {
 
 .audioButtons .toggleBtn:hover {
     transform: scale(1.1);
-}
-
-.audioButtons .toggleBtn#btn-music {
-    filter: grayscale(0.7);
 }
 /* #endregion */
