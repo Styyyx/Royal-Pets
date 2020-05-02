@@ -17,6 +17,23 @@ $(document).ready(function () {
         $(this).select();
     });
 
+    //#region Buttons
+    //New Game Button
+    $("#btn-newGame").on("click",function(){
+        $(".overlay#newGame").css("display","flex");
+    });
+    $(".overlay#newGame #btn-cancel").on("click",function(){
+        $(".overlay#newGame").css("display","none");
+    });
+    $("#btn-howToPlay").on("click",function(){
+        $(".overlay#howToPlay").css("display","flex");
+    });
+    $(".overlay#howToPlay #btn-exit").on("click",function(){
+        $(".overlay#howToPlay").css("display","none");
+    });
+
+    //#endregion
+
     //#region Music Handler
     var enableSound = true;
 
