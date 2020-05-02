@@ -322,3 +322,25 @@ body {
 }
 
 /* #endregion */
+
+/* #region Audio */
+.audioButtons {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    right: 1vw;
+    top: 2vh;
+    cursor: url(../res/custom_default.cur), auto;
+}
+.audioButtons .toggleBtn {
+    height: 5vh;
+    width: 2.5vw;
+    margin: 5px;
+    cursor: url(../res/custom_pointer.cur), pointer;
+    transition: 0.2s;
+}
+
+.audioButtons .toggleBtn:hover {
+    transform: scale(1.1);
+}
+/* #endregion */
