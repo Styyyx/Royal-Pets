@@ -25,20 +25,20 @@ $(document).ready(function () {
         if (audio.paused == true) {
             audio.currentTime = 0;
             audio.play();
-            $(this).css("filter", "grayscale(0)");
+            $(this).attr("src","../res/music_on.png");
         } else {
             audio.pause();
-            $(this).css("filter", "grayscale(0.7)");
+            $(this).attr("src","../res/music_off.png");
         }
     });
 
     $(".audioButtons .toggleBtn#btn-sound").on("click", function () {
         if (enableSound == true) {
             enableSound = false;
-            $(this).css("filter", "grayscale(0.7)");
+            $(this).attr("src","../res/sound_off.png");
         } else {
             enableSound = true;
-            $(this).css("filter", "grayscale(0)");
+            $(this).attr("src","../res/sound_on.png");
         }
     });
 
@@ -46,6 +46,11 @@ $(document).ready(function () {
         if (enableSound == true) {
             $("audio#sound-buttonClick").get(0).play();
             $("audio#sound-buttonClick").get(0).currentTime = 0;
+        }
+    }).on("mouseover",function(){
+        if (enableSound == true){
+            $("audio#sound-buttonHover").get(0).play();
+            $("audio#sound-buttonHover").get(0).currentTime = 0;
         }
     });
     //#endregion
