@@ -161,7 +161,7 @@ $("#btnHome").on("click", function () {
 
 // How to Play Button Click event
 $("#btnHowToPlay").on("click", function () {
-	$(".overlay#howToPlay").css("display","flex");
+	$(".overlay#howToPlay").css("display", "flex");
 	const slides = $('.slide');
 	var activeSlide = 0;
 
@@ -193,7 +193,7 @@ $("#btnHowToPlay").on("click", function () {
 	});
 	$('#btn-exit').on('click', function () {
 		showSlide(0);
-		$(".overlay#howToPlay").css("display","none");
+		$(".overlay#howToPlay").css("display", "none");
 	});
 
 	$(document).on('keydown', function (event) {
@@ -377,16 +377,15 @@ $(".btnGroup #btnSound").on("click", function () {
 
 $(".sound-btnClick").on("click", function () {
 	if (enableSound == true) {
-			$("audio#sound-buttonClick").get(0).play();
-			$("audio#sound-buttonClick").get(0).currentTime = 0;
+		$("audio#sound-buttonClick").get(0).play();
+		$("audio#sound-buttonClick").get(0).currentTime = 0;
 	}
-}).on("mouseover",function(){
-	if (enableSound == true){
-			$("audio#sound-buttonHover").get(0).play();
-			$("audio#sound-buttonHover").get(0).currentTime = 0;
+}).on("mouseover", function () {
+	if (enableSound == true) {
+		$("audio#sound-buttonHover").get(0).play();
+		$("audio#sound-buttonHover").get(0).currentTime = 0;
 	}
 });
-
 //#endregion
 
 // Prevents highlighting/selecting elements on drag
@@ -450,6 +449,7 @@ $("[empty]").on("click", function () {
 			if (data.piece == "rook" || data.piece == "king") {
 				$("[row=\'" + data.row + "\'][column=\'" + data.column + "\']").removeAttr("castle");
 			}
+			PlaySound("eat");
 			CheckforPromotion();
 			TakeSnapShot();
 			Debug("EAT", thisPlayer, thisPiece, thisRow, thisColumn);
@@ -468,6 +468,7 @@ $("[empty]").on("click", function () {
 			if (data.piece == "rook" || data.piece == "king") {
 				$("[row=\'" + data.row + "\'][column=\'" + data.column + "\']").removeAttr("castle");
 			}
+			PlaySound("move");
 			CheckforPromotion();
 			TakeSnapShot();
 			Debug("MOVE", thisPlayer, thisPiece, thisRow, thisColumn);
@@ -1890,6 +1891,18 @@ $(".overlay#endGame img#btnOk").on("click", function () {
 		location.replace("./home.html");
 	}
 });
+//#endregion
+
+//#region Sound Effects of Pieces
+function PlaySound(sound) {
+	if (enableSound == true) {
+		if (sound == "move") {
+			$("audio#sound-pieceMove").get(0).play();
+		} else if (sound == "eat") {
+			$("audio#sound-pieceEat").get(0).play();
+		}
+	}
+}
 //#endregion
 
 //#region Ease of Code
