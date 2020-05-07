@@ -763,11 +763,13 @@ function CheckEat(targetRow, targetColumn, thisPlayer = data.player, thisPiece =
 		if (thisPlayer == "dog") {
 			if (((parseInt(thisRow) + 1) == targetRow) &&
 				(((parseInt(thisColumn) - 1) == targetColumn) || ((parseInt(thisColumn) + 1) == targetColumn))) {
+				$("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").removeAttr("enpassant");
 				return true;
 			} else { return false; }
 		} else if (thisPlayer == "cat") {
 			if (((parseInt(thisRow) - 1) == targetRow) &&
 				(((parseInt(thisColumn) - 1) == targetColumn) || ((parseInt(thisColumn) + 1) == targetColumn))) {
+				$("[row=\'" + targetRow + "\'][column=\'" + targetColumn + "\']").removeAttr("enpassant");
 				return true;
 			} else { return false; }
 		}
@@ -990,7 +992,7 @@ function ShowMoves() {
 }
 
 function ShowMovesSetCursor() {
-	$("[empty]").each(function(){
+	$("[empty]").each(function () {
 		if ($(this).css("background-color") == "rgb(0, 0, 255)" || $(this).css("background-color") == "rgb(255, 0, 0)") {
 			$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
 		}
