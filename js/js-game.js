@@ -419,6 +419,7 @@ $("[empty]").on("click", function () {
 					$(this).css("background-color", "rgba(0, 128, 0, 0.7)");
 					data = { player: thisPlayer, piece: thisPiece, row: thisRow, column: thisColumn };
 					ShowMoves();
+					ShowMovesSetCursor();
 				}
 
 				else if ($(this).attr("canMove") == "true") {
@@ -426,12 +427,14 @@ $("[empty]").on("click", function () {
 					$(this).css("background-color", "rgba(0, 128, 0, 0.7)");
 					data = { player: thisPlayer, piece: thisPiece, row: thisRow, column: thisColumn };
 					ShowMoves();
+					ShowMovesSetCursor();
 				}
 			} else {
 				ReloadBoard();
 				$(this).css("background-color", "rgba(0, 128, 0, 0.7)");
 				data = { player: thisPlayer, piece: thisPiece, row: thisRow, column: thisColumn };
 				ShowMoves();
+				ShowMovesSetCursor();
 			}
 		}
 	}
@@ -984,10 +987,12 @@ function ShowMoves() {
 		}
 
 	}
-	//Set red/blue cell's cursor to pointer
-	$("[empty]").each(function () {
+}
+
+function ShowMovesSetCursor() {
+	$("[empty]").each(function(){
 		if ($(this).css("background-color") == "rgb(0, 0, 255)" || $(this).css("background-color") == "rgb(255, 0, 0)") {
-			$(this).css("cursor", "pointer");
+			$(this).css("cursor", "url(../res/custom_pointer.cur), pointer");
 		}
 	});
 }
