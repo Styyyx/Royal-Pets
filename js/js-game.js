@@ -32,6 +32,9 @@ $(window).bind("beforeunload", function () {
 		if ($(this).attr("castle") == "true") {
 			cell.castle = "true";
 		}
+		if ($(this).attr("enpassant") == "true") {
+			cell.enpassant = "true";
+		}
 
 		previousState.push(cell);
 	});
@@ -61,6 +64,9 @@ $(window).bind("load", function () {
 			$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("piece", cell.piece);
 			if (cell.castle == "true") {
 				$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("castle", "true");
+			}
+			if (cell.enpassant == "true") {
+				$("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']").attr("enpassant", "true");
 			}
 		}
 	}
@@ -337,6 +343,12 @@ $("#btnUndo").on("click", function () {
 		boardHistory[turnCounter].forEach(function (cell) {
 			thisCell = $("[row=\'" + cell.row + "\'][column=\'" + cell.column + "\']");
 			thisCell.attr("empty", "false").attr("piece", cell.piece).attr("player", cell.player);
+			if (cell.enpassant == "true") {
+				thisCell.attr("enpassant", "true");
+			}
+			if (cell.castle == "true") {
+				thisCell.attr("castle", "true");
+			}
 		});
 
 		$(".history ul li:last-child").remove();
@@ -1962,6 +1974,13 @@ function TakeSnapShot() {
 			piece: $(this).attr("piece"),
 			player: $(this).attr("player"),
 		};
+
+		if ($(this).attr("castle") == "true") {
+			cell.castle = "true";
+		}
+		if ($(this).attr("enpassant") == "true") {
+			cell.enpassant = "true";
+		}
 		snapShot.push(cell);
 	});
 	boardHistory[turnCounter] = snapShot;
