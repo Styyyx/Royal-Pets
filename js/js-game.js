@@ -112,6 +112,18 @@ $(document).on("keydown", function (e) {
 	}
 });
 
+$(document).on("keydown", function (e) {
+	if (e.key == "1") {
+		$(".overlay#dogWinner").css("display", "flex");
+	}
+
+});
+$(document).on("keydown", function (e) {
+	if (e.key == "2") {
+		$(".overlay#catWinner").css("display", "flex");
+	}
+});
+
 //#region Randomize First Player
 var namePlayer1 = (sessionStorage.getItem("player1") == null) ? "Player 1" : sessionStorage.getItem("player1");
 var namePlayer2 = (sessionStorage.getItem("player1") == null) ? "Player 1" : sessionStorage.getItem("player2");
