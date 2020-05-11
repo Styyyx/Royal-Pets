@@ -557,8 +557,8 @@ body {
     cursor: url(../res/custom_pointer.cur), pointer;
 }
 
-/* #region */
-.overlay#dogWinner .panel {
+/* #region Overlay Winner*/
+.overlay#winner .panel {
     z-index: 2;
     height: 55%;
     width: 50%;
@@ -575,14 +575,23 @@ body {
     position: absolute;
 }
 
-.overlay#dogWinner .pieces img {
-    height: 155px;
-    width: 110px;
+.overlay#winner .pieces {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    height: 35%;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay#winner .pieces img {
+    height: auto;
+    width: 15%;
     position: relative;
     margin: 0.5208333333333334vw 0 0.5208333333333334vw 0;
 }
 
-.overlay#dogWinner .panel .text {
+.overlay#winner .panel .text {
     font-size: 2.0833333333333335vw;
     font-family: "Monserrat-SemiBold";
     position: relative;
@@ -592,65 +601,15 @@ body {
     text-align: center;
 }
 
-.overlay#dogWinner .panel .winnerButtons {  
-    width: 700px;
+.overlay#winner .panel .winnerButtons {  
+    width: 80%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
 
-.overlay#dogWinner .panel .winnerButtons .button {
-    padding: 0.5em 0.5em 0.5em 0.5em;
-    margin: 1em 0 0 1em;
-    width: 100%;
-}
-/* #endregion */
-
-/* #region */
-.overlay#catWinner .panel {
-    z-index: 2;
-    height: 55%;
-    width: 50%;
-    border: 0.78125vw solid #EB8313;
-    border-radius: 1.5625vw;
-    background-color: #FFD3B5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    max-height: 60%;
-    max-width: 50%;
-    position: absolute;
-}
-
-.overlay#catWinner .pieces img {
-    height: 155px;
-    width: 110px;
-    position: relative;
-    margin: 0.5208333333333334vw 0 0.5208333333333334vw 0;
-}
-
-.overlay#catWinner .panel .text {
-    font-size: 2.0833333333333335vw;
-    font-family: "Monserrat-SemiBold";
-    position: relative;
-    margin-top: 0.2604166666666667vw;
-    margin-bottom: 1.0416666666666667vw;
-    justify-content: center;
-    text-align: center;
-}
-
-.overlay#catWinner .panel .winnerButtons {  
-    width: 700px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.overlay#catWinner .panel .winnerButtons .button {
+.overlay#winner .panel .winnerButtons .button {
     padding: 0.5em 0.5em 0.5em 0.5em;
     margin: 1em 0 0 1em;
     width: 100%;
