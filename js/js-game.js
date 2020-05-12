@@ -112,6 +112,16 @@ $(document).on("keydown", function (e) {
 	}
 });
 
+// $(document).on("keydown", function (e) {
+// 	if (e.key == "1") {
+// 		if ($(".overlay#winner").css("display") == "flex") {
+// 			$(".overlay#winner").css("display", "none");
+// 		} else {
+// 			CheckMate();
+// 		}
+// 	}
+// });
+
 //#region Randomize First Player
 var namePlayer1 = (sessionStorage.getItem("player1") == null) ? "Player 1" : sessionStorage.getItem("player1");
 var namePlayer2 = (sessionStorage.getItem("player1") == null) ? "Player 1" : sessionStorage.getItem("player2");
@@ -398,6 +408,27 @@ $(".sound-btnClick").on("click", function () {
 		$("audio#sound-buttonHover").get(0).currentTime = 0;
 	}
 });
+
+// Overlay Endgame Buttons
+$(".overlay#winner .button#btnNewGame").on("click", () => {
+	$(".overlay#newGame").css("display", "flex");
+	$(".overlay#newGame .button#btn-cancel").css("display", "none");
+	$(".overlay#winner").css("display", "none");
+});
+
+$(".overlay#winner .button#btnViewBoard").on("click", () => {
+	$("[empty]").off("click");
+	$(".btnGroup #btnUndo").off("click");
+	$(`[player=${turnPlayer}]`).each(() => {
+		$(this).css("cursor", "url(../res/custom_default.cur), auto");
+	});
+	$(".overlay#winner").css("display", "none");
+});
+
+$(".overlay#winner .button#btnHome").on("click", () => {
+	location.replace("../pages/home.html");
+});
+
 //#endregion
 
 // Prevents highlighting/selecting elements on drag
@@ -1838,8 +1869,17 @@ function IsCheck(thisRow, thisColumn, thisPlayer) {
 }
 
 function CheckMate() {
-	alert(usernames[turnPlayer] + " WINS");
-	$(".overlay#endGame").css("display", "block");
+	$(".overlay#winner .panel .pieces").empty();
+	$(".overlay#Winner .panel .pieces").append(
+		`<img src="../res/${turnPlayer}Pieces/${turnPlayer}_pawn.png">
+		<img src="../res/${turnPlayer}Pieces/${turnPlayer}_knight.png">
+		<img src="../res/${turnPlayer}Pieces/${turnPlayer}_bishop.png">
+		<img src="../res/${turnPlayer}Pieces/${turnPlayer}_rook.png">
+		<img src="../res/${turnPlayer}Pieces/${turnPlayer}_queen.png">
+		<img src="../res/${turnPlayer}Pieces/${turnPlayer}_king.png">`
+	);
+	$(".overlay#winner .panel .text#player").text(`${usernames[turnPlayer]} WINS!`);
+	$(".overlay#winner").css("display", "flex");
 }
 
 function StaleMate() {
