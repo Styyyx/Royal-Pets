@@ -112,15 +112,15 @@ $(document).on("keydown", function (e) {
 	}
 });
 
-// $(document).on("keydown", function (e) {
-// 	if (e.key == "1") {
-// 		if ($(".overlay#winner").css("display") == "flex") {
-// 			$(".overlay#winner").css("display", "none");
-// 		} else {
-// 			CheckMate();
-// 		}
-// 	}
-// });
+$(document).on("keydown", function (e) {
+	if (e.key == "1") {
+		if ($(".overlay#winner").css("display") == "flex") {
+			$(".overlay#winner").css("display", "none");
+		} else {
+			CheckMate();
+		}
+	}
+});
 
 //#region Randomize First Player
 var namePlayer1 = (sessionStorage.getItem("player1") == null) ? "Player 1" : sessionStorage.getItem("player1");
