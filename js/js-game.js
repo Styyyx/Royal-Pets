@@ -170,7 +170,7 @@ $(".sidenav").on("mouseleave", function () {
 
 //Home Button Click Event
 $("#btnHome").on("click", function () {
-	window.location.replace("./home.html");
+	window.location.replace("./index.html");
 	window.sessionStorage.removeItem("turnPlayer");
 	sessionStorage.removeItem("logHistory");
 });
@@ -426,7 +426,7 @@ $(".overlay#winner .button#btnViewBoard").on("click", () => {
 });
 
 $(".overlay#winner .button#btnHome").on("click", () => {
-	location.replace("../pages/home.html");
+	location.replace("../pages/index.html");
 });
 
 //#endregion
@@ -1947,7 +1947,7 @@ function CheckCastleQueenSide(thisPlayer, thisRow) {
 //#region EndGame
 $(".overlay#endGame img#btnOk").on("click", function () {
 	if ($(".overlay#endGame").css("display") != "none") {
-		location.replace("./home.html");
+		location.replace("./index.html");
 	}
 });
 //#endregion
