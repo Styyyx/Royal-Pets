@@ -6,9 +6,9 @@ A chess game themed cat and dogs, written in html,css and js.
 
 Alcantara, Patrick [Facebook](https://www.facebook.com/pema.alcantara)
 
-Baroma, Hannah
+Baroma, Hannah [Facebook](https://www.facebook.com/hannahmae.baroma)
 
-Bernardo, Reanne
+Bernardo, Reanne [Facebook](https://www.facebook.com/reannemaebernardo)
 ***
 ### Features
 
